@@ -2,7 +2,7 @@ from datetime import datetime
 from extensions import db
 
 
-class UserProfiles(db.Model):
+class UserProfile(db.Model):
     __tablename__ = "user_profiles"
 
     id = db.Column(db.Integer, primary_key=True)

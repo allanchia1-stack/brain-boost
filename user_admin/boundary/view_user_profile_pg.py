@@ -1,12 +1,12 @@
 from flask import Blueprint, jsonify, render_template_string
-from user_admin.controller.view_user_profiles_c import ViewUserProfilesController
+from user_admin.controller.view_user_profile_c import ViewUserProfileController
 
-view_user_profiles_bp = Blueprint("view_user_profiles_bp", __name__)
+view_user_profile_bp = Blueprint("view_user_profile_bp", __name__)
 
 
-@view_user_profiles_bp.route("/user_admin/view_user_profiles_page", methods=["GET"])
+@view_user_profile_bp.route("/user_admin/view_user_profiles_page", methods=["GET"])
 def view_user_profiles_page():
-    profiles = ViewUserProfilesController.view_all_user_profiles()
+    profiles = ViewUserProfileController.view_all_user_profiles()
 
     html = """
     <!DOCTYPE html>
@@ -44,18 +44,18 @@ def view_user_profiles_page():
     return render_template_string(html, profiles=profiles)
 
 
-@view_user_profiles_bp.route("/user_admin/view_user_profiles", methods=["GET"])
+@view_user_profile_bp.route("/user_admin/view_user_profiles", methods=["GET"])
 def view_all_user_profiles():
-    profiles = ViewUserProfilesController.view_all_user_profiles()
+    profiles = ViewUserProfileController.view_all_user_profiles()
     return jsonify({
         "success": True,
         "data": profiles
     })
 
 
-@view_user_profiles_bp.route("/user_admin/view_user_profiles/<int:profile_id>", methods=["GET"])
+@view_user_profile_bp.route("/user_admin/view_user_profiles/<int:profile_id>", methods=["GET"])
 def view_user_profile_by_id(profile_id):
-    profile = ViewUserProfilesController.view_user_profile_by_id(profile_id)
+    profile = ViewUserProfileController.view_user_profile_by_id(profile_id)
 
     if not profile:
         return jsonify({
