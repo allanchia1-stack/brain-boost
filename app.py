@@ -15,7 +15,7 @@ app.register_blueprint(view_user_profile_bp)
 def home():
     return """
     <h1>User Admin Home</h1>
-    <button onclick="window.location.href='/user_admin/view_user_profiles_page'">
+    <button onclick="window.location.href='/user_admin/view_user_profiles_pageasd'">
         View User Profiles
     </button>
     """
