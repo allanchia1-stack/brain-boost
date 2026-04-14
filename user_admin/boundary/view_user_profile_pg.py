@@ -27,17 +27,19 @@ def view_user_profiles_page():
             </tr>
             {% for profile in profiles %}
             <tr>
-                <td>{{ profile.id }}</td>
-                <td>{{ profile.full_name }}</td>
-                <td>{{ profile.email }}</td>
-                <td>{{ profile.role }}</td>
-                <td>{{ profile.status }}</td>
+                <td>{{ profile["id"] }}</td>
+                <td>{{ profile["full_name"] }}</td>
+                <td>{{ profile["email"] }}</td>
+                <td>{{ profile["role"] }}</td>
+                <td>{{ profile["status"] }}</td>
             </tr>
             {% endfor %}
         </table>
 
         <br>
-        <a href="/">Back to Home</a>
+        <button onclick="window.location.href='/'">
+        Back to Home
+        </button>
     </body>
     </html>
     """
@@ -57,7 +59,7 @@ def view_all_user_profiles():
 def view_user_profile_by_id(profile_id):
     profile = ViewUserProfileController.view_user_profile_by_id(profile_id)
 
-    if not profile:
+    if profile is None:
         return jsonify({
             "success": False,
             "message": "User profile not found"
