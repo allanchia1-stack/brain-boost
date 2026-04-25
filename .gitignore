@@ -1,3 +1,4 @@
 user_admin/controller/__pycache__/view_user_profile_c.cpython-311.pyc
 user_admin/entity/__pycache__/user_profile.cpython-311.pyc
 user_admin/boundary/__pycache__/view_user_profile_pg.cpython-311.pyc
+user_admin/entity/__pycache__/user_profile.cpython-311.pyc
