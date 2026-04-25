@@ -37,8 +37,8 @@ def view_user_profiles_page():
         </table>
 
         <br>
-        <button onclick="window.location.href='/'">
-        Back to Home
+        <button onclick="window.location.href='/logout'">
+        Logout
         </button>
     </body>
     </html>
