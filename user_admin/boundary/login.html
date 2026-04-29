@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto Condensed:wght@400;500;700&display=swap"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        line-height: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        width: 100%;
+        position: relative;
+        background-color: #fafaf5;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px 0px 131px;
+        box-sizing: border-box;
+        gap: 131px;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        font-size: 48px;
+        color: #426b1f;
+        font-family: 'Roboto Condensed';
+      "
+    >
+      <div
+        style="
+          align-self: stretch;
+          height: 1024px;
+          position: relative;
+          background-color: #fafaf5;
+          display: none;
+          flex-shrink: 0;
+        "
+      ></div>
+      <div
+        style="
+          align-self: stretch;
+          height: 112px;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-sizing: border-box;
+          overflow: hidden;
+          flex-shrink: 0;
+          display: flex;
+          align-items: flex-start;
+          top: 0;
+          z-index: 99;
+          position: sticky;
+          max-width: 100%;
+        "
+      >
+        <div
+          style="
+            background-color: #fff;
+            display: flex;
+            align-items: flex-start;
+            padding: 32px 607px 50px;
+            box-sizing: border-box;
+            max-width: 100%;
+            flex-shrink: 0;
+          "
+        >
+          <div
+            style="
+              height: 130px;
+              width: 1440px;
+              position: relative;
+              background-color: #fff;
+              display: none;
+              max-width: 100%;
+              flex-shrink: 0;
+            "
+          ></div>
+          <h1
+            style="
+              margin: 0;
+              position: relative;
+              font-size: inherit;
+              letter-spacing: -0.01em;
+              line-height: 100%;
+              font-weight: 400;
+              font-family: inherit;
+              z-index: 1;
+              flex-shrink: 0;
+            "
+          >
+            HelpFundUs
+          </h1>
+        </div>
+      </div>
+      <section
+        style="
+          align-self: stretch;
+          display: flex;
+          align-items: flex-start;
+          padding: 0px 470px;
+          box-sizing: border-box;
+          max-width: 100%;
+          flex-shrink: 0;
+          text-align: left;
+          font-size: 24px;
+          color: #000;
+          font-family: 'Roboto Condensed';
+        "
+      >
+        <div
+          style="
+            flex: 1;
+            background-color: #fff;
+            border: 0px solid rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 55px 25px 34px;
+            gap: 36px;
+            max-width: 100%;
+            z-index: 1;
+          "
+        >
+          <img
+            style="
+              width: 500px;
+              height: 649px;
+              position: relative;
+              display: none;
+              max-width: 100%;
+              flex-shrink: 0;
+            "
+            alt=""
+            src="./public/Boundary-Rectangle.svg"
+          />
+
+          <div
+            style="
+              display: flex;
+              align-items: flex-start;
+              padding: 0px 166px;
+              box-sizing: border-box;
+              max-width: 100%;
+              flex-shrink: 0;
+              font-size: 48px;
+            "
+          >
+            <h2
+              style="
+                margin: 0;
+                position: relative;
+                font-size: inherit;
+                line-height: 130%;
+                font-weight: 500;
+                font-family: inherit;
+                z-index: 1;
+              "
+            >
+              Login
+            </h2>
+          </div>
+          <form
+            method="post"
+            style="
+              align-self: stretch;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 36px;
+              width: 100%;
+            "
+          >
+            {% if error %}
+            <div
+              style="
+                align-self: stretch;
+                background-color: #fdecea;
+                border: 1px solid #f5c2c7;
+                border-radius: 5px;
+                color: #b42318;
+                padding: 16px;
+                box-sizing: border-box;
+                font-size: 20px;
+                line-height: 1.4;
+              "
+            >
+              {{ error }}
+            </div>
+            {% endif %}
+            <div
+              style="
+                align-self: stretch;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                flex-shrink: 0;
+              "
+            >
+              <h3
+                style="
+                  margin: 0;
+                  position: relative;
+                  font-size: inherit;
+                  line-height: 130%;
+                  font-weight: 400;
+                  font-family: inherit;
+                  z-index: 1;
+                "
+              >
+                Email address
+              </h3>
+              <input
+                name="email"
+                value="{{ email }}"
+                style="
+                  border: 1.5px solid #454545;
+                  outline: none;
+                  width: 100%;
+                  background-color: #fff;
+                  align-self: stretch;
+                  height: 75px;
+                  position: relative;
+                  border-radius: 5px;
+                  box-sizing: border-box;
+                  min-width: 250px;
+                  z-index: 1;
+                  font-size: 24px;
+                  line-height: 31.2px;
+                  border-radius: 5px;
+                  padding:0 16px;
+                  margin: 0;
+                "
+                type="text"
+              />
+            </div>
+            <div
+              style="
+                align-self: stretch;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0px 0px 12px;
+                gap: 6px;
+                flex-shrink: 0;
+              "
+            >
+              <h3
+                style="
+                  margin: 0;
+                  position: relative;
+                  font-size: inherit;
+                  line-height: 130%;
+                  font-weight: 400;
+                  font-family: inherit;
+                  z-index: 1;
+                "
+              >
+                Password
+              </h3>
+              <input
+                name="password"
+                style="
+                  border: 1.5px solid #454545;
+                  outline: none;
+                  width: 100%;
+                  background-color: #fff;
+                  align-self: stretch;
+                  height: 75px;
+                  position: relative;
+                  border-radius: 5px;
+                  box-sizing: border-box;
+                  min-width: 250px;
+                  z-index: 1;
+                  font-size: 24px;
+                  line-height: 31.2px;
+                  border-radius: 5px;
+                  padding:0 16px;
+                  margin: 0;
+                "
+                type="password"
+              />
+            </div>
+
+            <div
+              style="
+                align-self: stretch;
+                display: flex;
+                align-items: flex-start;
+                padding: 0px 113px 12px 112px;
+                flex-shrink: 0;
+                text-align: center;
+                font-size: 36px;
+                color: #fff;
+              "
+            >
+              <button
+                type="submit"
+                style="
+                  flex: 1;
+                  border-radius: 5px;
+                  background-color: #426b1f;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 1;
+                  height: 75px;
+                  border: none;
+                  color: #fff;
+                  font-size: 36px;
+                  line-height: 130%;
+                  font-weight: 700;
+                  font-family: Roboto Condensed;
+                  cursor: pointer;
+                "
+              >
+                Log in
+              </button>
+            </div>
+          </form>
+          <div
+            style="
+              align-self: stretch;
+              display: flex;
+              align-items: flex-start;
+              padding: 0px 89px 0px 88px;
+              flex-shrink: 0;
+              color: #000;
+            "
+          >
+            <h3
+              style="
+                margin: 0;
+                position: relative;
+                font-size: inherit;
+                line-height: 130%;
+                white-space: nowrap;
+                z-index: 1;
+                font-family: inherit;
+              "
+            >
+              <span style="font-weight: 300">
+                <span>New to </span>
+                <span style="color: #426b1f;">HelpFundUs</span>
+                <span>?</span>
+              </span>
+              <span style="color: #000">
+                <span style="text-decoration: underline">Sign up</span>
+              </span>
+            </h3>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
