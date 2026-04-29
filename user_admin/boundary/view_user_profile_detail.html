@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HelpFundUs - Profile Detail</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto Condensed', sans-serif;
+      background-color: #fafaf5;
+      color: #000;
+      min-height: 100vh;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background-color: #fff;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      color: #426b1f;
+    }
+    .logout-btn {
+      background-color: #426b1f;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: 700;
+      transition: background-color 0.2s;
+    }
+    .logout-btn:hover { background-color: #335318; }
+
+    .page-body {
+      padding: 32px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 24px;
+      color: #426b1f;
+    }
+
+    .detail-card {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 420px;
+      overflow: hidden;
+    }
+
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .detail-table td {
+      padding: 12px 16px;
+      font-size: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .detail-table tr:last-child td {
+      border-bottom: none;
+    }
+    .detail-table td:first-child {
+      font-weight: 700;
+      width: 140px;
+      background-color: #f7f7f2;
+    }
+
+    .status-active   { color: #426b1f; font-weight: 700; }
+    .status-suspended { color: #b00020; font-weight: 700; }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 24px;
+      background-color: #426b1f;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 22px;
+      border-radius: 4px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background-color 0.2s;
+    }
+    .back-btn:hover { background-color: #335318; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <span class="logo">HelpFundUs</span>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+
+  <div class="page-body">
+    <h2>User Profile Details</h2>
+
+    <div class="detail-card">
+      <table class="detail-table">
+        <tr>
+          <td>Profile ID</td>
+          <td>{{ "%03d"|format(profile["profile_id"]) }}</td>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td>{{ profile["profile_name"] }}</td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td>{{ profile["phone"] or "-" }}</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>{{ profile["address"] or "-" }}</td>
+        </tr>
+        <tr>
+          <td>Role</td>
+          <td>{{ profile["profile_role"] }}</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>
+            {% if profile["profile_status"] %}
+              <span class="status-active">Active</span>
+            {% else %}
+              <span class="status-suspended">Suspended</span>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <a href="{{ url_for('view_user_profile_bp.view_user_profiles_page') }}" class="back-btn">Back</a>
+  </div>
+
+</body>
+</html>
