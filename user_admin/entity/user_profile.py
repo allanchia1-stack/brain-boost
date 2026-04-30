@@ -6,12 +6,11 @@ class UserProfile:
     def get_connection():
         return mysql.connector.connect(
             user='root',
-            password='',
+            password='brain-boost',
             host='localhost',
-            port=3307,
             database='fundraising_db'
         )
-
+    
     @classmethod
     def get_all_profiles(cls):
         conn = None
