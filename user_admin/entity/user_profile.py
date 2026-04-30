@@ -6,8 +6,9 @@ class UserProfile:
     def get_connection():
         return mysql.connector.connect(
             user='root',
-            password='brain-boost',
+            password='',
             host='localhost',
+            port=3307,
             database='fundraising_db'
         )
 

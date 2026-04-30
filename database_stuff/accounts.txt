@@ -1,0 +1,7 @@
+[Admin]
+tiffanymurphy@example.come
+hashed_pass_placeholder
+
+[FundRaiser]
+emilygeorge@example.com
+hashed_pass_placeholder

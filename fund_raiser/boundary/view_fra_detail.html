@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HelpFundUs - Fund Raising Activity Detail</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f; }
+    .logout-btn, .back-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 8px 22px; border-radius: 4px; font-size: 15px; font-weight: 700; }
+    .logout-btn { padding: 10px 24px; font-size: 18px; }
+    .page-body { padding: 32px; }
+    h2 { font-size: 22px; margin-bottom: 24px; color: #426b1f; }
+    .detail-card { background-color: #fff; border: 1px solid #ccc; border-radius: 6px; max-width: 720px; overflow: hidden; }
+    .detail-table { width: 100%; border-collapse: collapse; }
+    .detail-table td { padding: 12px 16px; font-size: 15px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+    .detail-table tr:last-child td { border-bottom: none; }
+    .detail-table td:first-child { font-weight: 700; width: 170px; background-color: #f7f7f2; }
+    .back-btn { display: inline-block; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <span class="logo">HelpFundUs</span>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+  <div class="page-body">
+    <h2>Fund Raising Activity Details</h2>
+    <div class="detail-card">
+      <table class="detail-table">
+        <tr><td>FRA ID</td><td>{{ "%03d"|format(fra["fra_id"]) }}</td></tr>
+        <tr><td>Title</td><td>{{ fra["fra_title"] }}</td></tr>
+        <tr><td>Category</td><td>{{ fra["frc_name"] }}</td></tr>
+        <tr><td>Owner</td><td>{{ fra["owner_name"] }}</td></tr>
+        <tr><td>Goal</td><td>${{ fra["fra_donation_goal"] }}</td></tr>
+        <tr><td>Raised</td><td>${{ fra["fra_donation_amt"] }}</td></tr>
+        <tr><td>Start Date</td><td>{{ fra["fra_start_date"] }}</td></tr>
+        <tr><td>End Date</td><td>{{ fra["fra_end_date"] }}</td></tr>
+        <tr><td>Status</td><td>{{ fra["fra_status"]|title }}</td></tr>
+        <tr><td>Description</td><td>{{ fra["fra_des"] }}</td></tr>
+      </table>
+    </div>
+    <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="back-btn">Back</a>
+  </div>
+</body>
+</html>
+

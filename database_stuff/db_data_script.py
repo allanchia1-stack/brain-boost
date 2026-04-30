@@ -5,8 +5,9 @@ from datetime import datetime, timedelta
 
 config = {
     'user':     'root',
-    'password': 'brain-boost',
+    'password': '',
     'host':     'localhost',
+    'port':     3307,
     'database': 'fundraising_db'
 }
 
