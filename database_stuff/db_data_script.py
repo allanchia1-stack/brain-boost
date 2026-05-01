@@ -5,11 +5,12 @@ from datetime import datetime, timedelta
 
 config = {
     'user':     'root',
-    'password': '',
+    'password': 'brain-boost',
     'host':     'localhost',
-    'port':     3307,
+    'port':     3306,
     'database': 'fundraising_db'
 }
+
 
 fake = Faker()
 
