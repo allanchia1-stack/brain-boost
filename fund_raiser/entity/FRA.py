@@ -6,11 +6,10 @@ class FRA:
     @staticmethod
     def get_connection():
         return mysql.connector.connect(
-            user="root",
-            password="",
-            host="localhost",
-            port=3307,
-            database="fundraising_db",
+            user='root',
+            password='brain-boost',
+            host='localhost',
+            database='fundraising_db'
         )
 
     @classmethod
