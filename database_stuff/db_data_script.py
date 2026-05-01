@@ -13,14 +13,6 @@ config = {
 
 fake = Faker()
 
-#this section is new
-SEED = 42
-random.seed(SEED)
-Faker.seed(SEED)
-fake.seed_instance(SEED)
-fake.unique.clear()
-##
-
 def random_datetime(start_days_ago=365, end_days_ago=0):
     """Return a random datetime between start_days_ago and end_days_ago from now."""
     start = datetime.now() - timedelta(days=start_days_ago)

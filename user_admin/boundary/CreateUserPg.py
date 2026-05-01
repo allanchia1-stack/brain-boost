@@ -6,7 +6,7 @@ class CreateUserPg:
         self.control = CreateUserC()
 
     def get(self):
-        return render_template("create_user.html")
+        return render_template("user_admin/create_user.html")
 
     def post(self):
         name = request.form.get("name")

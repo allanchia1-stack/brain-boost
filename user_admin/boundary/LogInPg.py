@@ -7,7 +7,7 @@ class LogInPg:
 
     def get(self):
         # Pass empty/None values for the initial page load
-        return render_template('login.html', error=None, email=""), 200
+        return render_template('user_admin/login.html', error=None, email=""), 200
 
     def post(self):
         email = request.form.get("email", "").strip()
@@ -18,4 +18,4 @@ class LogInPg:
             return result, None, 200
 
         # Pass the actual attempted email and error message back to the template
-        return result, render_template("login.html", email=email, error=result.message), 401
+        return result, render_template("user_admin/login.html", email=email, error=result.message), 401

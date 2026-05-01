@@ -9,7 +9,7 @@ class CreateFRAPg:
 
     def get(self, error=None):
         categories = self.control.get_categories()
-        return render_template("create_fra.html", categories=categories, error=error)
+        return render_template("fund_raiser/create_fra.html", categories=categories, error=error)
 
     def post(self):
         title = request.form.get("title", "").strip()

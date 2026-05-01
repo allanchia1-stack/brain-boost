@@ -11,7 +11,7 @@ def view_user_profiles_page():
         profiles = ViewUserProfileController.search_user_profiles(search_query)
     else:
         profiles = ViewUserProfileController.view_all_user_profiles()
-    return render_template("view_user_profiles.html", profiles=profiles, search_query=search_query)
+    return render_template("user_admin/view_user_profiles.html", profiles=profiles, search_query=search_query)
 
 
 @view_user_profile_bp.route("/user_admin/view_user_profiles/<int:profile_id>", methods=["GET", "POST"])
@@ -36,7 +36,7 @@ def view_user_profile_detail(profile_id):
     profile = ViewUserProfileController.view_user_profile_by_id(profile_id)
     if profile is None:
         return "Profile not found", 404
-    return render_template("view_user_profile_detail.html", profile=profile, success=success)
+    return render_template("user_admin/view_user_profile_detail.html", profile=profile, success=success)
 
 
 @view_user_profile_bp.route("/user_admin/view_user_profiles", methods=["GET"])

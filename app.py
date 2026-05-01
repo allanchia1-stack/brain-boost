@@ -1,5 +1,4 @@
 from flask import Flask, flash, redirect, request, session, url_for, render_template
-from jinja2 import ChoiceLoader, FileSystemLoader
 from user_admin.boundary.LogInPg import LogInPg
 from user_admin.boundary.LogOutPg import logout_bp
 from user_admin.boundary.view_user_profile_pg import view_user_profile_bp
@@ -8,14 +7,8 @@ from user_admin.boundary.CreateUserPg import CreateUserPg
 from fund_raiser.boundary.CreateFRAPg import CreateFRAPg
 from fund_raiser.boundary.view_fra_pg import view_fra_bp
 
-# Pointer for flask to the boundary folder for HTML files
-app = Flask(__name__, template_folder="user_admin/boundary")
-app.jinja_loader = ChoiceLoader(
-    [
-        FileSystemLoader("user_admin/boundary"),
-        FileSystemLoader("fund_raiser/boundary"),
-    ]
-)
+# Flask automatically looks for HTML files inside the root templates/ folder
+app = Flask(__name__)
 app.secret_key = "dev-secret-key"
 
 # Register Blueprints
@@ -23,7 +16,6 @@ app.register_blueprint(logout_bp)
 app.register_blueprint(view_user_profile_bp)
 app.register_blueprint(view_user_account_bp)
 app.register_blueprint(view_fra_bp)
-
 # Instantiate the boundary
 login_page = LogInPg()
 create_user_page = CreateUserPg()
@@ -52,11 +44,11 @@ def home():
     email = session.get("email")
 
     if role == "Admin":
-        return render_template("admin_dashboard.html", admin_identifier=email)
+        return render_template("user_admin/admin_dashboard.html", admin_identifier=email)
     elif role == "Donee":
-        return render_template("user-donee/donee_dashboard.html", user_name=email)
+        return render_template("user_donee/donee_dashboard.html", user_name=email)
     elif role == "FundRaiser":
-        return render_template("fr_dashboard.html", user_name=email)
+        return render_template("fund_raiser/fr_dashboard.html", user_name=email)
     else:
         return "Role not recognized or unauthorized."
 

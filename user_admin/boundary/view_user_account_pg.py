@@ -11,7 +11,7 @@ def view_user_accounts_page():
         accounts = ViewUserAccountController.search_user_accounts(search_query)
     else:
         accounts = ViewUserAccountController.view_all_user_accounts()
-    return render_template("view_user_accounts.html", accounts=accounts, search_query=search_query)
+    return render_template("user_admin/view_user_accounts.html", accounts=accounts, search_query=search_query)
 
 
 @view_user_account_bp.route("/user_admin/view_user_accounts/<int:user_id>", methods=["GET", "POST"])
@@ -34,7 +34,7 @@ def view_user_account_detail(user_id):
     account = ViewUserAccountController.view_user_account_by_id(user_id)
     if account is None:
         return "Account not found", 404
-    return render_template("view_user_account_detail.html", account=account, success=success)
+    return render_template("user_admin/view_user_account_detail.html", account=account, success=success)
 
 
 @view_user_account_bp.route("/user_admin/view_user_accounts", methods=["GET"])

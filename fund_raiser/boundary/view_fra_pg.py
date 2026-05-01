@@ -14,7 +14,7 @@ def view_fras_page():
     else:
         fras = ViewFRAController.view_all_fras()
 
-    return render_template("view_fras.html", fras=fras, search_query=search_query)
+    return render_template("fund_raiser/view_fras.html", fras=fras, search_query=search_query)
 
 
 @view_fra_bp.route("/fund_raiser/view_fras/<int:fra_id>", methods=["GET"])
@@ -24,7 +24,7 @@ def view_fra_detail(fra_id):
     if fra is None:
         return "Fund raising activity not found", 404
 
-    return render_template("view_fra_detail.html", fra=fra)
+    return render_template("fund_raiser/view_fra_detail.html", fra=fra)
 
 
 @view_fra_bp.route("/fund_raiser/view_fras", methods=["GET"])
