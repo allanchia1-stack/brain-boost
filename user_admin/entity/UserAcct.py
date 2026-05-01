@@ -25,20 +25,15 @@ class UserAcct:
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
-            query = """
-                SELECT a.user_id, a.account_password, p.profile_role 
+            cursor.execute("""
+                SELECT a.user_id, a.account_password, p.profile_role
                 FROM UserAcct a
                 JOIN UserProf p ON a.user_id = p.user_id
                 WHERE a.account_email = %s
-            """
-            cursor.execute(query, (email,))
+            """, (email,))
             account = cursor.fetchone()
             if account and account['account_password'] == password:
-                return AuthenticatedUser(
-                    id=account['user_id'],
-                    email=email,
-                    role=account['profile_role']
-                )
+                return AuthenticatedUser(id=account['user_id'], email=email, role=account['profile_role'])
             return None
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
@@ -133,6 +128,45 @@ class UserAcct:
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             return None
+        finally:
+            if conn and conn.is_connected():
+                cursor.close()
+                conn.close()
+
+    @classmethod
+    def update_account(cls, user_id, email, password):
+        conn = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE UserAcct SET account_email = %s, account_password = %s
+                WHERE user_id = %s
+            """, (email, password, user_id))
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return False
+        finally:
+            if conn and conn.is_connected():
+                cursor.close()
+                conn.close()
+
+    @classmethod
+    def suspend_account(cls, user_id):
+        conn = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE UserAcct SET account_status = 0 WHERE user_id = %s
+            """, (user_id,))
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return False
         finally:
             if conn and conn.is_connected():
                 cursor.close()

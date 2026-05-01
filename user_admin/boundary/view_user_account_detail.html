@@ -3,53 +3,119 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HelpFundUs - Account Detail</title>
+  <title>HelpFundUs - Update User Account</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
     .logo { font-size: 26px; font-weight: 700; color: #426b1f; }
-    .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700; transition: background-color 0.2s; }
+    .logout-btn {
+      background-color: #426b1f; color: #fff; text-decoration: none;
+      padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700;
+      border: none; cursor: pointer; transition: background-color 0.2s;
+    }
     .logout-btn:hover { background-color: #335318; }
-    .page-body { padding: 32px; }
-    h2 { font-size: 22px; margin-bottom: 24px; color: #426b1f; }
-    .detail-card { background-color: #fff; border: 1px solid #ccc; border-radius: 6px; width: 420px; overflow: hidden; }
-    .detail-table { width: 100%; border-collapse: collapse; }
-    .detail-table td { padding: 12px 16px; font-size: 15px; border-bottom: 1px solid #e0e0e0; }
-    .detail-table tr:last-child td { border-bottom: none; }
-    .detail-table td:first-child { font-weight: 700; width: 140px; background-color: #f7f7f2; }
-    .status-active { color: #426b1f; font-weight: 700; }
-    .status-suspended { color: #b00020; font-weight: 700; }
-    .back-btn { display: inline-block; margin-top: 24px; background-color: #426b1f; color: #fff; text-decoration: none; padding: 8px 22px; border-radius: 4px; font-size: 15px; font-weight: 700; transition: background-color 0.2s; }
-    .back-btn:hover { background-color: #335318; }
+
+    .page-body {
+      display: flex; justify-content: center; align-items: flex-start;
+      padding: 48px 32px;
+    }
+
+    .form-card {
+      background-color: #fff; border: 1px solid #ccc;
+      border-radius: 8px; padding: 36px 40px; width: 420px;
+    }
+
+    .form-card h2 {
+      font-size: 22px; font-weight: 700; text-align: center;
+      margin-bottom: 28px; color: #000;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 5px; color: #333; }
+    .field input {
+      width: 100%; padding: 8px 10px; font-family: inherit; font-size: 14px;
+      border: 1px solid #bbb; border-radius: 3px; outline: none;
+    }
+    .field input:focus { border-color: #426b1f; }
+
+    .success-msg {
+      background-color: #eaf4e0;
+      border: 1px solid #426b1f;
+      color: #2d5a10;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .btn-row {
+      display: flex; justify-content: space-between; align-items: center; margin-top: 28px;
+    }
+    .btn-back {
+      background-color: #fff; color: #000; border: 1px solid #999;
+      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 4px; cursor: pointer; text-decoration: none; transition: background-color 0.2s;
+    }
+    .btn-back:hover { background-color: #f0f0f0; }
+    .btn-update {
+      background-color: #426b1f; color: #fff; border: none;
+      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+    }
+    .btn-update:hover { background-color: #335318; }
+    .btn-suspend {
+      background-color: #c0392b; color: #fff; border: none;
+      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+    }
+    .btn-suspend:hover { background-color: #a93226; }
   </style>
 </head>
 <body>
+
   <header class="header">
     <span class="logo">HelpFundUs</span>
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
+
   <div class="page-body">
-    <h2>User Account Details</h2>
-    <div class="detail-card">
-      <table class="detail-table">
-        <tr><td>User ID</td><td>{{ "%03d"|format(account["user_id"]) }}</td></tr>
-        <tr><td>Profile ID</td><td>{{ "%03d"|format(account["profile_id"]) }}</td></tr>
-        <tr><td>Email</td><td>{{ account["account_email"] }}</td></tr>
-        <tr>
-          <td>Status</td>
-          <td>
-            {% if account["account_status"] %}
-              <span class="status-active">Active</span>
-            {% else %}
-              <span class="status-suspended">Suspended</span>
-            {% endif %}
-          </td>
-        </tr>
-      </table>
+    <div class="form-card">
+      <h2>Update User Account</h2>
+
+      {% if success %}
+      <div class="success-msg">✓ Account updated successfully!</div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('view_user_account_bp.view_user_account_detail', user_id=account['user_id']) }}">
+
+        <div class="field">
+          <label>New Email</label>
+          <input type="email" name="email" value="{{ account['account_email'] }}" required />
+        </div>
+
+        <div class="field">
+          <label>New Password</label>
+          <input type="text" name="password" placeholder="Enter new password" />
+        </div>
+
+        <div class="btn-row">
+          <a href="{{ url_for('view_user_account_bp.view_user_accounts_page') }}" class="btn-back">Back</a>
+          <button type="submit" name="action" value="update" class="btn-update">Update</button>
+          <button type="submit" name="action" value="suspend" class="btn-suspend"
+            onclick="return confirm('Suspend this account?')">Suspend</button>
+        </div>
+
+      </form>
     </div>
-    <a href="{{ url_for('view_user_account_bp.view_user_accounts_page') }}" class="back-btn">Back</a>
   </div>
+
 </body>
 </html>
