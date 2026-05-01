@@ -13,3 +13,11 @@ class ViewUserAccountController:
     @staticmethod
     def view_user_account_by_id(user_id):
         return UserAcct.get_account_by_user_id(user_id)
+
+    @staticmethod
+    def update_user_account(user_id, email, password):
+        return UserAcct.update_account(user_id, email, password)
+
+    @staticmethod
+    def suspend_user_account(user_id):
+        return UserAcct.suspend_account(user_id)

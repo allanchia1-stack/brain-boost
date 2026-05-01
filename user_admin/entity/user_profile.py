@@ -10,7 +10,7 @@ class UserProfile:
             host='localhost',
             database='fundraising_db'
         )
-    
+
     @classmethod
     def get_all_profiles(cls):
         conn = None
@@ -40,7 +40,7 @@ class UserProfile:
             cursor.execute("""
                 SELECT profile_id, profile_name, phone, address, profile_role, profile_status
                 FROM UserProf
-                WHERE profile_id LIKE %s
+                WHERE CAST(profile_id AS CHAR) LIKE %s
                    OR profile_name LIKE %s
                    OR phone LIKE %s
                    OR address LIKE %s
@@ -70,6 +70,46 @@ class UserProfile:
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             return None
+        finally:
+            if conn and conn.is_connected():
+                cursor.close()
+                conn.close()
+
+    @classmethod
+    def update_profile(cls, profile_id, name, phone, address, role):
+        conn = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE UserProf
+                SET profile_name = %s, phone = %s, address = %s, profile_role = %s
+                WHERE profile_id = %s
+            """, (name, phone, address, role, profile_id))
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return False
+        finally:
+            if conn and conn.is_connected():
+                cursor.close()
+                conn.close()
+
+    @classmethod
+    def suspend_profile(cls, profile_id):
+        conn = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("""
+                UPDATE UserProf SET profile_status = 0 WHERE profile_id = %s
+            """, (profile_id,))
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return False
         finally:
             if conn and conn.is_connected():
                 cursor.close()

@@ -13,3 +13,11 @@ class ViewUserProfileController:
     @staticmethod
     def view_user_profile_by_id(profile_id):
         return UserProfile.get_profile_by_id(profile_id)
+
+    @staticmethod
+    def update_user_profile(profile_id, name, phone, address, role):
+        return UserProfile.update_profile(profile_id, name, phone, address, role)
+
+    @staticmethod
+    def suspend_user_profile(profile_id):
+        return UserProfile.suspend_profile(profile_id)
