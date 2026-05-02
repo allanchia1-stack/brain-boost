@@ -8,7 +8,7 @@
   <style>
     body { margin: 0; background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #000; }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
-    .logo { font-size: 32px; font-weight: 500; color: #426b1f; margin: 0; letter-spacing: -0.01em; }
+    .logo { font-size: 32px; font-weight: 500; color: #426b1f; margin: 0; text-decoration: none; cursor: pointer; display: inline-block; letter-spacing: -0.01em; }
     .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 12px 30px; border-radius: 5px; font-size: 24px; font-weight: 700; border: none; cursor: pointer; transition: background-color 0.2s; }
     .logout-btn:hover { background-color: #335318; }
     .main-content { display: flex; flex-direction: column; align-items: center; padding: 80px 20px; gap: 80px; }
@@ -20,7 +20,7 @@
 </head>
 <body>
   <header class="header">
-    <h1 class="logo">HelpFundUs</h1>
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
     <!-- Keeps the same logout routing as the admin page -->
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>

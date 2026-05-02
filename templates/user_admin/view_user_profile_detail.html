@@ -13,7 +13,7 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1);
     }
-    .logo { font-size: 26px; font-weight: 700; color: #426b1f; }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f;  text-decoration: none; cursor: pointer; display: inline-block; }
     .logout-btn {
       background-color: #426b1f; color: #fff; text-decoration: none;
       padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700;
@@ -86,7 +86,7 @@
 <body>
 
   <header class="header">
-    <span class="logo">HelpFundUs</span>
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
 

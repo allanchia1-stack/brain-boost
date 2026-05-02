@@ -23,7 +23,7 @@
       color: #426b1f;
       font-size: 24px;
       font-weight: bold;
-    }
+     text-decoration: none; cursor: pointer; display: inline-block; }
     .btn-logout {
       background: #426b1f;
       color: white;
@@ -103,7 +103,7 @@
 <body>
 
   <header class="header">
-    <div class="logo">HelpFundUs</div>
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
     <a href="{{ url_for('logout_bp.logout') }}" class="btn-logout">Log out</a>
   </header>
 

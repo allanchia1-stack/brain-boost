@@ -9,7 +9,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
-    .logo { font-size: 26px; font-weight: 700; color: #426b1f; }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f;  text-decoration: none; cursor: pointer; display: inline-block; }
     .logout-btn, .search-btn, .view-btn, .back-btn { background-color: #426b1f; color: #fff; text-decoration: none; border-radius: 4px; font-family: inherit; font-weight: 700; border: none; cursor: pointer; }
     .logout-btn { padding: 10px 24px; font-size: 18px; }
     .page-body { padding: 24px 32px; }
@@ -25,7 +25,7 @@
 </head>
 <body>
   <header class="header">
-    <span class="logo">HelpFundUs</span>
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
   <div class="page-body">
