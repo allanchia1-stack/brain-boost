@@ -28,6 +28,10 @@ class ViewFRAController:
         return FRA.get_completed_fras()
 
     @staticmethod
+    def suspend_fra(fra_id):
+        return FRA.suspend_fra(fra_id)
+
+    @staticmethod
     def update_fra_from_form(fra_id, form):
         title = form.get("title", "").strip()
         description = form.get("description", "").strip()

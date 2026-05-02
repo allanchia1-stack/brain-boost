@@ -282,3 +282,31 @@ class FRA:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+
+    @classmethod
+    def suspend_fra(cls, fra_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE FRA
+                SET fra_status = 'cancelled'
+                WHERE fra_id = %s
+                """,
+                (fra_id,),
+            )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()

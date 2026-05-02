@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 from fund_raiser.controller.view_fra_c import ViewFRAController
 
 
@@ -24,6 +24,10 @@ def view_fra_detail(fra_id):
 
     if request.method == "POST":
         action = request.form.get("action")
+
+        if action == "suspend":
+            ViewFRAController.suspend_fra(fra_id)
+            return redirect(url_for("view_fra_bp.view_fras_page"))
 
         if action == "update":
             success, error = ViewFRAController.update_fra_from_form(fra_id, request.form)

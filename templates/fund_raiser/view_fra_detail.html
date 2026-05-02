@@ -10,31 +10,64 @@
     body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
     .logo { font-size: 26px; font-weight: 700; color: #426b1f; }
-    .logout-btn, .back-btn, .update-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 8px 22px; border-radius: 4px; font-size: 15px; font-weight: 700; }
-    .logout-btn { padding: 10px 24px; font-size: 18px; }
-    .page-body { padding: 32px; }
-    h2 { font-size: 22px; margin-bottom: 24px; color: #426b1f; }
-    .detail-card { background-color: #fff; border: 1px solid #ccc; border-radius: 6px; max-width: 720px; overflow: hidden; }
-    .detail-table { width: 100%; border-collapse: collapse; }
-    .detail-table td { padding: 12px 16px; font-size: 15px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
-    .detail-table tr:last-child td { border-bottom: none; }
-    .detail-table td:first-child { font-weight: 700; width: 170px; background-color: #f7f7f2; }
-    input, select, textarea {
-      width: 100%; padding: 8px 10px; font-family: inherit; font-size: 15px;
-      border: 1px solid #bbb; border-radius: 3px; outline: none;
+    .logout-btn {
+      background-color: #426b1f; color: #fff; text-decoration: none;
+      padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700;
+      border: none; cursor: pointer; transition: background-color 0.2s;
     }
-    textarea { min-height: 90px; resize: vertical; }
-    input:focus, select:focus, textarea:focus { border-color: #426b1f; }
-    .readonly-value { line-height: 34px; }
-    .message {
-      max-width: 720px; border-radius: 4px; padding: 10px 14px;
-      font-size: 14px; font-weight: 700; margin-bottom: 18px;
+    .logout-btn:hover { background-color: #335318; }
+    .page-body {
+      display: flex; justify-content: center; align-items: flex-start;
+      padding: 48px 32px;
     }
-    .success-msg { background-color: #eaf4e0; border: 1px solid #426b1f; color: #2d5a10; }
-    .error-msg { background-color: #fdecea; border: 1px solid #f5c2c7; color: #b42318; }
-    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
-    .back-btn { display: inline-block; }
-    .update-btn { border: none; cursor: pointer; font-family: inherit; }
+    .form-card {
+      background-color: #fff; border: 1px solid #ccc;
+      border-radius: 8px; padding: 36px 40px; width: 520px;
+    }
+    .form-card h2 {
+      font-size: 22px; font-weight: 700; text-align: center;
+      margin-bottom: 28px; color: #000;
+    }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 5px; color: #333; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 8px 10px; font-family: inherit; font-size: 14px;
+      border: 1px solid #bbb; border-radius: 3px; outline: none; background-color: #fff;
+    }
+    .field textarea { min-height: 90px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: #426b1f; }
+    .field input[readonly] { background-color: #e8e8e8; color: #555; cursor: not-allowed; }
+    .success-msg {
+      background-color: #eaf4e0; border: 1px solid #426b1f; color: #2d5a10;
+      border-radius: 4px; padding: 10px 14px; font-size: 14px; font-weight: 700;
+      margin-bottom: 18px; text-align: center;
+    }
+    .error-msg {
+      background-color: #fdecea; border: 1px solid #f5c2c7; color: #b42318;
+      border-radius: 4px; padding: 10px 14px; font-size: 14px; font-weight: 700;
+      margin-bottom: 18px; text-align: center;
+    }
+    .btn-row {
+      display: flex; justify-content: space-between; align-items: center; margin-top: 28px;
+    }
+    .back-btn {
+      background-color: #fff; color: #000; border: 1px solid #999;
+      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 4px; cursor: pointer; text-decoration: none; transition: background-color 0.2s;
+    }
+    .back-btn:hover { background-color: #f0f0f0; }
+    .update-btn {
+      background-color: #426b1f; color: #fff; border: none;
+      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+    }
+    .update-btn:hover { background-color: #335318; }
+    .suspend-btn {
+      background-color: #c0392b; color: #fff; border: none;
+      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
+      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+    }
+    .suspend-btn:hover { background-color: #a93226; }
   </style>
 </head>
 <body>
@@ -43,74 +76,82 @@
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
   <div class="page-body">
-    <h2>Update Fund Raising Activity</h2>
+    <div class="form-card">
+      <h2>Update Fund Raising Activity</h2>
 
-    {% if success %}
-    <div class="message success-msg">Fund raising activity updated successfully!</div>
-    {% endif %}
+      {% if success %}
+      <div class="success-msg">Fund raising activity updated successfully!</div>
+      {% endif %}
 
-    {% if error %}
-    <div class="message error-msg">{{ error }}</div>
-    {% endif %}
+      {% if error %}
+      <div class="error-msg">{{ error }}</div>
+      {% endif %}
 
-    <form method="POST" action="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id']) }}">
-      <div class="detail-card">
-        <table class="detail-table">
-          <tr>
-            <td>FRA ID</td>
-            <td><div class="readonly-value">{{ "%03d"|format(fra["fra_id"]) }}</div></td>
-          </tr>
-          <tr>
-            <td>Title</td>
-            <td><input type="text" name="title" value="{{ fra['fra_title'] }}" required></td>
-          </tr>
-          <tr>
-            <td>Category</td>
-            <td>
-              <select name="category" required>
-                {% for category in categories %}
-                <option value="{{ category['frc_id'] }}" {% if category['frc_id'] == fra['fra_category'] %}selected{% endif %}>
-                  {{ category['frc_name'] }}
-                </option>
-                {% endfor %}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Owner</td>
-            <td><div class="readonly-value">{{ fra["owner_name"] }}</div></td>
-          </tr>
-          <tr>
-            <td>Goal</td>
-            <td><input type="number" name="goal" min="1" step="1" value="{{ fra['fra_donation_goal'] }}" required></td>
-          </tr>
-          <tr>
-            <td>Raised</td>
-            <td><div class="readonly-value">${{ fra["fra_donation_amt"] }}</div></td>
-          </tr>
-          <tr>
-            <td>Start Date</td>
-            <td><input type="date" name="start_date" value="{{ fra['fra_start_date'].strftime('%Y-%m-%d') if fra['fra_start_date'] else '' }}" required></td>
-          </tr>
-          <tr>
-            <td>End Date</td>
-            <td><input type="date" name="end_date" value="{{ fra['fra_end_date'].strftime('%Y-%m-%d') if fra['fra_end_date'] else '' }}" required></td>
-          </tr>
-          <tr>
-            <td>Status</td>
-            <td><div class="readonly-value">{{ fra["fra_status"]|title }}</div></td>
-          </tr>
-          <tr>
-            <td>Description</td>
-            <td><textarea name="description">{{ fra["fra_des"] }}</textarea></td>
-          </tr>
-        </table>
-      </div>
-      <div class="btn-row">
-        <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="back-btn">Back</a>
-        <button type="submit" name="action" value="update" class="update-btn">Update</button>
-      </div>
-    </form>
+      <form method="POST" action="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id']) }}">
+        <div class="field">
+          <label>FRA ID</label>
+          <input type="text" value="{{ '%03d'|format(fra['fra_id']) }}" readonly>
+        </div>
+
+        <div class="field">
+          <label>Title</label>
+          <input type="text" name="title" value="{{ fra['fra_title'] }}" required>
+        </div>
+
+        <div class="field">
+          <label>Category</label>
+          <select name="category" required>
+            {% for category in categories %}
+            <option value="{{ category['frc_id'] }}" {% if category['frc_id'] == fra['fra_category'] %}selected{% endif %}>
+              {{ category['frc_name'] }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Owner</label>
+          <input type="text" value="{{ fra['owner_name'] }}" readonly>
+        </div>
+
+        <div class="field">
+          <label>Goal</label>
+          <input type="number" name="goal" min="1" step="1" value="{{ fra['fra_donation_goal'] }}" required>
+        </div>
+
+        <div class="field">
+          <label>Raised</label>
+          <input type="text" value="${{ fra['fra_donation_amt'] }}" readonly>
+        </div>
+
+        <div class="field">
+          <label>Start Date</label>
+          <input type="date" name="start_date" value="{{ fra['fra_start_date'].strftime('%Y-%m-%d') if fra['fra_start_date'] else '' }}" required>
+        </div>
+
+        <div class="field">
+          <label>End Date</label>
+          <input type="date" name="end_date" value="{{ fra['fra_end_date'].strftime('%Y-%m-%d') if fra['fra_end_date'] else '' }}" required>
+        </div>
+
+        <div class="field">
+          <label>Status</label>
+          <input type="text" value="{{ fra['fra_status']|title }}" readonly>
+        </div>
+
+        <div class="field">
+          <label>Description</label>
+          <textarea name="description">{{ fra["fra_des"] }}</textarea>
+        </div>
+
+        <div class="btn-row">
+          <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="back-btn">Back</a>
+          <button type="submit" name="action" value="update" class="update-btn">Update</button>
+          <button type="submit" name="action" value="suspend" class="suspend-btn"
+            onclick="return confirm('Suspend this fund raising activity?')">Suspend</button>
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>
