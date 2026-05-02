@@ -2,21 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>HelpFundUs - FRA Details</title>
+  <title>HelpFundUs - FRA Detail</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
   <style>
     body { margin: 0; background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #000; }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
     .logo { font-size: 32px; font-weight: 500; color: #426b1f; text-decoration: none; }
     .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: 700; }
-    .detail-card { max-width: 520px; margin: 50px auto; padding: 40px; background: #fff; border: 1px solid #ddd; }
-    .field-label { color: #426b1f; font-weight: 700; margin-top: 22px; }
-    .field-value { margin-top: 8px; }
-    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
-    .back-btn, .save-btn { color: white; padding: 10px 22px; text-decoration: none; border-radius: 4px; font-size: 15px; border: none; cursor: pointer; font-family: 'Roboto Condensed', sans-serif; }
-    .back-btn { background-color: #426b1f; }
-    .save-btn { background-color: #426b1f; }
-    .unsave-btn { background-color: #b3261e; }
+    .card { width: 520px; margin: 50px auto; padding: 45px; background: #fff; border: 1px solid #ddd; }
+    .label { color: #426b1f; font-weight: 700; margin-top: 22px; }
+    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 45px; }
+    .back-btn, .save-btn { padding: 10px 25px; border-radius: 3px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; font-size: 15px; }
+    .back-btn { background: white; color: black; border: 1px solid #333; }
+    .save-btn { color: white; background: #426b1f; }
+    .unsave-btn { color: white; background: #b3261e; }
   </style>
 </head>
 <body>
@@ -25,32 +24,29 @@
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
 
-  <div class="detail-card">
-    <div class="field-label">Title</div>
-    <div class="field-value">{{ fra.fra_title }}</div>
+  <div class="card">
+    <div class="label">Title</div>
+    <p>{{ fra.fra_title }}</p>
 
-    <div class="field-label">Category</div>
-    <div class="field-value">{{ fra.category_name }}</div>
+    <div class="label">Category</div>
+    <p>{{ fra.category_name }}</p>
 
-    <div class="field-label">From</div>
-    <div class="field-value">{{ fra.fra_start_date.strftime('%d/%m/%y') if fra.fra_start_date else 'N/A' }}</div>
+    <div class="label">From</div>
+    <p>{{ fra.fra_start_date.strftime('%d/%m/%y') if fra.fra_start_date else 'N/A' }}</p>
 
-    <div class="field-label">To</div>
-    <div class="field-value">{{ fra.fra_end_date.strftime('%d/%m/%y') if fra.fra_end_date else 'N/A' }}</div>
+    <div class="label">To</div>
+    <p>{{ fra.fra_end_date.strftime('%d/%m/%y') if fra.fra_end_date else 'N/A' }}</p>
 
-    <div class="field-label">Description</div>
-    <div class="field-value">{{ fra.fra_des }}</div>
+    <div class="label">Description</div>
+    <p>{{ fra.fra_des }}</p>
 
-    <div class="field-label">Goal</div>
-    <div class="field-value">${{ fra.fra_donation_goal }}</div>
-
-    <div class="field-label">Amount Raised</div>
-    <div class="field-value">${{ fra.fra_donation_amt }}</div>
+    <div class="label">Goal</div>
+    <p>${{ fra.fra_donation_goal }}</p>
 
     <div class="actions">
       <a href="{{ url_for('donee_view_fra_bp.view_fra_page') }}" class="back-btn">Back</a>
-      <form method="POST" action="{{ url_for('donee_view_fra_bp.toggle_save_fra', fra_id=fra.fra_id) }}">
-        {% if fra.is_saved %}
+      <form method="POST" action="{{ url_for('donee_save_fra_bp.toggle_save_fra', fra_id=fra.fra_id) }}">
+        {% if saved %}
           <button type="submit" class="save-btn unsave-btn">Unsave</button>
         {% else %}
           <button type="submit" class="save-btn">Save</button>

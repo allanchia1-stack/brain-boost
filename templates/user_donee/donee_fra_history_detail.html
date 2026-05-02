@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>HelpFundUs - FRA History Detail</title>
+  <title>HelpFundUs - Donation Detail</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
   <style>
     body { margin: 0; background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #000; }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
     .logo { font-size: 32px; font-weight: 500; color: #426b1f; text-decoration: none; }
     .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: 700; }
-    .detail-card { max-width: 520px; margin: 50px auto; padding: 40px; background: #fff; border: 1px solid #ddd; }
-    .field-label { color: #426b1f; font-weight: 700; margin-top: 22px; }
-    .field-value { margin-top: 8px; }
-    .back-btn { background-color: #426b1f; color: white; padding: 10px 30px; text-decoration: none; border-radius: 4px; font-size: 15px; display: inline-block; margin-top: 40px; }
+    .card { width: 520px; margin: 50px auto; padding: 45px; background: #fff; border: 1px solid #ddd; }
+    .label { color: #426b1f; font-weight: 700; margin-top: 22px; }
+    .back-btn { margin-top: 45px; display: inline-block; background: #426b1f; color: white; padding: 10px 40px; text-decoration: none; border-radius: 3px; }
+    .center { text-align: center; }
   </style>
 </head>
 <body>
@@ -21,20 +21,28 @@
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
 
-  <div class="detail-card">
-    <div class="field-label">Title</div>
-    <div class="field-value">{{ item.fra_title }}</div>
+  <div class="card">
+    <div class="label">Title</div>
+    <p>{{ donation.fra_title }}</p>
 
-    <div class="field-label">Category</div>
-    <div class="field-value">{{ item.category_name }}</div>
+    <div class="label">Category</div>
+    <p>{{ donation.category_name }}</p>
 
-    <div class="field-label">Amount</div>
-    <div class="field-value">${{ item.donation_amt }}</div>
+    <div class="label">Amount</div>
+    <p>${{ donation.donation_amt }}</p>
 
-    <div class="field-label">Date</div>
-    <div class="field-value">{{ item.donation_date.strftime('%d/%m/%y') if item.donation_date else 'N/A' }}</div>
+    <div class="label">Date</div>
+    <p>{{ donation.donation_date.strftime('%d/%m/%y') if donation.donation_date else 'N/A' }}</p>
 
-    <a href="{{ url_for('donee_view_fra_bp.fra_history_page') }}" class="back-btn">Back</a>
+    <div class="label">Description</div>
+    <p>{{ donation.fra_des }}</p>
+
+    <div class="label">Goal</div>
+    <p>${{ donation.fra_donation_goal }}</p>
+
+    <div class="center">
+      <a href="{{ url_for('donee_donation_history_bp.donation_history_page') }}" class="back-btn">Back</a>
+    </div>
   </div>
 </body>
 </html>
