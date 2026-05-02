@@ -8,31 +8,31 @@ class ViewFRAController:
         return FRA.get_categories()
 
     @staticmethod
-    def view_all_fras():
-        return FRA.get_all_fras()
+    def view_all_fras(owner_id):
+        return FRA.get_all_fras(owner_id)
 
     @staticmethod
-    def search_fras(query):
-        return FRA.search_fras(query)
+    def search_fras(query, owner_id):
+        return FRA.search_fras(query, owner_id)
 
     @staticmethod
-    def view_fra_by_id(fra_id):
-        return FRA.get_fra_by_id(fra_id)
+    def view_fra_by_id(fra_id, owner_id):
+        return FRA.get_fra_by_id(fra_id, owner_id)
 
     @staticmethod
-    def view_ongoing_fras():
-        return FRA.get_ongoing_fras()
+    def view_ongoing_fras(owner_id):
+        return FRA.get_ongoing_fras(owner_id)
 
     @staticmethod
-    def view_completed_fras():
-        return FRA.get_completed_fras()
+    def view_completed_fras(owner_id):
+        return FRA.get_completed_fras(owner_id)
 
     @staticmethod
-    def suspend_fra(fra_id):
-        return FRA.suspend_fra(fra_id)
+    def suspend_fra(fra_id, owner_id):
+        return FRA.suspend_fra(fra_id, owner_id)
 
     @staticmethod
-    def update_fra_from_form(fra_id, form):
+    def update_fra_from_form(fra_id, form, owner_id):
         title = form.get("title", "").strip()
         description = form.get("description", "").strip()
 
@@ -46,6 +46,7 @@ class ViewFRAController:
 
         success = ViewFRAController.update_fra(
             fra_id,
+            owner_id,
             title,
             category_id,
             start_date,
@@ -59,8 +60,11 @@ class ViewFRAController:
         return True, None
 
     @staticmethod
-    def update_fra(fra_id, title, category_id, start_date, end_date, goal, description):
+    def update_fra(fra_id, owner_id, title, category_id, start_date, end_date, goal, description):
         if not title or not category_id or not start_date or not end_date or not goal:
+            return False
+
+        if not owner_id:
             return False
 
         if end_date < start_date:
@@ -71,6 +75,7 @@ class ViewFRAController:
 
         return FRA.update_fra(
             fra_id,
+            owner_id,
             title,
             category_id,
             start_date,

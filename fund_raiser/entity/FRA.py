@@ -85,7 +85,7 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def get_all_fras(cls):
+    def get_all_fras(cls, owner_id):
         conn = None
         cursor = None
         try:
@@ -98,8 +98,10 @@ class FRA:
                        f.fra_status
                 FROM FRA f
                 JOIN FRC c ON f.fra_category = c.frc_id
+                WHERE f.fra_owner_id = %s
                 ORDER BY f.fra_create_date DESC
-                """
+                """,
+                (owner_id,),
             )
             return cursor.fetchall()
         except mysql.connector.Error as err:
@@ -112,7 +114,7 @@ class FRA:
                 conn.close()
                 
     @classmethod
-    def get_ongoing_fras(cls):
+    def get_ongoing_fras(cls, owner_id):
         conn = None
         cursor = None
         try:
@@ -126,8 +128,10 @@ class FRA:
                 FROM FRA f
                 JOIN FRC c ON f.fra_category = c.frc_id
                 WHERE f.fra_status = 'ongoing'
+                  AND f.fra_owner_id = %s
                 ORDER BY f.fra_create_date DESC
-                """
+                """,
+                (owner_id,),
             )
             return cursor.fetchall()
         except mysql.connector.Error as err:
@@ -141,7 +145,7 @@ class FRA:
 
 
     @classmethod
-    def get_completed_fras(cls):
+    def get_completed_fras(cls, owner_id):
         conn = None
         cursor = None
         try:
@@ -155,8 +159,10 @@ class FRA:
                 FROM FRA f
                 JOIN FRC c ON f.fra_category = c.frc_id
                 WHERE f.fra_status = 'completed'
+                  AND f.fra_owner_id = %s
                 ORDER BY f.fra_create_date DESC
-                """
+                """,
+                (owner_id,),
             )
             return cursor.fetchall()
         except mysql.connector.Error as err:
@@ -169,7 +175,7 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def search_fras(cls, query):
+    def search_fras(cls, query, owner_id):
         conn = None
         cursor = None
         try:
@@ -183,13 +189,16 @@ class FRA:
                        f.fra_status
                 FROM FRA f
                 JOIN FRC c ON f.fra_category = c.frc_id
-                WHERE CAST(f.fra_id AS CHAR) LIKE %s
-                   OR f.fra_title LIKE %s
-                   OR c.frc_name LIKE %s
-                   OR f.fra_status LIKE %s
+                WHERE f.fra_owner_id = %s
+                  AND (
+                    CAST(f.fra_id AS CHAR) LIKE %s
+                    OR f.fra_title LIKE %s
+                    OR c.frc_name LIKE %s
+                    OR f.fra_status LIKE %s
+                  )
                 ORDER BY f.fra_create_date DESC
                 """,
-                (like, like, like, like),
+                (owner_id, like, like, like, like),
             )
             return cursor.fetchall()
         except mysql.connector.Error as err:
@@ -202,7 +211,7 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def get_fra_by_id(cls, fra_id):
+    def get_fra_by_id(cls, fra_id, owner_id):
         conn = None
         cursor = None
         try:
@@ -220,8 +229,9 @@ class FRA:
                 JOIN FRC c ON f.fra_category = c.frc_id
                 JOIN User u ON f.fra_owner_id = u.user_id
                 WHERE f.fra_id = %s
+                  AND f.fra_owner_id = %s
                 """,
-                (fra_id,),
+                (fra_id, owner_id),
             )
             return cursor.fetchone()
         except mysql.connector.Error as err:
@@ -237,6 +247,7 @@ class FRA:
     def update_fra(
         cls,
         fra_id,
+        owner_id,
         title,
         category_id,
         start_date,
@@ -259,6 +270,7 @@ class FRA:
                     fra_end_date = %s,
                     fra_category = %s
                 WHERE fra_id = %s
+                  AND fra_owner_id = %s
                 """,
                 (
                     title,
@@ -268,6 +280,7 @@ class FRA:
                     datetime.combine(end_date, datetime.min.time()),
                     category_id,
                     fra_id,
+                    owner_id,
                 ),
             )
             conn.commit()
@@ -284,7 +297,7 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def suspend_fra(cls, fra_id):
+    def suspend_fra(cls, fra_id, owner_id):
         conn = None
         cursor = None
         try:
@@ -295,8 +308,9 @@ class FRA:
                 UPDATE FRA
                 SET fra_status = 'cancelled'
                 WHERE fra_id = %s
+                  AND fra_owner_id = %s
                 """,
-                (fra_id,),
+                (fra_id, owner_id),
             )
             conn.commit()
             return True

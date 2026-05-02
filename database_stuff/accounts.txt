@@ -3,5 +3,5 @@ tiffanymurphy@example.com
 hashed_pass_placeholder
 
 [FundRaiser]
-emilygeorge@example.com
+gonzalezkristen@example.com
 hashed_pass_placeholder

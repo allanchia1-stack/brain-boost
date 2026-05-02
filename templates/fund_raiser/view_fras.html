@@ -21,7 +21,6 @@
     .fra-table tr:nth-child(even) td { background-color: #f0f0f0; }
     .view-btn { padding: 6px 18px; display: inline-block; }
     .back-btn { display: inline-block; margin-top: 20px; padding: 8px 22px; font-size: 15px; }
-    .empty-row td { height: 38px; }
   </style>
 </head>
 <body>
@@ -59,13 +58,9 @@
           <td><a class="view-btn" href="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id']) }}">View</a></td>
         </tr>
         {% endfor %}
-        {% for i in range([8 - fras|length, 0]|max) %}
-        <tr class="empty-row"><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        {% endfor %}
       </tbody>
     </table>
     <a href="{{ url_for('home') }}" class="back-btn">Back</a>
   </div>
 </body>
 </html>
-
