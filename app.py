@@ -1,11 +1,18 @@
 from flask import Flask, flash, redirect, request, session, url_for, render_template
+
+# Admin Imports
 from user_admin.boundary.LogInPg import LogInPg
 from user_admin.boundary.LogOutPg import logout_bp
 from user_admin.boundary.view_user_profile_pg import view_user_profile_bp
 from user_admin.boundary.view_user_account_pg import view_user_account_bp
 from user_admin.boundary.CreateUserPg import CreateUserPg
+
+# FundRaiser Imports
 from fund_raiser.boundary.CreateFRAPg import CreateFRAPg
-from fund_raiser.boundary.view_fra_pg import view_fra_bp
+from fund_raiser.boundary.view_fra_pg import view_fra_bp as fr_view_fra_bp
+
+# Donee Imports
+from user_donee.boundary.view_fra_pg import view_fra_bp as donee_view_fra_bp
 
 # Flask automatically looks for HTML files inside the root templates/ folder
 app = Flask(__name__)
@@ -15,7 +22,11 @@ app.secret_key = "dev-secret-key"
 app.register_blueprint(logout_bp)
 app.register_blueprint(view_user_profile_bp)
 app.register_blueprint(view_user_account_bp)
-app.register_blueprint(view_fra_bp)
+
+# Registering the aliases so they don't overwrite each other
+app.register_blueprint(fr_view_fra_bp)
+app.register_blueprint(donee_view_fra_bp)
+
 # Instantiate the boundary
 login_page = LogInPg()
 create_user_page = CreateUserPg()
