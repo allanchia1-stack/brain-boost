@@ -27,8 +27,8 @@
     <h2 class="welcome-text">Welcome Fundraiser, {{ user_name }}</h2>
     <div class="card-container">
       <a href="{{ url_for('create_fra') }}" class="nav-card">Create Fund Raising Activity</a>
-      <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="nav-card">View Fund Raising Activities</a>
-      <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="nav-card">Fund Raising Activities History</a>
+      <a href="{{ url_for('view_fra_bp.view_fras_ongoing') }}" class="nav-card">View Fund Raising Activities</a>
+      <a href="{{ url_for('view_fra_bp.view_fras_completed') }}" class="nav-card">Fund Raising Activities History</a>
     </div>
   </main>
 </body>

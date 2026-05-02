@@ -1,5 +1,5 @@
 [Admin]
-tiffanymurphy@example.come
+tiffanymurphy@example.com
 hashed_pass_placeholder
 
 [FundRaiser]

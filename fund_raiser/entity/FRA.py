@@ -9,6 +9,7 @@ class FRA:
             user='root',
             password='brain-boost',
             host='localhost',
+            port = 3307,
             database='fundraising_db'
         )
 
@@ -110,6 +111,63 @@ class FRA:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+                
+    @classmethod
+    def get_ongoing_fras(cls):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(
+                """
+                SELECT f.fra_id, f.fra_title, c.frc_name, f.fra_donation_goal,
+                    f.fra_donation_amt, f.fra_start_date, f.fra_end_date,
+                    f.fra_status
+                FROM FRA f
+                JOIN FRC c ON f.fra_category = c.frc_id
+                WHERE f.fra_status = 'ongoing'
+                ORDER BY f.fra_create_date DESC
+                """
+            )
+            return cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+
+    @classmethod
+    def get_completed_fras(cls):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(
+                """
+                SELECT f.fra_id, f.fra_title, c.frc_name, f.fra_donation_goal,
+                    f.fra_donation_amt, f.fra_start_date, f.fra_end_date,
+                    f.fra_status
+                FROM FRA f
+                JOIN FRC c ON f.fra_category = c.frc_id
+                WHERE f.fra_status = 'completed'
+                ORDER BY f.fra_create_date DESC
+                """
+            )
+            return cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
 
     @classmethod
     def search_fras(cls, query):
@@ -153,7 +211,8 @@ class FRA:
             cursor = conn.cursor(dictionary=True)
             cursor.execute(
                 """
-                SELECT f.fra_id, f.fra_title, f.fra_des, c.frc_name,
+                SELECT f.fra_id, f.fra_title, f.fra_des, f.fra_category,
+                       c.frc_name,
                        f.fra_donation_goal, f.fra_donation_amt,
                        f.fra_create_date, f.fra_start_date, f.fra_end_date,
                        f.fra_views, f.fra_num_of_fav, f.fra_status,
@@ -175,3 +234,52 @@ class FRA:
             if conn and conn.is_connected():
                 conn.close()
 
+    @classmethod
+    def update_fra(
+        cls,
+        fra_id,
+        title,
+        category_id,
+        start_date,
+        end_date,
+        goal,
+        description,
+    ):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE FRA
+                SET fra_title = %s,
+                    fra_des = %s,
+                    fra_donation_goal = %s,
+                    fra_start_date = %s,
+                    fra_end_date = %s,
+                    fra_category = %s
+                WHERE fra_id = %s
+                """,
+                (
+                    title,
+                    description,
+                    goal,
+                    datetime.combine(start_date, datetime.min.time()),
+                    datetime.combine(end_date, datetime.min.time()),
+                    category_id,
+                    fra_id,
+                ),
+            )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()

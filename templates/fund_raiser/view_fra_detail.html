@@ -10,7 +10,7 @@
     body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
     .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
     .logo { font-size: 26px; font-weight: 700; color: #426b1f; }
-    .logout-btn, .back-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 8px 22px; border-radius: 4px; font-size: 15px; font-weight: 700; }
+    .logout-btn, .back-btn, .update-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 8px 22px; border-radius: 4px; font-size: 15px; font-weight: 700; }
     .logout-btn { padding: 10px 24px; font-size: 18px; }
     .page-body { padding: 32px; }
     h2 { font-size: 22px; margin-bottom: 24px; color: #426b1f; }
@@ -19,7 +19,22 @@
     .detail-table td { padding: 12px 16px; font-size: 15px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
     .detail-table tr:last-child td { border-bottom: none; }
     .detail-table td:first-child { font-weight: 700; width: 170px; background-color: #f7f7f2; }
-    .back-btn { display: inline-block; margin-top: 24px; }
+    input, select, textarea {
+      width: 100%; padding: 8px 10px; font-family: inherit; font-size: 15px;
+      border: 1px solid #bbb; border-radius: 3px; outline: none;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: #426b1f; }
+    .readonly-value { line-height: 34px; }
+    .message {
+      max-width: 720px; border-radius: 4px; padding: 10px 14px;
+      font-size: 14px; font-weight: 700; margin-bottom: 18px;
+    }
+    .success-msg { background-color: #eaf4e0; border: 1px solid #426b1f; color: #2d5a10; }
+    .error-msg { background-color: #fdecea; border: 1px solid #f5c2c7; color: #b42318; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+    .back-btn { display: inline-block; }
+    .update-btn { border: none; cursor: pointer; font-family: inherit; }
   </style>
 </head>
 <body>
@@ -28,23 +43,74 @@
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
   <div class="page-body">
-    <h2>Fund Raising Activity Details</h2>
-    <div class="detail-card">
-      <table class="detail-table">
-        <tr><td>FRA ID</td><td>{{ "%03d"|format(fra["fra_id"]) }}</td></tr>
-        <tr><td>Title</td><td>{{ fra["fra_title"] }}</td></tr>
-        <tr><td>Category</td><td>{{ fra["frc_name"] }}</td></tr>
-        <tr><td>Owner</td><td>{{ fra["owner_name"] }}</td></tr>
-        <tr><td>Goal</td><td>${{ fra["fra_donation_goal"] }}</td></tr>
-        <tr><td>Raised</td><td>${{ fra["fra_donation_amt"] }}</td></tr>
-        <tr><td>Start Date</td><td>{{ fra["fra_start_date"] }}</td></tr>
-        <tr><td>End Date</td><td>{{ fra["fra_end_date"] }}</td></tr>
-        <tr><td>Status</td><td>{{ fra["fra_status"]|title }}</td></tr>
-        <tr><td>Description</td><td>{{ fra["fra_des"] }}</td></tr>
-      </table>
-    </div>
-    <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="back-btn">Back</a>
+    <h2>Update Fund Raising Activity</h2>
+
+    {% if success %}
+    <div class="message success-msg">Fund raising activity updated successfully!</div>
+    {% endif %}
+
+    {% if error %}
+    <div class="message error-msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id']) }}">
+      <div class="detail-card">
+        <table class="detail-table">
+          <tr>
+            <td>FRA ID</td>
+            <td><div class="readonly-value">{{ "%03d"|format(fra["fra_id"]) }}</div></td>
+          </tr>
+          <tr>
+            <td>Title</td>
+            <td><input type="text" name="title" value="{{ fra['fra_title'] }}" required></td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td>
+              <select name="category" required>
+                {% for category in categories %}
+                <option value="{{ category['frc_id'] }}" {% if category['frc_id'] == fra['fra_category'] %}selected{% endif %}>
+                  {{ category['frc_name'] }}
+                </option>
+                {% endfor %}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Owner</td>
+            <td><div class="readonly-value">{{ fra["owner_name"] }}</div></td>
+          </tr>
+          <tr>
+            <td>Goal</td>
+            <td><input type="number" name="goal" min="1" step="1" value="{{ fra['fra_donation_goal'] }}" required></td>
+          </tr>
+          <tr>
+            <td>Raised</td>
+            <td><div class="readonly-value">${{ fra["fra_donation_amt"] }}</div></td>
+          </tr>
+          <tr>
+            <td>Start Date</td>
+            <td><input type="date" name="start_date" value="{{ fra['fra_start_date'].strftime('%Y-%m-%d') if fra['fra_start_date'] else '' }}" required></td>
+          </tr>
+          <tr>
+            <td>End Date</td>
+            <td><input type="date" name="end_date" value="{{ fra['fra_end_date'].strftime('%Y-%m-%d') if fra['fra_end_date'] else '' }}" required></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td><div class="readonly-value">{{ fra["fra_status"]|title }}</div></td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td><textarea name="description">{{ fra["fra_des"] }}</textarea></td>
+          </tr>
+        </table>
+      </div>
+      <div class="btn-row">
+        <a href="{{ url_for('view_fra_bp.view_fras_page') }}" class="back-btn">Back</a>
+        <button type="submit" name="action" value="update" class="update-btn">Update</button>
+      </div>
+    </form>
   </div>
 </body>
 </html>
-
