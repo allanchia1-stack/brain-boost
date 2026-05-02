@@ -37,25 +37,17 @@
     <table class="fra-table">
       <thead>
         <tr>
-          <th>FRA ID</th>
           <th>Title</th>
           <th>Category</th>
-          <th>Raised</th>
-          <th>Goal</th>
-          <th>Status</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         {% for fra in fras %}
         <tr>
-          <td>{{ "%03d"|format(fra["fra_id"]) }}</td>
           <td>{{ fra["fra_title"] }}</td>
           <td>{{ fra["frc_name"] }}</td>
-          <td>${{ fra["fra_donation_amt"] }}</td>
-          <td>${{ fra["fra_donation_goal"] }}</td>
-          <td>{{ fra["fra_status"]|title }}</td>
-          <td><a class="view-btn" href="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id']) }}">View</a></td>
+          <td><a class="view-btn" href="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id'], source=source or 'all') }}">View</a></td>
         </tr>
         {% endfor %}
       </tbody>

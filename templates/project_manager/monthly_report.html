@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Monthly Report</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #1a1a1a; min-height: 100vh; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 22px 50px; background: #fff; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f; text-decoration: none; letter-spacing: -0.02em; }
+    .logout-btn { background: #426b1f; color: #fff; border: none; padding: 10px 26px; border-radius: 4px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .logout-btn:hover { background: #335318; }
+    .main { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    .gen-form { margin-bottom: 24px; }
+    .btn-generate { background: #426b1f; color: #fff; border: none; padding: 10px 30px; border-radius: 4px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+    .btn-generate:hover { background: #335318; }
+    .report-title { font-size: 18px; font-weight: 500; color: #1a1a1a; text-align: center; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; overflow: hidden; }
+    thead th { background: #426b1f; color: #fff; padding: 11px 18px; text-align: left; font-size: 14px; font-weight: 600; }
+    thead th:not(:first-child) { text-align: right; }
+    tbody td { padding: 10px 18px; font-size: 14px; border-bottom: 1px solid #ebebeb; }
+    tbody td:not(:first-child) { text-align: right; }
+    tbody tr:nth-child(even) { background: #f9f9f9; }
+    tbody tr:last-child td { border-bottom: none; }
+    .placeholder-row td { color: #e0e0e0; }
+    .empty-cell { color: #e0e0e0; }
+    .btn-back { display: inline-block; margin-top: 20px; padding: 9px 22px; background: #426b1f; color: #fff; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+    .btn-back:hover { background: #335318; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+  <div class="main">
+    <form class="gen-form" method="POST">
+      <button type="submit" class="btn-generate">Generate Report</button>
+    </form>
+    {% if report %}
+    <p class="report-title">Monthly report for {{ report.period }}</p>
+    <table>
+      <thead>
+        <tr><th>Activity</th><th>Category</th><th>Donor</th><th>Amount</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {% if report.donations %}
+          {% for donation in report.donations %}
+          <tr>
+            <td>{{ donation.fra_title }}</td>
+            <td>{{ donation.category }}</td>
+            <td>{{ donation.donor_name }}</td>
+            <td>${{ "{:,}".format(donation.donation_amt | int) }}</td>
+            <td>{{ donation.donation_date }}</td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr class="placeholder-row"><td colspan="5" style="text-align: center;">No donations found</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+    <p style="margin-top: 20px; text-align: center;"><strong>Total Donations:</strong> {{ report.total_donations }} | <strong>Total Amount:</strong> ${{ "{:,}".format(report.total_amount | int) }}</p>
+    {% endif %}
+    <a href="{{ url_for('home') }}" class="btn-back">Back</a>
+  </div>
+</body>
+</html>

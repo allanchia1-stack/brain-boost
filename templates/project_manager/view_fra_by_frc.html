@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>View FRA of Category</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #1a1a1a; min-height: 100vh; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 22px 50px; background: #fff; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f; text-decoration: none; letter-spacing: -0.02em; }
+    .logout-btn { background: #426b1f; color: #fff; border: none; padding: 10px 26px; border-radius: 4px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .logout-btn:hover { background: #335318; }
+    .main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; overflow: hidden; }
+    thead th { background: #426b1f; color: #fff; padding: 11px 14px; text-align: left; font-size: 14px; font-weight: 600; }
+    tbody td { padding: 10px 14px; font-size: 14px; border-bottom: 1px solid #ebebeb; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f7fbf3; }
+    .btn-view { background: #426b1f; color: #fff; border: none; padding: 6px 16px; border-radius: 4px; font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: none; }
+    .btn-view:hover { background: #335318; }
+    .btn-back { display: inline-block; margin-top: 20px; padding: 9px 22px; background: #426b1f; color: #fff; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; }
+    .empty { text-align: center; color: #888; font-style: italic; padding: 30px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+  <div class="main">
+    <table>
+      <thead>
+        <tr><th>Title</th><th>From</th><th>To</th><th>Goal</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% if fras %}
+          {% for fra in fras %}
+          <tr>
+            <td>{{ fra.fra_title }}</td>
+            <td>{{ fra.fra_start_date.strftime('%d %B %Y') if fra.fra_start_date else '—' }}</td>
+            <td>{{ fra.fra_end_date.strftime('%d %B %Y') if fra.fra_end_date else '—' }}</td>
+            <td>${{ "{:,}".format(fra.fra_donation_goal | int) }}</td>
+            <td><a href="{{ url_for('view_fra_detail', fra_id=fra.fra_id) }}" class="btn-view">View</a></td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr><td colspan="5" class="empty">No fund raising activities in this category.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+    <a href="{{ url_for('view_frc') }}" class="btn-back">Back</a>
+  </div>
+</body>
+</html>
