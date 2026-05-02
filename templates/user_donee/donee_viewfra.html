@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>HelpFundUs - Donee View FRA</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    body { margin: 0; background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #000; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .logo { font-size: 32px; font-weight: 500; color: #426b1f; margin: 0; }
+    .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: 700; border: none; cursor: pointer; }
+    
+    .container { max-width: 1000px; margin: 40px auto; padding: 20px; background: #fff; border: 1px solid #ddd; }
+    .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+    .search-bar input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+    .search-bar button { padding: 10px 30px; background-color: #426b1f; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 12px; text-align: center; }
+    th { background-color: #e0e0e0; font-weight: bold; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    
+    .view-btn { background-color: #426b1f; color: white; padding: 6px 15px; text-decoration: none; border-radius: 3px; font-size: 14px; }
+    .back-btn { background-color: #426b1f; color: white; padding: 10px 30px; text-decoration: none; border-radius: 4px; font-size: 16px; display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <h1 class="logo">HelpFundUs</h1>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search FRA or FRA Category">
+      <button>Search</button>
+    </div>
+
+    <h3>View FRA</h3>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Goal</th>
+          <th>Views</th>
+          <th>Favourites</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- This Jinja2 loop dynamically generates rows from your database -->
+        {% for fra in fras %}
+        <tr>
+          <td>{{ fra.fra_title }}</td>
+          <td>{{ fra.category_name }}</td>
+          <!-- Formats the datetime objects into DD/MM/YY -->
+          <td>{{ fra.fra_start_date.strftime('%d/%m/%y') if fra.fra_start_date else 'N/A' }}</td>
+          <td>{{ fra.fra_end_date.strftime('%d/%m/%y') if fra.fra_end_date else 'N/A' }}</td>
+          <td>${{ fra.fra_donation_goal }}</td>
+          <td>{{ fra.fra_views }}</td>
+          <td>{{ fra.fra_num_of_fav }}</td>
+          <td><a href="#" class="view-btn">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="/home" class="back-btn">Back</a>
+  </div>
+
+</body>
+</html>
