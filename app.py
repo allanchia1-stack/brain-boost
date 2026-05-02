@@ -16,6 +16,8 @@ from user_donee.boundary.donee_view_fra_pg import donee_view_fra_bp
 from user_donee.boundary.donee_save_fra_pg import donee_save_fra_bp
 from user_donee.boundary.donee_view_fav_fra_pg import donee_view_fav_fra_bp
 from user_donee.boundary.donee_donation_history_pg import donee_donation_history_bp
+from user_donee.boundary.LogInPg import LogInPg as DoneeLogInPg
+from user_donee.boundary.LogOutPg import donee_logout_bp
 
 # Flask automatically looks for HTML files inside the root templates/ folder
 app = Flask(__name__)
@@ -32,11 +34,13 @@ app.register_blueprint(donee_view_fra_bp)
 app.register_blueprint(donee_save_fra_bp)
 app.register_blueprint(donee_view_fav_fra_bp)
 app.register_blueprint(donee_donation_history_bp)
+app.register_blueprint(donee_logout_bp)
 
 # Instantiate the boundary
 login_page = LogInPg()
 create_user_page = CreateUserPg()
 create_fra_page = CreateFRAPg()
+donee_login_page = DoneeLogInPg()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -50,6 +54,19 @@ def login():
             return redirect(url_for("home"))
         return response, status_code
     return login_page.get()
+
+
+@app.route("/donee-login", methods=["GET", "POST"])
+def donee_login():
+    if request.method == "POST":
+        result, response, status_code = donee_login_page.post()
+        if result and result.success:
+            session["user_id"] = result.user_id
+            session["email"] = result.email
+            session["role"] = result.role
+            return redirect(url_for("home"))
+        return response, status_code
+    return donee_login_page.get()
 
 
 @app.route("/home")
