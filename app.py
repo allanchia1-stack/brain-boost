@@ -11,6 +11,15 @@ from user_admin.boundary.CreateUserPg import CreateUserPg
 from fund_raiser.boundary.CreateFRAPg import CreateFRAPg
 from fund_raiser.boundary.view_fra_pg import view_fra_bp as fr_view_fra_bp
 
+# ProjectManager Imports
+from project_manager.boundary.CreateFrcPg import CreateFrcPg
+from project_manager.boundary.ViewFraPg import ViewFraPg
+from project_manager.boundary.ViewFrcPg import ViewFrcPg
+from project_manager.boundary.UpdateFrcPg import UpdateFrcPg
+from project_manager.boundary.DailyReportGenPg import DailyReportGenPg
+from project_manager.boundary.WeeklyReportPg import WeeklyReportPg
+from project_manager.boundary.MonthlyReportPg import MonthlyReportPg
+
 # Donee Imports
 from user_donee.boundary.donee_view_fra_pg import donee_view_fra_bp
 from user_donee.boundary.donee_save_fra_pg import donee_save_fra_bp
@@ -37,6 +46,13 @@ app.register_blueprint(donee_donation_history_bp)
 login_page = LogInPg()
 create_user_page = CreateUserPg()
 create_fra_page = CreateFRAPg()
+create_frc_page = CreateFrcPg()
+view_frc_page = ViewFrcPg()
+view_fra_page = ViewFraPg()
+update_frc_page = UpdateFrcPg()
+daily_report_page = DailyReportGenPg()
+weekly_report_page = WeeklyReportPg()
+monthly_report_page = MonthlyReportPg()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -66,6 +82,8 @@ def home():
         return render_template("user_donee/donee_dashboard.html", user_name=email)
     elif role == "FundRaiser":
         return render_template("fund_raiser/fr_dashboard.html", user_name=email)
+    elif role == "Manager":
+        return render_template("project_manager/manager_dashboard.html", manager_identifier=email)
     else:
         return "Role not recognized or unauthorized."
 
@@ -94,6 +112,72 @@ def create_fra():
     if request.method == "POST":
         return create_fra_page.post()
     return create_fra_page.get()
+
+
+@app.route("/project-manager/create-frc", methods=["GET", "POST"])
+def create_frc():
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return create_frc_page.post()
+    return create_frc_page.get()
+
+
+@app.route("/project-manager/view-frc", methods=["GET"])
+def view_frc():
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    return view_frc_page.get()
+
+
+@app.route("/project-manager/frc/<int:frc_id>/edit", methods=["GET", "POST"])
+def update_frc(frc_id):
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return update_frc_page.post(frc_id)
+    return update_frc_page.get(frc_id)
+
+
+@app.route("/project-manager/view-frc/<int:frc_id>/fras", methods=["GET"])
+def view_fra_by_frc(frc_id):
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    return view_fra_page.get_by_category(frc_id)
+
+
+@app.route("/project-manager/view-fras/<int:fra_id>", methods=["GET"])
+def view_fra_detail(fra_id):
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    return view_fra_page.get_detail(fra_id)
+
+
+@app.route("/project-manager/daily-report", methods=["GET", "POST"])
+def daily_report():
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return daily_report_page.post()
+    return daily_report_page.get()
+
+
+@app.route("/project-manager/weekly-report", methods=["GET", "POST"])
+def weekly_report():
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return weekly_report_page.post()
+    return weekly_report_page.get()
+
+
+@app.route("/project-manager/monthly-report", methods=["GET", "POST"])
+def monthly_report():
+    if session.get("role") != "Manager":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return monthly_report_page.post()
+    return monthly_report_page.get()
 
 
 if __name__ == "__main__":

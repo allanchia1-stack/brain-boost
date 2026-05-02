@@ -9,6 +9,7 @@ class FRA:
             user='root',
             password='brain-boost',
             host='localhost',
+            port = 3307,
             database='fundraising_db'
         )
 
@@ -232,6 +233,64 @@ class FRA:
                   AND f.fra_owner_id = %s
                 """,
                 (fra_id, owner_id),
+            )
+            return cursor.fetchone()
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return None
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def get_fras_by_category(cls, category_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(
+                """
+                SELECT f.fra_id, f.fra_title, f.fra_start_date, f.fra_end_date,
+                       f.fra_donation_goal, f.fra_category
+                FROM FRA f
+                WHERE f.fra_category = %s
+                ORDER BY f.fra_create_date DESC
+                """,
+                (category_id,),
+            )
+            return cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def get_fra_by_id_for_manager(cls, fra_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(
+                """
+                SELECT f.fra_id, f.fra_title, f.fra_des, f.fra_category,
+                       c.frc_name, f.fra_donation_goal, f.fra_donation_amt,
+                       f.fra_create_date, f.fra_start_date, f.fra_end_date,
+                       f.fra_views, f.fra_num_of_fav, f.fra_status,
+                       u.user_name AS owner_name
+                FROM FRA f
+                JOIN FRC c ON f.fra_category = c.frc_id
+                JOIN User u ON f.fra_owner_id = u.user_id
+                WHERE f.fra_id = %s
+                """,
+                (fra_id,),
             )
             return cursor.fetchone()
         except mysql.connector.Error as err:

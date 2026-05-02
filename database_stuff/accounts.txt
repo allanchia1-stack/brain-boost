@@ -1,7 +1,11 @@
 [Admin]
 tiffanymurphy@example.com
-hashed_pass_placeholder
+
 
 [FundRaiser]
 gonzalezkristen@example.com
+hashed_pass_placeholder
+
+[ProjectManager]
+thomasbates@example.com
 hashed_pass_placeholder
