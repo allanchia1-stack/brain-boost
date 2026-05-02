@@ -31,8 +31,8 @@
     <div class="card-container">
       <!-- Temporary '#' links until you build these specific routes -->
       <a href="{{ url_for('donee_view_fra_bp.view_fra_page') }}" class="nav-card">View FRA</a>
-      <a href="#" class="nav-card">Favourited FRA</a>
-      <a href="#" class="nav-card">FRA History</a>
+      <a href="{{ url_for('donee_view_fra_bp.favourite_fra_page') }}" class="nav-card">Favourited FRA</a>
+      <a href="{{ url_for('donee_view_fra_bp.fra_history_page') }}" class="nav-card">FRA History</a>
     </div>
   </main>
 </body>
