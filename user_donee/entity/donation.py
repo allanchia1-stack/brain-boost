@@ -1,34 +1,29 @@
 import mysql.connector
+from user_donee.entity.fra import FRA
 
 
-class FRA:
+class Donation:
     @staticmethod
     def get_connection():
-        return mysql.connector.connect(
-            user="root",
-            password="brain-boost",
-            host="localhost",
-            database="fundraising_db"
-        )
+        return FRA.get_connection()
 
     @classmethod
-    def get_all_fras(cls):
+    def get_donation_history(cls, user_id):
         conn = None
         cursor = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
             query = """
-                SELECT f.fra_id, f.fra_title, f.fra_des,
-                       c.frc_name AS category_name,
-                       f.fra_start_date, f.fra_end_date,
-                       f.fra_donation_goal, f.fra_donation_amt,
-                       f.fra_views, f.fra_num_of_fav, f.fra_status
-                FROM FRA f
+                SELECT d.donation_id, d.fra_id, d.donation_amt, d.donation_date,
+                       f.fra_title, c.frc_name AS category_name
+                FROM Donation d
+                JOIN FRA f ON d.fra_id = f.fra_id
                 JOIN FRC c ON f.fra_category = c.frc_id
-                ORDER BY f.fra_create_date DESC
+                WHERE d.donation_user_id = %s
+                ORDER BY d.donation_date DESC
             """
-            cursor.execute(query)
+            cursor.execute(query, (user_id,))
             return cursor.fetchall()
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
@@ -40,7 +35,7 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def search_fras(cls, keyword):
+    def search_donation_history(cls, user_id, keyword):
         conn = None
         cursor = None
         try:
@@ -48,17 +43,16 @@ class FRA:
             cursor = conn.cursor(dictionary=True)
             search_text = f"%{keyword}%"
             query = """
-                SELECT f.fra_id, f.fra_title, f.fra_des,
-                       c.frc_name AS category_name,
-                       f.fra_start_date, f.fra_end_date,
-                       f.fra_donation_goal, f.fra_donation_amt,
-                       f.fra_views, f.fra_num_of_fav, f.fra_status
-                FROM FRA f
+                SELECT d.donation_id, d.fra_id, d.donation_amt, d.donation_date,
+                       f.fra_title, c.frc_name AS category_name
+                FROM Donation d
+                JOIN FRA f ON d.fra_id = f.fra_id
                 JOIN FRC c ON f.fra_category = c.frc_id
-                WHERE f.fra_title LIKE %s OR c.frc_name LIKE %s
-                ORDER BY f.fra_create_date DESC
+                WHERE d.donation_user_id = %s
+                  AND (f.fra_title LIKE %s OR c.frc_name LIKE %s)
+                ORDER BY d.donation_date DESC
             """
-            cursor.execute(query, (search_text, search_text))
+            cursor.execute(query, (user_id, search_text, search_text))
             return cursor.fetchall()
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
@@ -70,23 +64,22 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def get_fra_by_id(cls, fra_id):
+    def get_donation_by_id(cls, user_id, donation_id):
         conn = None
         cursor = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
             query = """
-                SELECT f.fra_id, f.fra_title, f.fra_des,
-                       c.frc_name AS category_name,
-                       f.fra_start_date, f.fra_end_date,
-                       f.fra_donation_goal, f.fra_donation_amt,
-                       f.fra_views, f.fra_num_of_fav, f.fra_status
-                FROM FRA f
+                SELECT d.donation_id, d.fra_id, d.donation_amt, d.donation_date,
+                       f.fra_title, f.fra_des, f.fra_donation_goal,
+                       c.frc_name AS category_name
+                FROM Donation d
+                JOIN FRA f ON d.fra_id = f.fra_id
                 JOIN FRC c ON f.fra_category = c.frc_id
-                WHERE f.fra_id = %s
+                WHERE d.donation_user_id = %s AND d.donation_id = %s
             """
-            cursor.execute(query, (fra_id,))
+            cursor.execute(query, (user_id, donation_id))
             return cursor.fetchone()
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")

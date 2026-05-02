@@ -9,16 +9,18 @@
     .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
     .logo { font-size: 32px; font-weight: 500; color: #426b1f; text-decoration: none; }
     .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: 700; }
-    .container { max-width: 900px; margin: 40px auto; padding: 20px; background: #fff; border: 1px solid #ddd; }
-    .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+    .container { max-width: 950px; margin: 40px auto; padding: 20px; background: #fff; border: 1px solid #ddd; }
+    .search-bar { display: flex; gap: 15px; margin-bottom: 20px; }
     .search-bar input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-    .search-bar button { padding: 10px 30px; background-color: #426b1f; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    .search-bar button { padding: 10px 40px; background-color: #426b1f; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
     table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
     th, td { border: 1px solid #ccc; padding: 12px; text-align: center; }
-    th { background-color: #e0e0e0; font-weight: bold; }
+    th { background-color: #e0e0e0; }
     tr:nth-child(even) { background-color: #f9f9f9; }
-    .view-btn, .back-btn { background-color: #426b1f; color: white; padding: 6px 15px; text-decoration: none; border-radius: 3px; font-size: 14px; }
-    .back-btn { padding: 10px 30px; display: inline-block; }
+    .view-btn, .back-btn { background-color: #426b1f; color: white; text-decoration: none; border-radius: 3px; }
+    .view-btn { padding: 6px 15px; font-size: 14px; }
+    .back-btn { padding: 10px 30px; font-size: 16px; display: inline-block; }
+    .empty { text-align: center; padding: 25px; color: #666; }
   </style>
 </head>
 <body>
@@ -34,7 +36,6 @@
     </form>
 
     <h3>Your FRA History</h3>
-
     <table>
       <thead>
         <tr>
@@ -46,17 +47,17 @@
         </tr>
       </thead>
       <tbody>
-        {% for item in history %}
+        {% for donation in donations %}
         <tr>
-          <td>{{ item.fra_title }}</td>
-          <td>{{ item.category_name }}</td>
-          <td>${{ item.donation_amt }}</td>
-          <td>{{ item.donation_date.strftime('%d/%m/%y') if item.donation_date else 'N/A' }}</td>
-          <td><a href="{{ url_for('donee_view_fra_bp.fra_history_detail_page', donation_id=item.donation_id) }}" class="view-btn">View</a></td>
+          <td>{{ donation.fra_title }}</td>
+          <td>{{ donation.category_name }}</td>
+          <td>${{ donation.donation_amt }}</td>
+          <td>{{ donation.donation_date.strftime('%d/%m/%y') if donation.donation_date else 'N/A' }}</td>
+          <td><a href="{{ url_for('donee_donation_history_bp.donation_detail_page', donation_id=donation.donation_id) }}" class="view-btn">View</a></td>
         </tr>
         {% else %}
         <tr>
-          <td colspan="5">No FRA history found.</td>
+          <td colspan="5" class="empty">No donation history found.</td>
         </tr>
         {% endfor %}
       </tbody>

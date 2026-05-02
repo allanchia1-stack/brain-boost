@@ -12,7 +12,10 @@ from fund_raiser.boundary.CreateFRAPg import CreateFRAPg
 from fund_raiser.boundary.view_fra_pg import view_fra_bp as fr_view_fra_bp
 
 # Donee Imports
-from user_donee.boundary.view_fra_pg import view_fra_bp as donee_view_fra_bp
+from user_donee.boundary.donee_view_fra_pg import donee_view_fra_bp
+from user_donee.boundary.donee_save_fra_pg import donee_save_fra_bp
+from user_donee.boundary.donee_view_fav_fra_pg import donee_view_fav_fra_bp
+from user_donee.boundary.donee_donation_history_pg import donee_donation_history_bp
 
 # Flask automatically looks for HTML files inside the root templates/ folder
 app = Flask(__name__)
@@ -26,6 +29,9 @@ app.register_blueprint(view_user_account_bp)
 # Registering the aliases so they don't overwrite each other
 app.register_blueprint(fr_view_fra_bp)
 app.register_blueprint(donee_view_fra_bp)
+app.register_blueprint(donee_save_fra_bp)
+app.register_blueprint(donee_view_fav_fra_bp)
+app.register_blueprint(donee_donation_history_bp)
 
 # Instantiate the boundary
 login_page = LogInPg()
