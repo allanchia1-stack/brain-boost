@@ -1,4 +1,4 @@
-from user_admin.entity.user_profile import UserProfile
+from user_admin.entity.UserProf import UserProfile
 
 
 class ViewUserProfileController:
