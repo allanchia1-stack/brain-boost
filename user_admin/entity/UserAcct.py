@@ -27,14 +27,13 @@ class UserAcct:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
             cursor.execute("""
-                SELECT a.user_id, a.account_password, p.profile_role
+                SELECT a.account_id, a.account_password, a.account_role
                 FROM UserAcct a
-                JOIN UserProf p ON a.user_id = p.user_id
                 WHERE a.account_email = %s
             """, (email,))
             account = cursor.fetchone()
             if account and account['account_password'] == password:
-                return AuthenticatedUser(id=account['user_id'], email=email, role=account['profile_role'])
+                return AuthenticatedUser(id=account['account_id'], email=email, role=account['account_role'])
             return None
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
@@ -50,13 +49,13 @@ class UserAcct:
         try:
             conn = cls.get_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO User (user_name, user_email, user_password_hash) VALUES (%s, %s, %s)",
-                           (name, email, password))
-            user_id = cursor.lastrowid
-            cursor.execute("INSERT INTO UserAcct (user_id, account_password, account_email) VALUES (%s, %s, %s)",
-                           (user_id, password, email))
-            cursor.execute("INSERT INTO UserProf (user_id, profile_name, phone, address, profile_role) VALUES (%s, %s, %s, %s, %s)",
-                           (user_id, name, phone, address, role))
+            #cursor.execute("INSERT INTO User (user_name, user_email, user_password_hash) VALUES (%s, %s, %s)",
+            #               (name, email, password))
+            #user_id = cursor.lastrowid
+            cursor.execute("INSERT INTO UserAcct (account_email, account_password, account_name, account_phone, account_address, account_role) VALUES (%s, %s, %s, %s, %s, %s)",
+                           (email, password, name, phone, address, role))
+            #cursor.execute("INSERT INTO UserProf (user_id, profile_name, phone, address, profile_role) VALUES (%s, %s, %s, %s, %s)",
+            #               (user_id, name, phone, address, role))
             conn.commit()
             return True
         except Exception as e:
@@ -76,9 +75,8 @@ class UserAcct:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
             cursor.execute("""
-                SELECT a.user_id, p.profile_id, a.account_email, a.account_status
-                FROM UserAcct a
-                JOIN UserProf p ON a.user_id = p.user_id
+                SELECT a.account_email, a.account_name, a.account_role, a.account_status
+                FROM UserAcct a;
             """)
             return cursor.fetchall()
         except mysql.connector.Error as err:
@@ -97,13 +95,13 @@ class UserAcct:
             cursor = conn.cursor(dictionary=True)
             like = f"%{query}%"
             cursor.execute("""
-                SELECT a.user_id, p.profile_id, a.account_email, a.account_status
+                SELECT a.account_id, a.account_role, a.account_email, a.account_name, a.account_status
                 FROM UserAcct a
-                JOIN UserProf p ON a.user_id = p.user_id
-                WHERE CAST(a.user_id AS CHAR) LIKE %s
-                   OR CAST(p.profile_id AS CHAR) LIKE %s
+                WHERE CAST(a.account_id AS CHAR) LIKE %s
+                   OR a.account_role LIKE %s
                    OR a.account_email LIKE %s
-            """, (like, like, like))
+                   OR a.account_name LIKE %s
+            """, (like, like, like, like))
             return cursor.fetchall()
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
@@ -114,17 +112,16 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def get_account_by_user_id(cls, user_id):
+    def get_account_by_user_id(cls, account_id):
         conn = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
             cursor.execute("""
-                SELECT a.user_id, p.profile_id, a.account_email, a.account_status
+                SELECT a.account_id, a.account_email, a.account_name, a.account_status
                 FROM UserAcct a
-                JOIN UserProf p ON a.user_id = p.user_id
-                WHERE a.user_id = %s
-            """, (user_id,))
+                WHERE a.account_id = %s
+            """, (account_id,))
             return cursor.fetchone()
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
@@ -135,15 +132,15 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def update_account(cls, user_id, email, password):
+    def update_account(cls, account_id, email, password, name, phone, address, role):
         conn = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor()
             cursor.execute("""
-                UPDATE UserAcct SET account_email = %s, account_password = %s
-                WHERE user_id = %s
-            """, (email, password, user_id))
+                UPDATE UserAcct SET account_email = %s, account_password = %s, account_name = %s, account_phone = %s, account_address = %s, account_status = %s
+                WHERE account_id = %s
+            """, (email, password, name, phone, address, role, account_id))
             conn.commit()
             return True
         except mysql.connector.Error as err:
@@ -155,14 +152,14 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def suspend_account(cls, user_id):
+    def suspend_account(cls, account_id):
         conn = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor()
             cursor.execute("""
-                UPDATE UserAcct SET account_status = 0 WHERE user_id = %s
-            """, (user_id,))
+                UPDATE UserAcct SET account_status = 0 WHERE account_id = %s
+            """, (account_id,))
             conn.commit()
             return True
         except mysql.connector.Error as err:
