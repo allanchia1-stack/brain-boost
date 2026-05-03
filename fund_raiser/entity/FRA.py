@@ -9,7 +9,7 @@ class FRA:
             user='root',
             password='brain-boost',
             host='localhost',
-            port = 3307,
+            port = 3306,
             database='fundraising_db'
         )
 
