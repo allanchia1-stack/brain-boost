@@ -1,6 +1,13 @@
 import mysql.connector
 from dataclasses import dataclass
 
+def __init__(self, email, password, name, phone, address, role):
+    self.email = email
+    self.password = password
+    self.name = name
+    self.phone = phone
+    self.address = address
+    self.role = role
 
 @dataclass
 class AuthenticatedUser:
@@ -16,7 +23,7 @@ class UserAcct:
             user='root',
             password='brain-boost',
             host='localhost',
-            port = 3307,
+            port = 3306,
             database='fundraising_db'
         )
 

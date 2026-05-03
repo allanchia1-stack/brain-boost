@@ -31,7 +31,7 @@ CREATE TABLE UserAcct (
     account_address  VARCHAR(255),
     account_role     VARCHAR(100) NOT NULL,
     account_status   TINYINT(1) NOT NULL DEFAULT 1,
-    FOREIGN KEY (account_role_id) REFERENCES UserProfdonation(profile_id)
+    FOREIGN KEY (account_role) REFERENCES UserProf(profile_role)
 );
 
 
