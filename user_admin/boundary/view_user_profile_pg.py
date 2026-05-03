@@ -21,16 +21,13 @@ def view_user_profile_detail(profile_id):
     if request.method == "POST":
         action = request.form.get("action")
 
-        if action == "suspend":
-            ViewUserProfileController.suspend_user_profile(profile_id)
-            return redirect(url_for("view_user_profile_bp.view_user_profiles_page"))
+        if action == "toggle_suspend":
+            ViewUserProfileController.toggle_suspend_user_profile(profile_id)
+            return redirect(url_for("view_user_profile_bp.view_user_profile_detail", profile_id=profile_id))
 
         if action == "update":
-            name    = request.form.get("name", "").strip()
-            phone   = request.form.get("phone", "").strip()
-            address = request.form.get("address", "").strip()
-            role    = request.form.get("role", "").strip()
-            ViewUserProfileController.update_user_profile(profile_id, name, phone, address, role)
+            role = request.form.get("role", "").strip()
+            ViewUserProfileController.update_user_profile(profile_id, role)
             success = True
 
     profile = ViewUserProfileController.view_user_profile_by_id(profile_id)
