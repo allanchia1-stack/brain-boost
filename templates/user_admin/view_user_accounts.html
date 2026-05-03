@@ -46,6 +46,7 @@
           <th>User ID</th>
           <th>Profile ID</th>
           <th>Email address</th>
+          <th>Status</th>
           <th></th>
         </tr>
       </thead>
@@ -55,11 +56,12 @@
           <td>{{ "%03d"|format(account["user_id"]) }}</td>
           <td>{{ "%03d"|format(account["profile_id"]) }}</td>
           <td>{{ account["account_email"] }}</td>
+          <td>{{ "Active" if account["account_status"] == 1 else "Suspended" }}</td>
           <td><a class="view-btn" href="{{ url_for('view_user_account_bp.view_user_account_detail', user_id=account['user_id']) }}">View</a></td>
         </tr>
         {% endfor %}
         {% for i in range([8 - accounts|length, 0]|max) %}
-        <tr class="empty-row"><td>&nbsp;</td><td></td><td></td><td></td></tr>
+        <tr class="empty-row"><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
         {% endfor %}
       </tbody>
     </table>

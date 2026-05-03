@@ -235,20 +235,29 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def suspend_account(cls, account_id):
+    def toggle_suspend_account(cls, account_id):
         conn = None
         cursor = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor()
             cursor.execute(
-                "UPDATE UserAcct SET account_status = 0 WHERE account_id = %s",
+                """
+                UPDATE UserAcct
+                SET account_status = CASE
+                    WHEN account_status = 1 THEN 0
+                    ELSE 1
+                END
+                WHERE account_id = %s
+                """,
                 (account_id,),
             )
             conn.commit()
             return True
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
             return False
         finally:
             if cursor:

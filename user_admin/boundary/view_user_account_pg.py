@@ -21,9 +21,9 @@ def view_user_account_detail(user_id):
     if request.method == "POST":
         action = request.form.get("action")
 
-        if action == "suspend":
-            ViewUserAccountController.suspend_user_account(user_id)
-            return redirect(url_for("view_user_account_bp.view_user_accounts_page"))
+        if action == "toggle_suspend":
+            ViewUserAccountController.toggle_suspend_user_account(user_id)
+            return redirect(url_for("view_user_account_bp.view_user_account_detail", user_id=user_id))
 
         if action == "update":
             email    = request.form.get("email", "").strip()
