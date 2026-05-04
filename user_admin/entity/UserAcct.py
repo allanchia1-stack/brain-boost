@@ -90,10 +90,49 @@ class UserAcct:
             cursor.execute(
                 """
                 INSERT INTO UserAcct
-                (account_email, account_password, account_name, account_phone, account_address, account_role, account_status)
+                (account_email, account_password, account_name, account_phone, account_address, account_role_id, account_status)
                 VALUES (%s, %s, %s, %s, %s, %s, 1)
                 """,
                 (email.strip().lower(), password, name, phone, address, role),
+            )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Error creating user: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def createAccount(cls, temp):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+
+            # UserProf is the role/profile lookup table in your SQL schema.
+            # This prevents FK errors if the role does not exist yet.
+            cursor.execute(
+                """
+                INSERT IGNORE INTO UserProf (profile_role, profile_status)
+                VALUES (%s, 1)
+                """,
+                (temp.role,),
+            )
+
+            cursor.execute(
+                """
+                INSERT INTO UserAcct
+                (account_email, account_password, account_name, account_phone, account_address, account_role_id, account_status)
+                VALUES (%s, %s, %s, %s, %s, %s, 1)
+                """,
+                (temp.email.strip().lower(), temp.password, temp.name, temp.phone, temp.address, temp.role),
             )
             conn.commit()
             return True
