@@ -11,6 +11,9 @@ class UserProfile:
             port=3306,
             database="fundraising_db",
         )
+    
+    def __init__(self, role):
+        self.role = role
 
     @classmethod
     def get_all_profiles(cls):
@@ -157,3 +160,32 @@ class UserProfile:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+
+    @classmethod
+    def createProfile(cls, temp):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO UserProf
+                (profile_role, status)
+                VALUES (%s, 1)
+                """
+                (temp.role,),
+            )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Error creating user profile: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+

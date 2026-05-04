@@ -181,21 +181,21 @@ def populate_data():
             current_name = fake.name()
             current_email = fake.unique.email()
             
-            #if role == 'Admin':
-            #    current_role_id = 1
-            #elif role == 'Manager':
-            #    current_role_id = 2
-            #elif role == 'FundRaiser':
-            #    current_role_id = 3
-            #elif role == 'Donee':
-            #    current_role_id = 4
+            if role == 'Admin':
+                current_role_id = 1
+            elif role == 'Manager':
+                current_role_id = 2
+            elif role == 'FundRaiser':
+                current_role_id = 3
+            elif role == 'Donee':
+                current_role_id = 4
             
             rand_profile_id = random.randint(1, 4)
             
             # UserAcct Table
             cursor.execute(
                 "INSERT INTO UserAcct "
-                "(account_email, account_password, account_name, account_phone, account_address, account_role, account_status) "
+                "(account_email, account_password, account_name, account_phone, account_address, account_role_id, account_status) "
                 "VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (
                     current_email,
@@ -203,7 +203,7 @@ def populate_data():
                     current_name,
                     fake.numerify('9#######'),
                     fake.address().replace('\n', ', '),
-                    role,
+                    current_role_id,
                     1
                 )
             )

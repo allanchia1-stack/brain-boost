@@ -19,6 +19,15 @@ class UserAcct:
             port=3306,
             database="fundraising_db",
         )
+    
+
+    def __init__(self, email, password, name, phone, address, role):
+        self.email = email
+        self.password = password
+        self.name = name
+        self.phone = phone
+        self.address = address
+        self.role = role
 
     @classmethod
     def authenticate(cls, email, password):
@@ -29,8 +38,10 @@ class UserAcct:
             cursor = conn.cursor(dictionary=True)
             cursor.execute(
                 """
-                SELECT account_id, account_email, account_password, account_role, account_status
-                FROM UserAcct
+                SELECT a.account_id, a.account_email, a.account_password, p.profile_role, a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p
+                ON a.account_role_id = p.profile_id
                 WHERE LOWER(account_email) = LOWER(%s)
                 """,
                 (email,),
@@ -46,7 +57,7 @@ class UserAcct:
                 return AuthenticatedUser(
                     id=account["account_id"],
                     email=account["account_email"],
-                    role=account["account_role"],
+                    role=account["profile_role"],
                 )
             return None
         except mysql.connector.Error as err:
@@ -107,14 +118,16 @@ class UserAcct:
             cursor.execute(
                 """
                 SELECT
-                    account_id AS user_id,
-                    account_id AS profile_id,
-                    account_email,
-                    account_name,
-                    account_role,
-                    account_status
-                FROM UserAcct
-                ORDER BY account_id
+                    a.account_id AS user_id,
+                    a.account_id AS profile_id,
+                    a.account_email,
+                    a.account_name,
+                    p.profile_role,
+                    a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p
+                ON a.account_role_id = p.profile_id
+                ORDER BY a.account_id
                 """
             )
             return cursor.fetchall()
@@ -138,18 +151,20 @@ class UserAcct:
             cursor.execute(
                 """
                 SELECT
-                    account_id AS user_id,
-                    account_id AS profile_id,
-                    account_email,
-                    account_name,
-                    account_role,
-                    account_status
-                FROM UserAcct
-                WHERE CAST(account_id AS CHAR) LIKE %s
-                   OR account_role LIKE %s
-                   OR account_email LIKE %s
-                   OR account_name LIKE %s
-                ORDER BY account_id
+                    a.account_id AS user_id,
+                    a.account_id AS profile_id,
+                    a.account_email,
+                    a.account_name,
+                    p.profile_role,
+                    a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p
+                ON a.account_role_id = p.profile_id
+                WHERE CAST(a.account_id AS CHAR) LIKE %s
+                   OR a.account_role LIKE %s
+                   OR a.account_email LIKE %s
+                   OR a.account_name LIKE %s
+                ORDER BY a.account_id
                 """,
                 (like, like, like, like),
             )
@@ -173,13 +188,15 @@ class UserAcct:
             cursor.execute(
                 """
                 SELECT
-                    account_id AS user_id,
-                    account_id AS profile_id,
-                    account_email,
-                    account_name,
-                    account_role,
-                    account_status
-                FROM UserAcct
+                    a.account_id AS user_id,
+                    a.account_id AS profile_id,
+                    a.account_email,
+                    a.account_name,
+                    p.profile_role,
+                    a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p
+                ON a.account_role_id = profile_id
                 WHERE account_id = %s
                 """,
                 (account_id,),
