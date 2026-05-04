@@ -26,9 +26,10 @@
   <main class="main-content">
     <h2 class="welcome-text">Welcome User Admin, {{ admin_identifier }}</h2>
     <div class="card-container">
-      <a href="/create-user" class="nav-card">Create New User<br/>(Account &amp; Profile)</a>
-      <a href="{{ url_for('view_user_profile_bp.view_user_profiles_page') }}" class="nav-card">View User Profiles</a>
+      <a href="{{ url_for('create_account') }}" class="nav-card">Create New Account</a>
+      <a href="{{ url_for('create_profile') }}" class="nav-card">Create New Profile</a>
       <a href="{{ url_for('view_user_account_bp.view_user_accounts_page') }}" class="nav-card">View User Accounts</a>
+      <a href="{{ url_for('view_user_profile_bp.view_user_profiles_page') }}" class="nav-card">View User Profiles</a>
     </div>
   </main>
 </body>

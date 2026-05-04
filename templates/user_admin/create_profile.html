@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HelpFundUs - Create New Account</title>
+  <title>HelpFundUs - Create New Profile</title>
   <style>
     body { font-family: 'Roboto Condensed', sans-serif; background: #fafaf5; padding: 50px; }
     .header { max-width: 500px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
@@ -10,7 +10,7 @@
     .logout-btn { background:#426b1f; color:white; padding:8px 18px; text-decoration:none; border-radius:4px; font-weight:bold; }
     .form-container { max-width: 500px; margin: auto; background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #ddd; }
     h2 { text-align: center; color: #000; }
-    .form-group { margin-bottom: 16px; }
+    .form-group { margin-bottom: 20px; }
     label { display: block; font-weight: bold; margin-bottom: 5px; color:#426b1f; }
     input, select { width: 100%; padding: 10px; border: 1px solid #aaa; border-radius: 4px; }
     .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 22px; }
@@ -25,13 +25,10 @@
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
   <div class="form-container">
-    <h2>Create New Account</h2>
-    <form method="POST" action="{{ url_for('create_account') }}">
-      <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
-      <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
-      <div class="form-group"><label>Address</label><input type="text" name="address" required></div>
+    <h2>Create New Profile</h2>
+    <form method="POST" action="{{ url_for('create_profile') }}">
       <div class="form-group">
-        <label>Role</label>
+        <label>Name of Profile</label>
         <select name="role">
           <option value="Admin">Admin</option>
           <option value="Manager">Manager</option>
@@ -39,11 +36,10 @@
           <option value="Donee">Donee</option>
         </select>
       </div>
-      <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-      <div class="form-group"><label>Password</label><input type="password" name="password" required></div>
+      <input type="hidden" name="status" value="1">
       <div class="btn-group">
         <button type="button" class="btn-cancel" onclick="window.location.href='{{ url_for('home') }}'">Cancel</button>
-        <button type="submit" class="btn-create">Create Account</button>
+        <button type="submit" class="btn-create">Create Profile</button>
       </div>
     </form>
   </div>
