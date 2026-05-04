@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>HelpFundUs - FRA Detail</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    body { margin: 0; background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #000; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .logo { font-size: 32px; font-weight: 500; color: #426b1f; text-decoration: none; }
+    .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: 700; }
+    .card { width: 520px; margin: 50px auto; padding: 45px; background: #fff; border: 1px solid #ddd; }
+    .label { color: #426b1f; font-weight: 700; margin-top: 22px; }
+    .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 45px; }
+    .back-btn, .save-btn { padding: 10px 25px; border-radius: 3px; text-decoration: none; border: none; cursor: pointer; font-family: inherit; font-size: 15px; }
+    .back-btn { background: white; color: black; border: 1px solid #333; }
+    .save-btn { color: white; background: #426b1f; }
+    .unsave-btn { color: white; background: #b3261e; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+
+  <div class="card">
+    <div class="label">Title</div>
+    <p>{{ fra.fra_title }}</p>
+
+    <div class="label">Category</div>
+    <p>{{ fra.category_name }}</p>
+
+    <div class="label">From</div>
+    <p>{{ fra.fra_start_date.strftime('%d/%m/%y') if fra.fra_start_date else 'N/A' }}</p>
+
+    <div class="label">To</div>
+    <p>{{ fra.fra_end_date.strftime('%d/%m/%y') if fra.fra_end_date else 'N/A' }}</p>
+
+    <div class="label">Description</div>
+    <p>{{ fra.fra_des }}</p>
+
+    <div class="label">Goal</div>
+    <p>${{ fra.fra_donation_goal }}</p>
+
+    <div class="actions">
+      <a href="{{ url_for('donee_view_fra_bp.view_fra_page') }}" class="back-btn">Back</a>
+      <form method="POST" action="{{ url_for('donee_save_fra_bp.toggle_save_fra', fra_id=fra.fra_id) }}">
+        {% if saved %}
+          <button type="submit" class="save-btn unsave-btn">Unsave</button>
+        {% else %}
+          <button type="submit" class="save-btn">Save</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</body>
+</html>

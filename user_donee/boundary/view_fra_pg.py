@@ -1,0 +1,1 @@
+from user_donee.boundary.donee_view_fra_pg import donee_view_fra_bp as view_fra_bp

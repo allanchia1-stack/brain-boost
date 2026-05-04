@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HelpFundUs - View User Accounts</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f;  text-decoration: none; cursor: pointer; display: inline-block; }
+    .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700; border: none; cursor: pointer; transition: background-color 0.2s; }
+    .logout-btn:hover { background-color: #335318; }
+    .page-body { padding: 24px 32px; }
+    .search-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .search-input { flex: 1; padding: 10px 16px; font-family: inherit; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+    .search-input:focus { border-color: #426b1f; }
+    .search-btn { background-color: #426b1f; color: #fff; border: none; padding: 10px 28px; font-family: inherit; font-size: 16px; font-weight: 700; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
+    .search-btn:hover { background-color: #335318; }
+    .account-table { width: 100%; border-collapse: collapse; background-color: #fff; border: 1px solid #ccc; }
+    .account-table th, .account-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 15px; }
+    .account-table th { font-weight: 700; background-color: #fff; }
+    .account-table tr:nth-child(even) td { background-color: #f0f0f0; }
+    .account-table td:last-child { text-align: right; width: 90px; }
+    .view-btn { background-color: #426b1f; color: #fff; border: none; padding: 6px 18px; font-family: inherit; font-size: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.2s; }
+    .view-btn:hover { background-color: #335318; }
+    .empty-row td { height: 38px; }
+    .back-btn { display: inline-block; margin-top: 20px; background-color: #426b1f; color: #fff; text-decoration: none; padding: 8px 22px; border-radius: 4px; font-size: 15px; font-weight: 700; transition: background-color 0.2s; }
+    .back-btn:hover { background-color: #335318; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+  <div class="page-body">
+    <form class="search-row" method="GET" action="{{ url_for('view_user_account_bp.view_user_accounts_page') }}">
+      <input class="search-input" type="text" name="q" placeholder="Search user account" value="{{ search_query }}" />
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+    <table class="account-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Profile ID</th>
+          <th>Email address</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for account in accounts %}
+        <tr>
+          <td>{{ "%03d"|format(account["user_id"]) }}</td>
+          <td>{{ "%03d"|format(account["profile_id"]) }}</td>
+          <td>{{ account["account_email"] }}</td>
+          <td><a class="view-btn" href="{{ url_for('view_user_account_bp.view_user_account_detail', user_id=account['user_id']) }}">View</a></td>
+        </tr>
+        {% endfor %}
+        {% for i in range([8 - accounts|length, 0]|max) %}
+        <tr class="empty-row"><td>&nbsp;</td><td></td><td></td><td></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{{ url_for('home') }}" class="back-btn">Back</a>
+  </div>
+</body>
+</html>

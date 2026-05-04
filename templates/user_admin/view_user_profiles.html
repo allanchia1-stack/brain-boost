@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HelpFundUs - View User Profiles</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto Condensed', sans-serif;
+      background-color: #fafaf5;
+      color: #000;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background-color: #fff;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      color: #426b1f;
+     text-decoration: none; cursor: pointer; display: inline-block; }
+    .logout-btn {
+      background-color: #426b1f;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .logout-btn:hover { background-color: #335318; }
+
+    /* ── Page body ── */
+    .page-body {
+      padding: 24px 32px;
+    }
+
+    /* ── Search bar ── */
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .search-input {
+      flex: 1;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+    }
+    .search-input:focus { border-color: #426b1f; }
+    .search-btn {
+      background-color: #426b1f;
+      color: #fff;
+      border: none;
+      padding: 10px 28px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .search-btn:hover { background-color: #335318; }
+
+    /* ── Table ── */
+    .profile-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .profile-table th,
+    .profile-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 15px;
+    }
+    .profile-table th {
+      font-weight: 700;
+      background-color: #fff;
+    }
+    .profile-table tr:nth-child(even) td {
+      background-color: #f0f0f0;
+    }
+    .profile-table td:last-child {
+      text-align: right;
+      width: 90px;
+    }
+
+    .view-btn {
+      background-color: #426b1f;
+      color: #fff;
+      border: none;
+      padding: 6px 18px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s;
+    }
+    .view-btn:hover { background-color: #335318; }
+
+    /* ── Empty rows filler ── */
+    .empty-row td { height: 38px; }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #426b1f;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 22px;
+      border-radius: 4px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .back-btn:hover { background-color: #335318; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+
+  <div class="page-body">
+
+    <!-- Search -->
+    <form class="search-row" method="GET" action="{{ url_for('view_user_profile_bp.view_user_profiles_page') }}">
+      <input
+        class="search-input"
+        type="text"
+        name="q"
+        placeholder="Search user profile"
+        value="{{ search_query }}"
+      />
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <!-- Table -->
+    <table class="profile-table">
+      <thead>
+        <tr>
+          <th>Profile ID</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in profiles %}
+        <tr>
+          <td>{{ "%03d"|format(profile["profile_id"]) }}</td>
+          <td>{{ profile["profile_name"] }}</td>
+          <td>{{ profile["phone"] or "-" }}</td>
+          <td>{{ profile["address"] or "-" }}</td>
+          <td>{{ profile["profile_role"] }}</td>
+          <td>
+            <a class="view-btn" href="{{ url_for('view_user_profile_bp.view_user_profile_detail', profile_id=profile['profile_id']) }}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+
+        <!-- Filler rows to always show at least 8 rows -->
+        {% for i in range([8 - profiles|length, 0]|max) %}
+        <tr class="empty-row">
+          <td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a href="{{ url_for('home') }}" class="back-btn">Back</a>
+
+  </div>
+</body>
+</html>

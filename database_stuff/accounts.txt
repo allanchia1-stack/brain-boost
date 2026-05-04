@@ -1,0 +1,11 @@
+[Admin]
+tiffanymurphy@example.com
+
+
+[FundRaiser]
+gonzalezkristen@example.com
+hashed_pass_placeholder
+
+[ProjectManager]
+thomasbates@example.com
+hashed_pass_placeholder

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HelpFundUs – Project Manager</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #fafaf5; font-family: 'Roboto Condensed', sans-serif; color: #1a1a1a; min-height: 100vh; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 22px 50px; background: #fff; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f; text-decoration: none; letter-spacing: -0.02em; }
+    .logout-btn { background: #426b1f; color: #fff; border: none; padding: 10px 26px; border-radius: 4px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .logout-btn:hover { background: #335318; }
+    .main { display: flex; flex-direction: column; align-items: center; padding: 70px 20px 40px; gap: 60px; }
+    .welcome { font-size: 28px; font-weight: 500; }
+    .cards { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      background: #fff; border-radius: 8px; width: 230px; height: 140px;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      text-decoration: none; color: #426b1f; font-size: 17px; font-weight: 600;
+      line-height: 1.35; padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.07);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+  <main class="main">
+    <h2 class="welcome">Welcome Platform Management Manager, {{ manager_identifier }}</h2>
+    <div class="cards">
+      <a href="{{ url_for('create_frc') }}" class="card">Create Fund Raising<br/>Activity Category</a>
+      <a href="{{ url_for('view_frc') }}" class="card">View Fund Raising<br/>Activity Categories</a>
+      <a href="{{ url_for('daily_report') }}" class="card">Generate Daily Report</a>
+      <a href="{{ url_for('weekly_report') }}" class="card">Generate Weekly Report</a>
+      <a href="{{ url_for('monthly_report') }}" class="card">Generate Monthly Report</a>
+    </div>
+  </main>
+</body>
+</html>

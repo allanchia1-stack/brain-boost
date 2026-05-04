@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HelpFundUs - View Fund Raising Activities</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f;  text-decoration: none; cursor: pointer; display: inline-block; }
+    .logout-btn, .search-btn, .view-btn, .back-btn { background-color: #426b1f; color: #fff; text-decoration: none; border-radius: 4px; font-family: inherit; font-weight: 700; border: none; cursor: pointer; }
+    .logout-btn { padding: 10px 24px; font-size: 18px; }
+    .page-body { padding: 24px 32px; }
+    .search-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .search-input { flex: 1; padding: 10px 16px; font-family: inherit; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+    .search-btn { padding: 10px 28px; font-size: 16px; }
+    .fra-table { width: 100%; border-collapse: collapse; background-color: #fff; border: 1px solid #ccc; }
+    .fra-table th, .fra-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 15px; }
+    .fra-table tr:nth-child(even) td { background-color: #f0f0f0; }
+    .view-btn { padding: 6px 18px; display: inline-block; }
+    .back-btn { display: inline-block; margin-top: 20px; padding: 8px 22px; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
+    <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
+  </header>
+  <div class="page-body">
+    <form class="search-row" method="GET" action="{{ url_for('view_fra_bp.view_fras_page') }}">
+      <input class="search-input" type="text" name="q" placeholder="Search fund raising activity" value="{{ search_query }}" />
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+    <h2 style="margin-bottom: 20px;">{{ title }}</h2>
+    <table class="fra-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fra in fras %}
+        <tr>
+          <td>{{ fra["fra_title"] }}</td>
+          <td>{{ fra["frc_name"] }}</td>
+          <td><a class="view-btn" href="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id'], source=source or 'all') }}">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{{ url_for('home') }}" class="back-btn">Back</a>
+  </div>
+</body>
+</html>
