@@ -113,11 +113,12 @@
 
         <div class="field">
           <label>Role</label>
-          <select name="role">
-            {% for r in ['Admin', 'Manager', 'FundRaiser', 'Donee'] %}
-            <option value="{{ r }}" {% if profile['profile_role'] == r %}selected{% endif %}>{{ r }}</option>
-            {% endfor %}
-          </select>
+          <input 
+            type="text" 
+            name="role"
+            value="{{ profile['profile_role'] }}"
+            required
+          />
         </div>
 
         <div class="field">
