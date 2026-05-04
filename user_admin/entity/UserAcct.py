@@ -153,7 +153,7 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def search_accounts(cls, user_id):
+    def search_accounts(cls, user_email):
         conn = None
         cursor = None
 
@@ -176,9 +176,9 @@ class UserAcct:
                 FROM UserAcct a
                 INNER JOIN UserProf p 
                     ON a.account_role_id = p.profile_id
-                WHERE a.account_id = %s
+                WHERE a.account_email LIKE %s
                 """,
-                (user_id,)
+                (f"%{user_email}%",)
             )
 
             return cursor.fetchall()
