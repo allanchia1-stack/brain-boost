@@ -32,7 +32,7 @@ class UserProf:
                 (tempProfile.role, tempProfile.status),
             )
             conn.commit()
-            return True
+            return cursor.lastrowid
         except mysql.connector.Error as err:
             print(f"Error creating user profile: {err}")
             if conn:

@@ -19,7 +19,11 @@ class UserAdminCreatePg:
     def post(self):
         role = request.form.get("role", "").strip()
         status = int(request.form.get("status", "1"))
+
+        if not role:
+            return "Profile name cannot be empty", 400
+
         tempProfile = UserProf(role=role, status=status)
         if self.createProfile(tempProfile):
             return redirect(url_for("view_user_profile_bp.view_user_profiles_page"))
-        return "Error creating profile", 400
+        return "Error creating profile. This profile may already exist.", 400
