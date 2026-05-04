@@ -1,7 +1,7 @@
 import mysql.connector
 
 
-class UserProfile:
+class UserProf:
     @staticmethod
     def get_connection():
         return mysql.connector.connect(
@@ -11,9 +11,55 @@ class UserProfile:
             port=3306,
             database="fundraising_db",
         )
-    
-    def __init__(self, role):
+
+    def __init__(self, role=None, status=1, profile_id=None):
+        self.profile_id = profile_id
         self.role = role
+        self.status = status
+
+    @classmethod
+    def createProfile(cls, tempProfile):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO UserProf (profile_role, profile_status)
+                VALUES (%s, %s)
+                """,
+                (tempProfile.role, tempProfile.status),
+            )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Error creating user profile: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def view(cls, profile_id):
+        return cls.get_profile_by_id(profile_id)
+
+    @classmethod
+    def updateUser(cls, tempProfile):
+        return cls.update_profile(tempProfile.profile_id, tempProfile.role)
+
+    @classmethod
+    def SuspendUserProfile(cls, profile_id):
+        return cls.toggle_suspend_profile(profile_id)
+
+    @classmethod
+    def queryUserProfile(cls, user_name="", role=""):
+        query = " ".join([str(user_name or ""), str(role or "")]).strip()
+        return cls.search_profiles(query)
 
     @classmethod
     def get_all_profiles(cls):
@@ -24,10 +70,7 @@ class UserProfile:
             cursor = conn.cursor(dictionary=True)
             cursor.execute(
                 """
-                SELECT
-                    profile_id,
-                    profile_role,
-                    profile_status
+                SELECT profile_id, profile_role, profile_status
                 FROM UserProf
                 ORDER BY profile_id
                 """
@@ -52,14 +95,11 @@ class UserProfile:
             like = f"%{query}%"
             cursor.execute(
                 """
-                SELECT
-                    profile_id,
-                    profile_role,
-                    profile_status
+                SELECT profile_id, profile_role, profile_status
                 FROM UserProf
                 WHERE CAST(profile_id AS CHAR) LIKE %s
                    OR profile_role LIKE %s
-                   OR CAST(profile_status AS CHAR) LIKE %s
+                   OR CASE WHEN profile_status = 1 THEN 'Active' ELSE 'Suspended' END LIKE %s
                 ORDER BY profile_id
                 """,
                 (like, like, like),
@@ -83,10 +123,7 @@ class UserProfile:
             cursor = conn.cursor(dictionary=True)
             cursor.execute(
                 """
-                SELECT
-                    profile_id,
-                    profile_role,
-                    profile_status
+                SELECT profile_id, profile_role, profile_status
                 FROM UserProf
                 WHERE profile_id = %s
                 """,
@@ -103,6 +140,31 @@ class UserProfile:
                 conn.close()
 
     @classmethod
+    def get_profile_id_by_role(cls, role):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("SELECT profile_id FROM UserProf WHERE profile_role = %s LIMIT 1", (role,))
+            row = cursor.fetchone()
+            if row:
+                return row["profile_id"]
+            cursor.execute("INSERT INTO UserProf (profile_role, profile_status) VALUES (%s, 1)", (role,))
+            conn.commit()
+            return cursor.lastrowid
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return None
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
     def update_profile(cls, profile_id, role):
         conn = None
         cursor = None
@@ -110,11 +172,7 @@ class UserProfile:
             conn = cls.get_connection()
             cursor = conn.cursor()
             cursor.execute(
-                """
-                UPDATE UserProf
-                SET profile_role = %s
-                WHERE profile_id = %s
-                """,
+                "UPDATE UserProf SET profile_role = %s WHERE profile_id = %s",
                 (role, profile_id),
             )
             conn.commit()
@@ -140,10 +198,7 @@ class UserProfile:
             cursor.execute(
                 """
                 UPDATE UserProf
-                SET profile_status = CASE
-                    WHEN profile_status = 1 THEN 0
-                    ELSE 1
-                END
+                SET profile_status = CASE WHEN profile_status = 1 THEN 0 ELSE 1 END
                 WHERE profile_id = %s
                 """,
                 (profile_id,),
@@ -161,31 +216,5 @@ class UserProfile:
             if conn and conn.is_connected():
                 conn.close()
 
-    @classmethod
-    def createProfile(cls, temp):
-        conn = None
-        cursor = None
-        try:
-            conn = cls.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                INSERT INTO UserProf
-                (profile_role, status)
-                VALUES (%s, 1)
-                """
-                (temp.role,),
-            )
-            conn.commit()
-            return True
-        except mysql.connector.Error as err:
-            print(f"Error creating user profile: {err}")
-            if conn:
-                conn.rollback()
-            return False
-        finally:
-            if cursor:
-                cursor.close()
-            if conn and conn.is_connected():
-                conn.close()
-
+# Backward-compatible name for older imports.
+UserProfile = UserProf

@@ -1,6 +1,7 @@
+from user_admin.controller.UserAdminCreateAccountC import UserAdminCreateAccountC
 from user_admin.entity.UserAcct import UserAcct
 
-class CreateUserC:
+
+class CreateUserC(UserAdminCreateAccountC):
     def create_user(self, name, phone, address, role, email, password):
-        # Add basic validation here if needed
-        return UserAcct.create_user(name, phone, address, role, email, password)
+        return self.createAccount(UserAcct(email=email, password=password, name=name, phone=phone, address=address, role=role))

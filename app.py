@@ -6,6 +6,8 @@ from user_admin.boundary.LogOutPg import logout_bp
 from user_admin.boundary.view_user_profile_pg import view_user_profile_bp
 from user_admin.boundary.view_user_account_pg import view_user_account_bp
 from user_admin.boundary.CreateUserPg import CreateUserPg
+from user_admin.boundary.UserAdminCreatePg import UserAdminCreatePg
+from user_admin.boundary.UserAdminCreateUserAccountPg import UserAdminCreateUserAccountPg
 
 # FundRaiser Imports
 from fund_raiser.boundary.CreateFRAPg import CreateFRAPg
@@ -45,6 +47,8 @@ app.register_blueprint(donee_donation_history_bp)
 # Instantiate the boundary
 login_page = LogInPg()
 create_user_page = CreateUserPg()
+create_profile_page = UserAdminCreatePg()
+create_account_page = UserAdminCreateUserAccountPg()
 create_fra_page = CreateFRAPg()
 create_frc_page = CreateFrcPg()
 view_frc_page = ViewFrcPg()
@@ -98,11 +102,30 @@ def add_header(response):
 
 @app.route("/create-user", methods=["GET", "POST"])
 def create_user():
+    # Old URL kept for compatibility. It now creates a user account.
     if session.get("role") != "Admin":
         return redirect(url_for("home"))
     if request.method == "POST":
-        return create_user_page.post()
-    return create_user_page.get()
+        return create_account_page.post()
+    return create_account_page.get()
+
+
+@app.route("/user_admin/create_account", methods=["GET", "POST"])
+def create_account():
+    if session.get("role") != "Admin":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return create_account_page.post()
+    return create_account_page.get()
+
+
+@app.route("/user_admin/create_profile", methods=["GET", "POST"])
+def create_profile():
+    if session.get("role") != "Admin":
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        return create_profile_page.post()
+    return create_profile_page.get()
 
 
 @app.route("/create-fra", methods=["GET", "POST"])
