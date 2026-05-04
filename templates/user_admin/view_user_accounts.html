@@ -37,7 +37,7 @@
   </header>
   <div class="page-body">
     <form class="search-row" method="GET" action="{{ url_for('view_user_account_bp.view_user_accounts_page') }}">
-      <input class="search-input" type="text" name="q" placeholder="Search user account" value="{{ search_query }}" />
+      <input class="search-input" type="text" name="q" placeholder="Search by email" value="{{ search_query }}" />
       <button type="submit" class="search-btn">Search</button>
     </form>
     <table class="account-table">

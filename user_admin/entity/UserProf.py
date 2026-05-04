@@ -57,9 +57,8 @@ class UserProf:
         return cls.toggle_suspend_profile(profile_id)
 
     @classmethod
-    def queryUserProfile(cls, user_name="", role=""):
-        query = " ".join([str(user_name or ""), str(role or "")]).strip()
-        return cls.search_profiles(query)
+    def queryUserProfile(cls, search_query=""):
+        return cls.search_profiles(search_query)
 
     @classmethod
     def get_all_profiles(cls):
@@ -95,14 +94,19 @@ class UserProf:
             like = f"%{query}%"
             cursor.execute(
                 """
-                SELECT profile_id, profile_role, profile_status
-                FROM UserProf
-                WHERE CAST(profile_id AS CHAR) LIKE %s
-                   OR profile_role LIKE %s
-                   OR CASE WHEN profile_status = 1 THEN 'Active' ELSE 'Suspended' END LIKE %s
-                ORDER BY profile_id
+                SELECT DISTINCT
+                    p.profile_id,
+                    p.profile_role,
+                    p.profile_status
+                FROM UserProf p
+                LEFT JOIN UserAcct a ON a.account_role_id = p.profile_id
+                WHERE CAST(p.profile_id AS CHAR) LIKE %s
+                   OR p.profile_role LIKE %s
+                   OR CASE WHEN p.profile_status = 1 THEN 'Active' ELSE 'Suspended' END LIKE %s
+                   OR a.account_email LIKE %s
+                ORDER BY p.profile_id
                 """,
-                (like, like, like),
+                (like, like, like, like),
             )
             return cursor.fetchall()
         except mysql.connector.Error as err:
