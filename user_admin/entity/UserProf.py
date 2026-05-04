@@ -88,30 +88,33 @@ class UserProf:
     def search_profiles(cls, query):
         conn = None
         cursor = None
+
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
+
             like = f"%{query}%"
+
             cursor.execute(
                 """
-                SELECT DISTINCT
-                    p.profile_id,
-                    p.profile_role,
-                    p.profile_status
-                FROM UserProf p
-                LEFT JOIN UserAcct a ON a.account_role_id = p.profile_id
-                WHERE CAST(p.profile_id AS CHAR) LIKE %s
-                   OR p.profile_role LIKE %s
-                   OR CASE WHEN p.profile_status = 1 THEN 'Active' ELSE 'Suspended' END LIKE %s
-                   OR a.account_email LIKE %s
-                ORDER BY p.profile_id
+                SELECT
+                    profile_id,
+                    profile_role,
+                    profile_status
+                FROM UserProf
+                WHERE CAST(profile_id AS CHAR) LIKE %s
+                OR profile_role LIKE %s
+                ORDER BY profile_id
                 """,
-                (like, like, like, like),
+                (like, like)
             )
+
             return cursor.fetchall()
+
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             return []
+
         finally:
             if cursor:
                 cursor.close()

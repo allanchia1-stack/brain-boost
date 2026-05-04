@@ -153,13 +153,14 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def search_accounts(cls, query):
+    def search_accounts(cls, user_id):
         conn = None
         cursor = None
+
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
-            like = f"%{query}%"
+
             cursor.execute(
                 """
                 SELECT
@@ -173,23 +174,19 @@ class UserAcct:
                     p.profile_role,
                     a.account_status
                 FROM UserAcct a
-                INNER JOIN UserProf p ON a.account_role_id = p.profile_id
-                WHERE CAST(a.account_id AS CHAR) LIKE %s
-                   OR CAST(a.account_role_id AS CHAR) LIKE %s
-                   OR p.profile_role LIKE %s
-                   OR a.account_email LIKE %s
-                   OR a.account_name LIKE %s
-                   OR a.account_phone LIKE %s
-                   OR a.account_address LIKE %s
-                   OR CASE WHEN a.account_status = 1 THEN 'Active' ELSE 'Suspended' END LIKE %s
-                ORDER BY a.account_id
+                INNER JOIN UserProf p 
+                    ON a.account_role_id = p.profile_id
+                WHERE a.account_id = %s
                 """,
-                (like, like, like, like, like, like, like, like),
+                (user_id,)
             )
+
             return cursor.fetchall()
+
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             return []
+
         finally:
             if cursor:
                 cursor.close()
