@@ -5,7 +5,6 @@ from user_admin.boundary.LogInPg import LogInPg
 from user_admin.boundary.LogOutPg import logout_bp
 from user_admin.boundary.view_user_profile_pg import view_user_profile_bp
 from user_admin.boundary.view_user_account_pg import view_user_account_bp
-from user_admin.boundary.CreateUserPg import CreateUserPg
 from user_admin.boundary.UserAdminCreatePg import UserAdminCreatePg
 from user_admin.boundary.UserAdminCreateUserAccountPg import UserAdminCreateUserAccountPg
 
@@ -46,7 +45,6 @@ app.register_blueprint(donee_donation_history_bp)
 
 # Instantiate the boundary
 login_page = LogInPg()
-create_user_page = CreateUserPg()
 create_profile_page = UserAdminCreatePg()
 create_account_page = UserAdminCreateUserAccountPg()
 create_fra_page = CreateFRAPg()
