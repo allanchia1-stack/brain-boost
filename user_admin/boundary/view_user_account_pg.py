@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from user_admin.controller.view_user_account_c import ViewUserAccountController
+from user_admin.entity.UserProf import UserProf
 
 view_user_account_bp = Blueprint("view_user_account_bp", __name__)
 
@@ -17,7 +18,8 @@ class UserAdminResultUserAccountPg:
 
 class UserAdminUpdateUserAccountPg:
     def updateUserForm(self, account, success=False):
-        return render_template("user_admin/view_user_account_detail.html", account=account, success=success)
+        profiles = [p for p in UserProf.get_all_profiles() if int(p.get("profile_status", 1)) == 1]
+        return render_template("user_admin/view_user_account_detail.html", account=account, success=success, profiles=profiles)
 
 
 class UserAccountPg:

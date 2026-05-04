@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, url_for
 from user_admin.controller.UserAdminCreateAccountC import UserAdminCreateAccountC
 from user_admin.entity.UserAcct import UserAcct
+from user_admin.entity.UserProf import UserProf
 
 
 class UserAdminCreateUserAccountPg:
@@ -8,7 +9,8 @@ class UserAdminCreateUserAccountPg:
         self.control = UserAdminCreateAccountC()
 
     def displayAccountCreationForm(self):
-        return render_template("user_admin/create_account.html")
+        profiles = [p for p in UserProf.get_all_profiles() if int(p.get("profile_status", 1)) == 1]
+        return render_template("user_admin/create_account.html", profiles=profiles)
 
     def get(self):
         return self.displayAccountCreationForm()
