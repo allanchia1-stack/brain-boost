@@ -9,17 +9,17 @@ from user_admin.boundary.UserAdminResultUserProfilePg import view_user_profile_b
 from user_admin.boundary.UserAdminResultUserAccountPg import view_user_account_bp
 
 # Fund Raiser imports
-from fund_raiser.boundary.CreateFRAPg import CreateFRAPg
-from fund_raiser.boundary.view_fra_pg import view_fra_bp as fr_view_fra_bp
+from fund_raiser.boundary.FundRaiserCreateFraPg import FundRaiserCreateFraPg
+from fund_raiser.boundary.FundRaiserResultFraPg import view_fra_bp as fr_view_fra_bp
 
 # Project Manager imports
 from project_manager.boundary.CreateFrcPg import CreateFrcPg
+from project_manager.boundary.PMDailyReportGenPg import PMDailyReportGenPg
+from project_manager.boundary.PMMonthlyReportGenPg import PMMonthlyReportGenPg
+from project_manager.boundary.PMUpdateFrcPg import PMUpdateFrcPg
+from project_manager.boundary.PMViewFrcPg import PMViewFrcPg
+from project_manager.boundary.PMWeeklyReportGenPg import PMWeeklyReportGenPg
 from project_manager.boundary.ViewFraPg import ViewFraPg
-from project_manager.boundary.ViewFrcPg import ViewFrcPg
-from project_manager.boundary.UpdateFrcPg import UpdateFrcPg
-from project_manager.boundary.DailyReportGenPg import DailyReportGenPg
-from project_manager.boundary.WeeklyReportPg import WeeklyReportPg
-from project_manager.boundary.MonthlyReportPg import MonthlyReportPg
 
 # Donee imports
 from user_donee.boundary.donee_view_fra_pg import donee_view_fra_bp
@@ -44,14 +44,14 @@ app.register_blueprint(donee_donation_history_bp)
 login_page = LogInPg()
 create_profile_page = UserAdminCreateProfilePg()
 create_account_page = UserAdminCreateUserAccountPg()
-create_fra_page = CreateFRAPg()
+create_fra_page = FundRaiserCreateFraPg()
 create_frc_page = CreateFrcPg()
-view_frc_page = ViewFrcPg()
+view_frc_page = PMViewFrcPg()
 view_fra_page = ViewFraPg()
-update_frc_page = UpdateFrcPg()
-daily_report_page = DailyReportGenPg()
-weekly_report_page = WeeklyReportPg()
-monthly_report_page = MonthlyReportPg()
+update_frc_page = PMUpdateFrcPg()
+daily_report_page = PMDailyReportGenPg()
+weekly_report_page = PMWeeklyReportGenPg()
+monthly_report_page = PMMonthlyReportGenPg()
 
 
 def role_required(role_name):
