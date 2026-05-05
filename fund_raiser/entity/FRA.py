@@ -9,6 +9,7 @@ class FRA:
             user='root',
             password='brain-boost',
             host='localhost',
+            port = 3307,
             database='fundraising_db'
         )
 
@@ -224,10 +225,10 @@ class FRA:
                        f.fra_donation_goal, f.fra_donation_amt,
                        f.fra_create_date, f.fra_start_date, f.fra_end_date,
                        f.fra_views, f.fra_num_of_fav, f.fra_status,
-                       u.user_name AS owner_name
+                       ua.account_name AS owner_name
                 FROM FRA f
                 JOIN FRC c ON f.fra_category = c.frc_id
-                JOIN User u ON f.fra_owner_id = u.user_id
+                JOIN UserAcct ua ON f.fra_owner_id = ua.account_id
                 WHERE f.fra_id = %s
                   AND f.fra_owner_id = %s
                 """,
@@ -283,10 +284,10 @@ class FRA:
                        c.frc_name, f.fra_donation_goal, f.fra_donation_amt,
                        f.fra_create_date, f.fra_start_date, f.fra_end_date,
                        f.fra_views, f.fra_num_of_fav, f.fra_status,
-                       u.user_name AS owner_name
+                       ua.account_name AS owner_name
                 FROM FRA f
                 JOIN FRC c ON f.fra_category = c.frc_id
-                JOIN User u ON f.fra_owner_id = u.user_id
+                JOIN UserAcct ua ON f.fra_owner_id = ua.account_id
                 WHERE f.fra_id = %s
                 """,
                 (fra_id,),

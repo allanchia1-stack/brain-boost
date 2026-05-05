@@ -9,36 +9,43 @@ class Donation:
             user='root',
             password='brain-boost',
             host='localhost',
+            port = 3307,
             database='fundraising_db'
         )
 
     @classmethod
-    def _get_by_period(cls, start_dt, end_dt):
+    def _fetch_all(cls, query, params=()):
         conn = cursor = None
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
-            cursor.execute(
-                """
-                SELECT d.donation_id, d.donation_amt, d.donation_date,
-                       f.fra_title, c.frc_name AS category,
-                       u.user_name AS donor_name
-                FROM Donation d
-                JOIN FRA   f ON d.fra_id          = f.fra_id
-                JOIN FRC   c ON f.fra_category     = c.frc_id
-                JOIN User  u ON d.donation_user_id = u.user_id
-                WHERE d.donation_date >= %s AND d.donation_date <= %s
-                ORDER BY d.donation_date DESC
-                """,
-                (start_dt, end_dt)
-            )
+            cursor.execute(query, params)
             return cursor.fetchall()
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             return []
         finally:
-            if cursor: cursor.close()
-            if conn and conn.is_connected(): conn.close()
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def _get_by_period(cls, start_dt, end_dt):
+        return cls._fetch_all(
+            """
+            SELECT d.donation_id, d.donation_amt, d.donation_date,
+                   f.fra_title, c.frc_name AS category,
+                   ua.account_name AS donor_name
+            FROM Donation d
+            JOIN FRA      f  ON d.fra_id = f.fra_id
+            JOIN FRC      c  ON f.fra_category = c.frc_id
+            JOIN UserAcct ua ON d.donation_user_id = ua.account_id
+            WHERE d.donation_date >= %s AND d.donation_date <= %s
+            ORDER BY d.donation_date DESC
+            """,
+            (start_dt, end_dt),
+        )
 
     @classmethod
     def get_daily_summary(cls):

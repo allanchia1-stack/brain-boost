@@ -45,13 +45,6 @@
           <input type="text" id="name" name="name" value="{{ frc.name }}" required />
         </div>
         <div class="field">
-          <label for="status">Status</label>
-          <select id="status" name="status">
-            <option value="1" {{ 'selected' if frc.status == 1 }}>Active</option>
-            <option value="0" {{ 'selected' if frc.status == 0 }}>Suspended</option>
-          </select>
-        </div>
-        <div class="field">
           <label for="description">Description</label>
           <textarea id="description" name="description">{{ frc.description or '' }}</textarea>
         </div>
