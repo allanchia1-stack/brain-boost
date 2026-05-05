@@ -1,0 +1,13 @@
+from flask import render_template, request
+
+from project_manager.controller.PMSearchFrcC import PMSearchFrcC
+
+
+class PMSearchFrcPg:
+    def __init__(self):
+        self.control = PMSearchFrcC()
+
+    def get(self):
+        query = request.args.get("query", "").strip()
+        frcs = self.control.searchFrc(query)
+        return render_template("project_manager/view_frc.html", frcs=frcs, query=query)
