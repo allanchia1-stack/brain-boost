@@ -46,6 +46,7 @@
           <th>User ID</th>
           <th>Profile ID</th>
           <th>Email address</th>
+          <th>Status</th>
           <th></th>
         </tr>
       </thead>
@@ -55,11 +56,19 @@
           <td>{{ "%03d"|format(account["user_id"]) }}</td>
           <td>{{ "%03d"|format(account["profile_id"]) }}</td>
           <td>{{ account["account_email"] }}</td>
+<<<<<<< HEAD
+=======
+          <td>{{ "Active" if account["account_status"] == 1 else "Suspended" }}</td>
+>>>>>>> b190910b4dc46a6e6093cbd530ec8905c950077a
           <td><a class="view-btn" href="{{ url_for('view_user_account_bp.view_user_account_detail', user_id=account['user_id']) }}">View</a></td>
         </tr>
         {% endfor %}
         {% for i in range([8 - accounts|length, 0]|max) %}
+<<<<<<< HEAD
         <tr class="empty-row"><td>&nbsp;</td><td></td><td></td><td></td></tr>
+=======
+        <tr class="empty-row"><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+>>>>>>> b190910b4dc46a6e6093cbd530ec8905c950077a
         {% endfor %}
       </tbody>
     </table>

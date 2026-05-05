@@ -168,33 +168,28 @@
       <thead>
         <tr>
           <th>Profile ID</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Address</th>
-          <th>Role</th>
+          <th>Profile Role</th>
+          <th>Profile Status</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         {% for profile in profiles %}
         <tr>
-          <td>{{ "%03d"|format(profile["profile_id"]) }}</td>
-          <td>{{ profile["profile_name"] }}</td>
-          <td>{{ profile["phone"] or "-" }}</td>
-          <td>{{ profile["address"] or "-" }}</td>
+          <td>{{ profile["profile_id"] }}</td>
           <td>{{ profile["profile_role"] }}</td>
+          <td>{{ "Active" if profile["profile_status"] == 1 else "Suspended" }}</td>
           <td>
             <a class="view-btn" href="{{ url_for('view_user_profile_bp.view_user_profile_detail', profile_id=profile['profile_id']) }}">View</a>
           </td>
         </tr>
         {% endfor %}
 
-        <!-- Filler rows to always show at least 8 rows -->
-        {% for i in range([8 - profiles|length, 0]|max) %}
+        {% if profiles|length == 0 %}
         <tr class="empty-row">
-          <td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td>
+          <td colspan="4">No user profiles found.</td>
         </tr>
-        {% endfor %}
+        {% endif %}
       </tbody>
     </table>
 

@@ -19,5 +19,5 @@ class ViewUserAccountController:
         return UserAcct.update_account(user_id, email, password)
 
     @staticmethod
-    def suspend_user_account(user_id):
-        return UserAcct.suspend_account(user_id)
+    def toggle_suspend_user_account(user_id):
+        return UserAcct.toggle_suspend_account(user_id)

@@ -1,6 +1,8 @@
+-- DROP DATABASE fundraising_db;
 CREATE DATABASE IF NOT EXISTS fundraising_db;
 USE fundraising_db;
 
+/*
 -- User
 CREATE TABLE User (
     user_id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -10,28 +12,28 @@ CREATE TABLE User (
     user_status        ENUM('active', 'suspended') NOT NULL DEFAULT 'active',
     user_created_at    DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+*/
+
+-- UserProf
+CREATE TABLE UserProf (
+    profile_id     INT AUTO_INCREMENT PRIMARY KEY,
+    profile_role   VARCHAR(100) UNIQUE NOT NULL,
+    profile_status TINYINT(1) NOT NULL DEFAULT 1
+);
 
 -- UserAcct (Added UNIQUE to user_id to enforce 1-to-1)
 CREATE TABLE UserAcct (
     account_id       INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT UNIQUE NOT NULL, 
-    account_password VARCHAR(255) NOT NULL,
     account_email    VARCHAR(100) UNIQUE NOT NULL,
+    account_password VARCHAR(255) NOT NULL,
+    account_name     VARCHAR(100),
+    account_phone    VARCHAR(20), -- Kept as VARCHAR for safety, change to INT if strictly required
+    account_address  VARCHAR(255),
+    account_role     VARCHAR(100) NOT NULL,
     account_status   TINYINT(1) NOT NULL DEFAULT 1,
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
+    FOREIGN KEY (account_role) REFERENCES UserProf(profile_role)
 );
 
--- UserProf (Added UNIQUE to user_id to enforce 1-to-1)
-CREATE TABLE UserProf (
-    profile_id     INT AUTO_INCREMENT PRIMARY KEY,
-    user_id        INT UNIQUE NOT NULL,
-    profile_name   VARCHAR(100) NOT NULL,
-    phone          VARCHAR(20), -- Kept as VARCHAR for safety, change to INT if strictly required
-    address        VARCHAR(255),
-    profile_role   ENUM('Admin', 'FundRaiser', 'Donee', 'Manager') NOT NULL, -- Ignored ERD UNIQUE trap
-    profile_status TINYINT(1) NOT NULL DEFAULT 1,
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
-);
 
 -- FRC (Renamed to match ERD)
 CREATE TABLE FRC (
@@ -57,7 +59,7 @@ CREATE TABLE FRA (
     fra_owner_id      INT NOT NULL,
     fra_status        ENUM('ongoing', 'completed', 'cancelled') NOT NULL DEFAULT 'ongoing',
     FOREIGN KEY (fra_category) REFERENCES FRC(frc_id),
-    FOREIGN KEY (fra_owner_id) REFERENCES User(user_id)
+    FOREIGN KEY (fra_owner_id) REFERENCES UserAcct(account_id)
 );
 
 -- Donation (Corrected FK to point to FRA)
@@ -68,7 +70,7 @@ CREATE TABLE Donation (
     donation_amt     INT NOT NULL,
     donation_date    DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (fra_id) REFERENCES FRA(fra_id),
-    FOREIGN KEY (donation_user_id) REFERENCES User(user_id)
+    FOREIGN KEY (donation_user_id) REFERENCES UserAcct(account_id)
 );
 
 -- FavouriteFRA
@@ -78,6 +80,6 @@ CREATE TABLE FavouriteFRA (
     fra_id       INT NOT NULL,
     fav_saved_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY unique_fav (user_id, fra_id),
-    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (user_id) REFERENCES UserAcct(account_id),
     FOREIGN KEY (fra_id) REFERENCES FRA(fra_id)
 );

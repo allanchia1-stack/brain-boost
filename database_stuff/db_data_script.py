@@ -7,6 +7,7 @@ config = {
     'user':     'root',
     'password': 'brain-boost',
     'host':     'localhost',
+    'port':     3307,
     'database': 'fundraising_db'
 }
 
@@ -30,6 +31,18 @@ def populate_data():
         conn   = mysql.connector.connect(**config)
         cursor = conn.cursor()
         print("Connected to database...")
+        
+        # IMPT: clean up all tables. Only comment this out if you are not cleaning up database tables
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+
+        cursor.execute("TRUNCATE TABLE UserProf")
+        cursor.execute("TRUNCATE TABLE UserAcct")
+        cursor.execute("TRUNCATE TABLE FRC")
+        cursor.execute("TRUNCATE TABLE FRA")
+        cursor.execute("TRUNCATE TABLE Donation")
+        cursor.execute("TRUNCATE TABLE favouritefra")
+
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
 
         # FRC (FundRaisingCategory)
         categories = [
@@ -54,7 +67,103 @@ def populate_data():
         category_ids = [row[0] for row in cursor.fetchall()]
         print(f"  [1/5] Inserted {len(category_ids)} categories.")
 
-        # Users (User + UserAcct + UserProf) 100 tuples of data
+        #Original
+        #
+        ## Users (User + UserAcct + UserProf) 100 tuples of data
+        #role_list = (
+        #    ['Admin']      * 2  +
+        #    ['Manager']    * 2  +
+        #    ['FundRaiser'] * 16 +
+        #    ['Donee']      * 80
+        #)
+        #random.shuffle(role_list)
+		#
+        #all_user_ids   = []
+        #fundraiser_ids = []
+        #donee_ids      = []
+		#
+        #for role in role_list:
+        #    # Generate the core identity ONCE per iteration
+        #    current_name = fake.name()
+        #    current_email = fake.unique.email()
+        #    
+        #    # User Table
+        #    cursor.execute(
+        #        "INSERT INTO User "
+        #        "(user_name, user_email, user_password_hash, user_status) "
+        #        "VALUES (%s, %s, %s, %s)",
+        #        (
+        #            current_name,
+        #            current_email,
+        #            "hashed_pass_placeholder",
+        #            random.choices(['active', 'suspended'], weights=[90, 10])[0]
+        #        )
+        #    )
+        #    uid = cursor.lastrowid
+        #    all_user_ids.append(uid)
+		#
+        #    # UserAcct Table
+        #    cursor.execute(
+        #        "INSERT INTO UserAcct "
+        #        "(user_id, account_password, account_email, account_status) "
+        #        "VALUES (%s, %s, %s, %s)",
+        #        (
+        #            uid,
+        #            "hashed_pass_placeholder",
+        #            current_email,
+        #            1
+        #        )
+        #    )
+		#
+        #    # UserProf Table
+        #    cursor.execute(
+        #        "INSERT INTO UserProf "
+        #        "(user_id, profile_name, phone, address, profile_role, profile_status) "
+        #        "VALUES (%s, %s, %s, %s, %s, %s)",
+        #        (
+        #            uid,
+        #            current_name,
+        #            fake.numerify('9#######'),
+        #            fake.address().replace('\n', ', '),
+        #            role,
+        #            1
+        #        )
+        #    )
+		#
+        #    if role == 'FundRaiser':
+        #        fundraiser_ids.append(uid)
+        #    elif role == 'Donee':
+        #        donee_ids.append(uid)
+		#
+        #conn.commit()
+        #print(f"  [2/5] Inserted 100 users with unified identities.")
+        
+        
+        # Users (UserAcct + UserProf) 100 tuples of data
+        role_list = ['Admin', 'Manager', 'FundRaiser', 'Donee']
+		
+        
+        unique_roles = len(set(role_list))
+		
+        for i in range(unique_roles):
+			# UserProf Table
+            cursor.execute(
+                "INSERT INTO UserProf "
+                "(profile_role, profile_status) "
+                "VALUES (%s, %s)",
+                (
+                    role_list[i],
+                    1
+                )
+            )
+		
+        cursor.execute("SELECT profile_id, profile_role FROM UserProf")
+        rows = cursor.fetchall()
+        
+        #role_map = {role: pid for pid, role in rows}
+        #print(role_map)
+        
+        # once role_list is used to populate unique number of roles, set to below to set number of users of each type of role
         role_list = (
             ['Admin']      * 2  +
             ['Manager']    * 2  +
@@ -62,51 +171,35 @@ def populate_data():
             ['Donee']      * 80
         )
         random.shuffle(role_list)
-
+		
         all_user_ids   = []
         fundraiser_ids = []
         donee_ids      = []
-
+		
         for role in role_list:
             # Generate the core identity ONCE per iteration
             current_name = fake.name()
             current_email = fake.unique.email()
             
-            # User Table
-            cursor.execute(
-                "INSERT INTO User "
-                "(user_name, user_email, user_password_hash, user_status) "
-                "VALUES (%s, %s, %s, %s)",
-                (
-                    current_name,
-                    current_email,
-                    "hashed_pass_placeholder",
-                    random.choices(['active', 'suspended'], weights=[90, 10])[0]
-                )
-            )
-            uid = cursor.lastrowid
-            all_user_ids.append(uid)
-
+            #if role == 'Admin':
+            #    current_role_id = 1
+            #elif role == 'Manager':
+            #    current_role_id = 2
+            #elif role == 'FundRaiser':
+            #    current_role_id = 3
+            #elif role == 'Donee':
+            #    current_role_id = 4
+            
+            rand_profile_id = random.randint(1, 4)
+            
             # UserAcct Table
             cursor.execute(
                 "INSERT INTO UserAcct "
-                "(user_id, account_password, account_email, account_status) "
-                "VALUES (%s, %s, %s, %s)",
+                "(account_email, account_password, account_name, account_phone, account_address, account_role, account_status) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (
-                    uid,
-                    "hashed_pass_placeholder",
                     current_email,
-                    1
-                )
-            )
-
-            # UserProf Table
-            cursor.execute(
-                "INSERT INTO UserProf "
-                "(user_id, profile_name, phone, address, profile_role, profile_status) "
-                "VALUES (%s, %s, %s, %s, %s, %s)",
-                (
-                    uid,
+                    "hashed_pass_placeholder",
                     current_name,
                     fake.numerify('9#######'),
                     fake.address().replace('\n', ', '),
@@ -114,14 +207,20 @@ def populate_data():
                     1
                 )
             )
-
+            uid = cursor.lastrowid
+            all_user_ids.append(uid)
+            
             if role == 'FundRaiser':
                 fundraiser_ids.append(uid)
             elif role == 'Donee':
                 donee_ids.append(uid)
-
+            
+		
         conn.commit()
         print(f"  [2/5] Inserted 100 users with unified identities.")
+        
+
+
 
         # FRA & Donations (Combined Logic)
         activity_ids = []

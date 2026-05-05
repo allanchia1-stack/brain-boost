@@ -1,11 +1,10 @@
 [Admin]
 tiffanymurphy@example.com
 
-
 [FundRaiser]
-gonzalezkristen@example.com
+julie69@example.com
 hashed_pass_placeholder
 
 [ProjectManager]
-thomasbates@example.com
+jenniferwilliams@example.com
 hashed_pass_placeholder

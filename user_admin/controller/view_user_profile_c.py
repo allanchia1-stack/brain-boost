@@ -1,4 +1,4 @@
-from user_admin.entity.user_profile import UserProfile
+from user_admin.entity.UserProf import UserProfile
 
 
 class ViewUserProfileController:
@@ -15,9 +15,9 @@ class ViewUserProfileController:
         return UserProfile.get_profile_by_id(profile_id)
 
     @staticmethod
-    def update_user_profile(profile_id, name, phone, address, role):
-        return UserProfile.update_profile(profile_id, name, phone, address, role)
+    def update_user_profile(profile_id, role):
+        return UserProfile.update_profile(profile_id, role)
 
     @staticmethod
-    def suspend_user_profile(profile_id):
-        return UserProfile.suspend_profile(profile_id)
+    def toggle_suspend_user_profile(profile_id):
+        return UserProfile.toggle_suspend_profile(profile_id)
