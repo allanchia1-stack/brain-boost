@@ -15,68 +15,53 @@ class UserAdminResultUserProfilePg:
     def view_all(self):
         return UserAdminViewProfileC.view_all_user_profiles()
 
-    def search(self, search_query):
-        return UserAdminSearchProfileC.searchUserProfile(search_query)
+    def searchUserProfile(self, text):
+        return UserAdminSearchProfileC.searchUserProfile(text)
 
-    # Boundary method for the sequence diagram:
-    # UserAdminResultUserProfilePg.view(profile_id) -> UserAdminViewProfileC.view(profile_id) -> UserProf.view(profile_id)
     def view(self, profile_id):
         return UserAdminViewProfileC.view(profile_id)
 
     def showResult(self, profiles, search_query=""):
-        return render_template(
-            "user_admin/view_user_profiles.html",
-            profiles=profiles,
-            search_query=search_query,
-        )
+        return render_template("user_admin/view_user_profiles.html", profiles=profiles, search_query=search_query)
 
 
 class UserAdminUpdateUserProfilePg:
     def updateUserForm(self, profile, success=False):
-        return render_template(
-            "user_admin/view_user_profile_detail.html",
-            profile=profile,
-            success=success,
-        )
+        return render_template("user_admin/view_user_profile_detail.html", profile=profile, success=success)
+
+    def updateProf(self, temp):
+        return UserAdminUpdateProfileC.updateProf(temp)
 
 
 class UserAdminUserProfilePg:
-    def updateUserProfile(self, profile_id, role):
-        return UserAdminUpdateProfileC.updateUser(UserProf(role=role, profile_id=profile_id))
-
-    def SuspendUserProfile(self, profile_id):
-        return UserAdminSuspendProfileC.SuspendUserProfile(profile_id)
+    def SuspendProf(self, profile_id):
+        return UserAdminSuspendProfileC.SuspendProf(profile_id)
 
 
 @view_user_profile_bp.route("/user_admin/view_user_profiles_page", methods=["GET"])
 def view_user_profiles_page():
     page = UserAdminResultUserProfilePg()
     search_query = page.getSearchUPKey()
-    profiles = page.search(search_query) if search_query else page.view_all()
+    profiles = page.searchUserProfile(search_query) if search_query else page.view_all()
     return page.showResult(profiles, search_query)
 
 
 @view_user_profile_bp.route("/user_admin/view_user_profiles/<int:profile_id>", methods=["GET", "POST"])
 def view_user_profile_detail(profile_id):
     success = False
-    action_page = UserAdminUserProfilePg()
-
     if request.method == "POST":
         action = request.form.get("action")
-
         if action == "toggle_suspend":
-            action_page.SuspendUserProfile(profile_id)
+            UserAdminUserProfilePg().SuspendProf(profile_id)
             return redirect(url_for("view_user_profile_bp.view_user_profile_detail", profile_id=profile_id))
-
         if action == "update":
             role = request.form.get("role", "").strip()
-            action_page.updateUserProfile(profile_id, role)
+            UserAdminUpdateUserProfilePg().updateProf(UserProf(role=role, profile_id=profile_id))
             success = True
 
     profile = UserAdminResultUserProfilePg().view(profile_id)
     if profile is None:
         return "Profile not found", 404
-
     return UserAdminUpdateUserProfilePg().updateUserForm(profile, success)
 
 

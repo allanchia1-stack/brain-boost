@@ -3,5 +3,10 @@ from user_admin.entity.UserProf import UserProf
 
 class UserAdminUpdateProfileC:
     @staticmethod
-    def updateUser(tempProfile):
-        return UserProf.updateUser(tempProfile)
+    def updateProf(temp):
+        return UserProf.updateProf(temp)
+
+    # Backward compatible alias
+    @staticmethod
+    def updateUser(temp):
+        return UserAdminUpdateProfileC.updateProf(temp)

@@ -48,12 +48,20 @@ class UserProf:
         return cls.get_profile_by_id(profile_id)
 
     @classmethod
-    def updateUser(cls, tempProfile):
+    def updateProf(cls, tempProfile):
         return cls.update_profile(tempProfile.profile_id, tempProfile.role)
 
     @classmethod
-    def SuspendUserProfile(cls, profile_id):
+    def updateUser(cls, tempProfile):
+        return cls.updateProf(tempProfile)
+
+    @classmethod
+    def SuspendProf(cls, profile_id):
         return cls.toggle_suspend_profile(profile_id)
+
+    @classmethod
+    def SuspendUserProfile(cls, profile_id):
+        return cls.SuspendProf(profile_id)
 
     @classmethod
     def queryUserProfile(cls, search_query=""):

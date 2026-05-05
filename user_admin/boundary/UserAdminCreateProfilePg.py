@@ -3,7 +3,7 @@ from user_admin.controller.UserAdminCreateProfileC import UserAdminCreateProfile
 from user_admin.entity.UserProf import UserProf
 
 
-class UserAdminCreatePg:
+class UserAdminCreateProfilePg:
     def __init__(self):
         self.control = UserAdminCreateProfileC()
 
@@ -13,17 +13,15 @@ class UserAdminCreatePg:
     def get(self):
         return self.displayProfileCreationForm()
 
-    def createProfile(self, tempProfile):
-        return self.control.createProfile(tempProfile)
+    def createProfile(self, temp):
+        return self.control.createProfile(temp)
 
     def post(self):
         role = request.form.get("role", "").strip()
         status = int(request.form.get("status", "1"))
-
         if not role:
-            return "Profile name cannot be empty", 400
-
-        tempProfile = UserProf(role=role, status=status)
-        if self.createProfile(tempProfile):
+            return "Profile role cannot be empty", 400
+        temp = UserProf(role=role, status=status)
+        if self.createProfile(temp):
             return redirect(url_for("view_user_profile_bp.view_user_profiles_page"))
         return "Error creating profile. This profile may already exist.", 400

@@ -1,10 +1,10 @@
 from flask import request, render_template
-from user_admin.controller.UserAdminLoginC import UserAdminLoginC
+from user_admin.controller.LogInC import LogInC
 
 
 class LogInPg:
     def __init__(self):
-        self.control = UserAdminLoginC()
+        self.control = LogInC()
 
     def get(self):
         return render_template("user_admin/login.html", error=None, email=""), 200

@@ -35,7 +35,7 @@
     <div class="form-card">
       <h2>Update User Account</h2>
       {% if success %}<div class="success-msg">✓ Account updated successfully!</div>{% endif %}
-      <form method="POST" action="{{ url_for('view_user_account_bp.view_user_account_detail', user_id=account['user_id']) }}">
+      <form method="POST" action="{{ url_for('view_user_account_bp.view_user_account_detail', accountId=account['user_id']) }}">
         <div class="field"><label>Account ID</label><input type="text" value="{{ account['user_id'] }}" readonly /></div>
         <div class="field"><label>Email</label><input type="email" name="email" value="{{ account['account_email'] }}" required /></div>
         <div class="field"><label>Name</label><input type="text" name="name" value="{{ account['account_name'] }}" required /></div>
