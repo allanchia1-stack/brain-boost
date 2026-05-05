@@ -1,4 +1,4 @@
--- DROP DATABASE fundraising_db;
+DROP DATABASE fundraising_db;
 CREATE DATABASE IF NOT EXISTS fundraising_db;
 USE fundraising_db;
 
@@ -29,9 +29,9 @@ CREATE TABLE UserAcct (
     account_name     VARCHAR(100),
     account_phone    VARCHAR(20), -- Kept as VARCHAR for safety, change to INT if strictly required
     account_address  VARCHAR(255),
-    account_role     VARCHAR(100) NOT NULL,
+    account_role_id  INT NOT NULL,
     account_status   TINYINT(1) NOT NULL DEFAULT 1,
-    FOREIGN KEY (account_role) REFERENCES UserProf(profile_role)
+    FOREIGN KEY (account_role_id) REFERENCES UserProf(profile_id)
 );
 
 

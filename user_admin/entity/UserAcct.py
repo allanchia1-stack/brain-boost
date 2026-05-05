@@ -1,5 +1,6 @@
 import mysql.connector
 from dataclasses import dataclass
+from user_admin.entity.UserProf import UserProf
 
 
 @dataclass
@@ -20,6 +21,19 @@ class UserAcct:
             database="fundraising_db",
         )
 
+    def __init__(self, email=None, password=None, name=None, phone=None, address=None, role=None, account_id=None):
+        self.account_id = account_id
+        self.email = email
+        self.password = password
+        self.name = name
+        self.phone = phone
+        self.address = address
+        self.role = role
+
+    @classmethod
+    def userLogin(cls, username, password_hash):
+        return cls.authenticate(username, password_hash)
+
     @classmethod
     def authenticate(cls, email, password):
         conn = None
@@ -29,24 +43,19 @@ class UserAcct:
             cursor = conn.cursor(dictionary=True)
             cursor.execute(
                 """
-                SELECT account_id, account_email, account_password, account_role, account_status
-                FROM UserAcct
-                WHERE LOWER(account_email) = LOWER(%s)
+                SELECT a.account_id, a.account_email, a.account_password, p.profile_role, a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p ON a.account_role_id = p.profile_id
+                WHERE LOWER(a.account_email) = LOWER(%s)
                 """,
                 (email,),
             )
             account = cursor.fetchone()
-
-            # account_status = 0 means suspended, so suspended users cannot login
-            if (
-                account
-                and account["account_password"] == password
-                and int(account.get("account_status", 1)) == 1
-            ):
+            if account and account["account_password"] == password and int(account.get("account_status", 1)) == 1:
                 return AuthenticatedUser(
                     id=account["account_id"],
                     email=account["account_email"],
-                    role=account["account_role"],
+                    role=account["profile_role"],
                 )
             return None
         except mysql.connector.Error as err:
@@ -60,34 +69,30 @@ class UserAcct:
 
     @classmethod
     def create_user(cls, name, phone, address, role, email, password):
+        return cls.createAccount(cls(email=email, password=password, name=name, phone=phone, address=address, role=role))
+
+    @classmethod
+    def createAccount(cls, temp):
         conn = None
         cursor = None
         try:
+            role_id = UserProf.get_profile_id_by_role(temp.role)
+            if role_id is None:
+                return False
             conn = cls.get_connection()
             cursor = conn.cursor()
-
-            # UserProf is the role/profile lookup table in your SQL schema.
-            # This prevents FK errors if the role does not exist yet.
-            cursor.execute(
-                """
-                INSERT IGNORE INTO UserProf (profile_role, profile_status)
-                VALUES (%s, 1)
-                """,
-                (role,),
-            )
-
             cursor.execute(
                 """
                 INSERT INTO UserAcct
-                (account_email, account_password, account_name, account_phone, account_address, account_role, account_status)
+                (account_email, account_password, account_name, account_phone, account_address, account_role_id, account_status)
                 VALUES (%s, %s, %s, %s, %s, %s, 1)
                 """,
-                (email.strip().lower(), password, name, phone, address, role),
+                (temp.email.strip().lower(), temp.password, temp.name, temp.phone, temp.address, role_id),
             )
             conn.commit()
             return True
         except mysql.connector.Error as err:
-            print(f"Error creating user: {err}")
+            print(f"Error creating user account: {err}")
             if conn:
                 conn.rollback()
             return False
@@ -96,6 +101,22 @@ class UserAcct:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+
+    @classmethod
+    def view(cls, accountId):
+        return cls.get_account_by_user_id(accountId)
+
+    @classmethod
+    def updateUser(cls, temp):
+        return cls.update_account(temp.account_id, temp.email, temp.password, temp.name, temp.phone, temp.address, temp.role)
+
+    @classmethod
+    def SuspendUserAccount(cls, idNum):
+        return cls.toggle_suspend_account(idNum)
+
+    @classmethod
+    def queryUserAccount(cls, user_id_match):
+        return cls.search_accounts(user_id_match)
 
     @classmethod
     def get_all_accounts(cls):
@@ -107,14 +128,18 @@ class UserAcct:
             cursor.execute(
                 """
                 SELECT
-                    account_id AS user_id,
-                    account_id AS profile_id,
-                    account_email,
-                    account_name,
-                    account_role,
-                    account_status
-                FROM UserAcct
-                ORDER BY account_id
+                    a.account_id AS user_id,
+                    a.account_id,
+                    a.account_role_id AS profile_id,
+                    a.account_email,
+                    a.account_name,
+                    a.account_phone,
+                    a.account_address,
+                    p.profile_role,
+                    a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p ON a.account_role_id = p.profile_id
+                ORDER BY a.account_id
                 """
             )
             return cursor.fetchall()
@@ -128,35 +153,40 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def search_accounts(cls, query):
+    def search_accounts(cls, user_email):
         conn = None
         cursor = None
+
         try:
             conn = cls.get_connection()
             cursor = conn.cursor(dictionary=True)
-            like = f"%{query}%"
+
             cursor.execute(
                 """
                 SELECT
-                    account_id AS user_id,
-                    account_id AS profile_id,
-                    account_email,
-                    account_name,
-                    account_role,
-                    account_status
-                FROM UserAcct
-                WHERE CAST(account_id AS CHAR) LIKE %s
-                   OR account_role LIKE %s
-                   OR account_email LIKE %s
-                   OR account_name LIKE %s
-                ORDER BY account_id
+                    a.account_id AS user_id,
+                    a.account_id,
+                    a.account_role_id AS profile_id,
+                    a.account_email,
+                    a.account_name,
+                    a.account_phone,
+                    a.account_address,
+                    p.profile_role,
+                    a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p 
+                    ON a.account_role_id = p.profile_id
+                WHERE a.account_email LIKE %s
                 """,
-                (like, like, like, like),
+                (f"%{user_email}%",)
             )
+
             return cursor.fetchall()
+
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             return []
+
         finally:
             if cursor:
                 cursor.close()
@@ -173,14 +203,18 @@ class UserAcct:
             cursor.execute(
                 """
                 SELECT
-                    account_id AS user_id,
-                    account_id AS profile_id,
-                    account_email,
-                    account_name,
-                    account_role,
-                    account_status
-                FROM UserAcct
-                WHERE account_id = %s
+                    a.account_id AS user_id,
+                    a.account_id,
+                    a.account_role_id AS profile_id,
+                    a.account_email,
+                    a.account_name,
+                    a.account_phone,
+                    a.account_address,
+                    p.profile_role,
+                    a.account_status
+                FROM UserAcct a
+                INNER JOIN UserProf p ON a.account_role_id = p.profile_id
+                WHERE a.account_id = %s
                 """,
                 (account_id,),
             )
@@ -195,32 +229,32 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def update_account(cls, account_id, email, password=None):
+    def update_account(cls, account_id, email, password=None, name=None, phone=None, address=None, role=None):
         conn = None
         cursor = None
         try:
+            role_id = UserProf.get_profile_id_by_role(role) if role else None
             conn = cls.get_connection()
             cursor = conn.cursor()
-
+            fields = ["account_email = %s"]
+            values = [email.strip().lower()]
             if password:
-                cursor.execute(
-                    """
-                    UPDATE UserAcct
-                    SET account_email = %s, account_password = %s
-                    WHERE account_id = %s
-                    """,
-                    (email.strip().lower(), password, account_id),
-                )
-            else:
-                cursor.execute(
-                    """
-                    UPDATE UserAcct
-                    SET account_email = %s
-                    WHERE account_id = %s
-                    """,
-                    (email.strip().lower(), account_id),
-                )
-
+                fields.append("account_password = %s")
+                values.append(password)
+            if name is not None:
+                fields.append("account_name = %s")
+                values.append(name)
+            if phone is not None:
+                fields.append("account_phone = %s")
+                values.append(phone)
+            if address is not None:
+                fields.append("account_address = %s")
+                values.append(address)
+            if role_id is not None:
+                fields.append("account_role_id = %s")
+                values.append(role_id)
+            values.append(account_id)
+            cursor.execute(f"UPDATE UserAcct SET {', '.join(fields)} WHERE account_id = %s", tuple(values))
             conn.commit()
             return True
         except mysql.connector.Error as err:
@@ -244,10 +278,7 @@ class UserAcct:
             cursor.execute(
                 """
                 UPDATE UserAcct
-                SET account_status = CASE
-                    WHEN account_status = 1 THEN 0
-                    ELSE 1
-                END
+                SET account_status = CASE WHEN account_status = 1 THEN 0 ELSE 1 END
                 WHERE account_id = %s
                 """,
                 (account_id,),

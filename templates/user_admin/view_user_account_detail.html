@@ -4,134 +4,64 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HelpFundUs - Update User Account</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;700&display=swap" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Roboto Condensed', sans-serif; background-color: #fafaf5; color: #000; min-height: 100vh; }
-
-    .header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1);
-    }
-    .logo { font-size: 26px; font-weight: 700; color: #426b1f;  text-decoration: none; cursor: pointer; display: inline-block; }
-    .logout-btn {
-      background-color: #426b1f; color: #fff; text-decoration: none;
-      padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700;
-      border: none; cursor: pointer; transition: background-color 0.2s;
-    }
-    .logout-btn:hover { background-color: #335318; }
-
-    .page-body {
-      display: flex; justify-content: center; align-items: flex-start;
-      padding: 48px 32px;
-    }
-
-    .form-card {
-      background-color: #fff; border: 1px solid #ccc;
-      border-radius: 8px; padding: 36px 40px; width: 420px;
-    }
-
-    .form-card h2 {
-      font-size: 22px; font-weight: 700; text-align: center;
-      margin-bottom: 28px; color: #000;
-    }
-
-    .field { margin-bottom: 16px; }
-    .field label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 5px; color: #333; }
-    .field input {
-      width: 100%; padding: 8px 10px; font-family: inherit; font-size: 14px;
-      border: 1px solid #bbb; border-radius: 3px; outline: none;
-    }
-    .field input:focus { border-color: #426b1f; }
-
-    .success-msg {
-      background-color: #eaf4e0;
-      border: 1px solid #426b1f;
-      color: #2d5a10;
-      border-radius: 4px;
-      padding: 10px 14px;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      text-align: center;
-    }
-
-    .btn-row {
-      display: flex; justify-content: space-between; align-items: center; margin-top: 28px;
-    }
-    .btn-back {
-      background-color: #fff; color: #000; border: 1px solid #999;
-      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
-      border-radius: 4px; cursor: pointer; text-decoration: none; transition: background-color 0.2s;
-    }
-    .btn-back:hover { background-color: #f0f0f0; }
-    .btn-update {
-      background-color: #426b1f; color: #fff; border: none;
-      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
-      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
-    }
-    .btn-update:hover { background-color: #335318; }
-    .btn-suspend {
-      background-color: #c0392b; color: #fff; border: none;
-      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
-      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
-    }
-    .btn-suspend:hover { background-color: #a93226; }
-    .btn-unsuspend {
-      background-color: #426b1f; color: #fff; border: none;
-      padding: 8px 20px; font-family: inherit; font-size: 14px; font-weight: 700;
-      border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
-    }
-    .btn-unsuspend:hover { background-color: #335318; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background-color: #fff; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .logo { font-size: 26px; font-weight: 700; color: #426b1f; text-decoration: none; }
+    .logout-btn { background-color: #426b1f; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 5px; font-size: 18px; font-weight: 700; }
+    .page-body { display: flex; justify-content: center; align-items: flex-start; padding: 48px 32px; }
+    .form-card { background-color: #fff; border: 1px solid #ccc; border-radius: 8px; padding: 36px 40px; width: 460px; }
+    .form-card h2 { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 28px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 5px; color: #426b1f; }
+    .field input, .field select { width: 100%; padding: 8px 10px; font-family: inherit; font-size: 14px; border: 1px solid #bbb; border-radius: 3px; }
+    .field input[readonly] { background-color: #e8e8e8; color: #555; }
+    .success-msg { background-color: #eaf4e0; border: 1px solid #426b1f; color: #2d5a10; border-radius: 4px; padding: 10px; font-weight: 700; margin-bottom: 18px; text-align: center; }
+    .btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 10px; }
+    .btn-back, .btn-update, .btn-suspend, .btn-unsuspend { padding: 8px 18px; font-family: inherit; font-size: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; text-decoration: none; }
+    .btn-back { background-color: #fff; color: #000; border: 1px solid #999; }
+    .btn-update { background-color: #426b1f; color: #fff; border: none; }
+    .btn-suspend { background-color: #c0392b; color: #fff; border: none; }
+    .btn-unsuspend { background-color: #426b1f; color: #fff; border: none; }
   </style>
 </head>
 <body>
-
   <header class="header">
     <a href="{{ url_for('home') }}" class="logo">HelpFundUs</a>
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
-
   <div class="page-body">
     <div class="form-card">
       <h2>Update User Account</h2>
-
-      {% if success %}
-      <div class="success-msg">✓ Account updated successfully!</div>
-      {% endif %}
-
+      {% if success %}<div class="success-msg">✓ Account updated successfully!</div>{% endif %}
       <form method="POST" action="{{ url_for('view_user_account_bp.view_user_account_detail', user_id=account['user_id']) }}">
-
+        <div class="field"><label>Account ID</label><input type="text" value="{{ account['user_id'] }}" readonly /></div>
+        <div class="field"><label>Email</label><input type="email" name="email" value="{{ account['account_email'] }}" required /></div>
+        <div class="field"><label>Name</label><input type="text" name="name" value="{{ account['account_name'] }}" required /></div>
+        <div class="field"><label>Phone</label><input type="text" name="phone" value="{{ account['account_phone'] }}" required /></div>
+        <div class="field"><label>Address</label><input type="text" name="address" value="{{ account['account_address'] }}" required /></div>
         <div class="field">
-          <label>New Email</label>
-          <input type="email" name="email" value="{{ account['account_email'] }}" required />
+          <label>Role</label>
+          <select name="role" required>
+            {% for profile in profiles %}
+            <option value="{{ profile['profile_role'] }}" {% if account['profile_role'] == profile['profile_role'] %}selected{% endif %}>{{ profile['profile_role'] }}</option>
+            {% endfor %}
+          </select>
         </div>
-
-        <div class="field">
-          <label>New Password</label>
-          <input type="text" name="password" placeholder="Enter new password" />
-        </div>
-
-        <div class="field">
-          <label>Status</label>
-          <input type="text" value="{{ 'Active' if account['account_status'] == 1 else 'Suspended' }}" readonly />
-        </div>
-
+        <div class="field"><label>New Password</label><input type="password" name="password" placeholder="Leave blank to keep current password" /></div>
+        <div class="field"><label>Status</label><input type="text" value="{{ 'Active' if account['account_status'] == 1 else 'Suspended' }}" readonly /></div>
         <div class="btn-row">
           <a href="{{ url_for('view_user_account_bp.view_user_accounts_page') }}" class="btn-back">Back</a>
           <button type="submit" name="action" value="update" class="btn-update">Update</button>
           {% if account['account_status'] == 1 %}
-          <button type="submit" name="action" value="toggle_suspend" class="btn-suspend"
-            onclick="return confirm('Suspend this account?')">Suspend</button>
+          <button type="submit" name="action" value="toggle_suspend" class="btn-suspend" onclick="return confirm('Suspend this account?')">Suspend</button>
           {% else %}
-          <button type="submit" name="action" value="toggle_suspend" class="btn-unsuspend"
-            onclick="return confirm('Unsuspend this account?')">Unsuspend</button>
+          <button type="submit" name="action" value="toggle_suspend" class="btn-unsuspend" onclick="return confirm('Unsuspend this account?')">Unsuspend</button>
           {% endif %}
         </div>
-
       </form>
     </div>
   </div>
-
 </body>
 </html>
