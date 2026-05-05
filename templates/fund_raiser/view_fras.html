@@ -39,6 +39,8 @@
         <tr>
           <th>Title</th>
           <th>Category</th>
+          <th>Views</th>
+          <th>Favourites</th>
           <th></th>
         </tr>
       </thead>
@@ -47,6 +49,8 @@
         <tr>
           <td>{{ fra["fra_title"] }}</td>
           <td>{{ fra["frc_name"] }}</td>
+          <td>{{ fra["fra_views"] }}</td>
+          <td>{{ fra["fra_num_of_fav"] }}</td>
           <td><a class="view-btn" href="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id'], source=source or 'all') }}">View</a></td>
         </tr>
         {% endfor %}

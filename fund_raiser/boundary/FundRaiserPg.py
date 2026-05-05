@@ -2,6 +2,7 @@ from flask import redirect, render_template, request, session, url_for
 
 from fund_raiser.controller.FundRaiserUpdateFraC import FundRaiserUpdateFraC
 from fund_raiser.controller.FundRaiserViewFraC import FundRaiserViewFraC
+from fund_raiser.controller.FundRaiserViewFraViewC import FundRaiserViewFraViewC
 
 
 def get_back_route(source):
@@ -21,6 +22,8 @@ class FundRaiserPg:
         source = request.args.get("source", "all").strip() or "all"
         success = False
         error = None
+        if request.method == "GET":
+            FundRaiserViewFraViewC.updateNumOfViews(fra_id)
         if request.method == "POST" and request.form.get("action") == "update":
             success, error = FundRaiserUpdateFraC.updateFraFromForm(fra_id, request.form, owner_id)
         fra = FundRaiserViewFraC.viewFraById(fra_id, owner_id)

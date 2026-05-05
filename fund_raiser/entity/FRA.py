@@ -244,6 +244,34 @@ class FRA:
                 conn.close()
 
     @classmethod
+    def increment_fra_views(cls, fra_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE FRA
+                SET fra_views = fra_views + 1
+                WHERE fra_id = %s
+                """,
+                (fra_id,),
+            )
+            conn.commit()
+            return cursor.rowcount > 0
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
     def get_fras_by_category(cls, category_id):
         conn = None
         cursor = None

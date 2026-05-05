@@ -18,5 +18,6 @@ def view_fav_fra_page():
         fras=fras,
         search_query=search_query,
         page_title="Favourited FRA",
-        table_title="Your Favourited FRA"
+        table_title="Your Favourited FRA",
+        source="favourited",
     )

@@ -24,7 +24,8 @@ def view_fra_page():
         fras=fras,
         search_query=search_query,
         page_title="View FRA",
-        table_title="View FRA"
+        table_title="View FRA",
+        source="all",
     )
 
 
@@ -33,12 +34,17 @@ def view_fra_detail_page(fra_id):
     if not donee_only():
         return redirect(url_for("login"))
 
+    source = request.args.get("source", "all").strip() or "all"
+    view_control.update_num_of_views(fra_id)
     fra, saved = view_control.view_fra(fra_id, session["user_id"])
     if fra is None:
+        if source == "favourited":
+            return redirect(url_for("donee_view_fav_fra_bp.view_fav_fra_page"))
         return redirect(url_for("donee_view_fra_bp.view_fra_page"))
 
     return render_template(
         "user_donee/donee_viewfra_detail.html",
         fra=fra,
-        saved=saved
+        saved=saved,
+        source=source,
     )

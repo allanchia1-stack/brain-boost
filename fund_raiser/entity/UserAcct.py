@@ -53,4 +53,3 @@ class UserAcct:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
-

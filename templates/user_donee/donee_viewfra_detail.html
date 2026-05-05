@@ -44,7 +44,7 @@
     <p>${{ fra.fra_donation_goal }}</p>
 
     <div class="actions">
-      <a href="{{ url_for('donee_view_fra_bp.view_fra_page') }}" class="back-btn">Back</a>
+      <a href="{% if source == 'favourited' %}{{ url_for('donee_view_fav_fra_bp.view_fav_fra_page') }}{% else %}{{ url_for('donee_view_fra_bp.view_fra_page') }}{% endif %}" class="back-btn">Back</a>
       <form method="POST" action="{{ url_for('donee_save_fra_bp.toggle_save_fra', fra_id=fra.fra_id) }}">
         {% if saved %}
           <button type="submit" class="save-btn unsave-btn">Unsave</button>

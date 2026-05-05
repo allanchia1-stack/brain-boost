@@ -58,7 +58,7 @@
           <td>${{ fra.fra_donation_goal }}</td>
           <td>{{ fra.fra_views }}</td>
           <td>{{ fra.fra_num_of_fav }}</td>
-          <td><a href="{{ url_for('donee_view_fra_bp.view_fra_detail_page', fra_id=fra.fra_id) }}" class="view-btn">View</a></td>
+          <td><a href="{{ url_for('donee_view_fra_bp.view_fra_detail_page', fra_id=fra.fra_id, source=source or 'all') }}" class="view-btn">View</a></td>
         </tr>
         {% else %}
         <tr>
