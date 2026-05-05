@@ -39,11 +39,14 @@ class FundRaiserResultFraPg:
     def searchFra(self, query, owner_id):
         return FundRaiserSearchFraC.searchFra(query, owner_id)
 
+    def searchOngoingFra(self, query, owner_id):
+        return FundRaiserSearchFraC.searchOngoingFra(query, owner_id)
+
     def viewFraHistory(self, owner_id):
         return FundRaiserViewFraHisC.viewFraHistory(owner_id)
 
     def searchFraHistory(self, query, owner_id):
-        return FundRaiserSearchFraHisC.searchFraHistory(query, owner_id)
+        return FundRaiserSearchFraHisC.searchFraHis(query, owner_id)
 
     def viewNumOfViews(self, fra_id, owner_id):
         return FundRaiserViewFraViewC.viewNumOfViews(fra_id, owner_id)
@@ -68,8 +71,10 @@ def view_fras_ongoing():
     owner_id = get_current_owner_id()
     if not owner_id:
         return redirect(url_for("login"))
-    fras = FundRaiserViewFraC.viewOngoingFra(owner_id)
-    return FundRaiserResultFraPg().showResult(fras, search_query="", title="View Ongoing FRA", source="ongoing")
+    page = FundRaiserResultFraPg()
+    search_query = request.args.get("q", "").strip()
+    fras = page.searchOngoingFra(search_query, owner_id) if search_query else FundRaiserViewFraC.viewOngoingFra(owner_id)
+    return page.showResult(fras, search_query=search_query, title="View Ongoing FRA", source="ongoing")
 
 
 @view_fra_bp.route("/fund_raiser/view_fras_completed", methods=["GET"])
@@ -77,8 +82,10 @@ def view_fras_completed():
     owner_id = get_current_owner_id()
     if not owner_id:
         return redirect(url_for("login"))
-    fras = FundRaiserResultFraPg().viewFraHistory(owner_id)
-    return FundRaiserResultFraPg().showResult(fras, search_query="", title="View Completed FRA History", source="completed")
+    page = FundRaiserResultFraPg()
+    search_query = request.args.get("q", "").strip()
+    fras = page.searchFraHistory(search_query, owner_id) if search_query else page.viewFraHistory(owner_id)
+    return page.showResult(fras, search_query=search_query, title="View Completed FRA History", source="completed")
 
 
 @view_fra_bp.route("/fund_raiser/view_fras/<int:fra_id>", methods=["GET", "POST"])

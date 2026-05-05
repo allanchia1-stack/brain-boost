@@ -29,7 +29,7 @@
     <a href="{{ url_for('logout_bp.logout') }}" class="logout-btn">Log out</a>
   </header>
   <div class="page-body">
-    <form class="search-row" method="GET" action="{{ url_for('view_fra_bp.view_fras_page') }}">
+    <form class="search-row" method="GET" action="{% if source == 'ongoing' %}{{ url_for('view_fra_bp.view_fras_ongoing') }}{% elif source == 'completed' %}{{ url_for('view_fra_bp.view_fras_completed') }}{% else %}{{ url_for('view_fra_bp.view_fras_page') }}{% endif %}">
       <input class="search-input" type="text" name="q" placeholder="Search fund raising activity" value="{{ search_query }}" />
       <button type="submit" class="search-btn">Search</button>
     </form>

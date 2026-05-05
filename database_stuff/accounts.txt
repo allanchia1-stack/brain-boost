@@ -1,5 +1,5 @@
 [Admin]
-tiffanymurphy@example.com
+samuel87@example.org
 
 [FundRaiser]
 julie69@example.com
@@ -8,3 +8,6 @@ hashed_pass_placeholder
 [ProjectManager]
 jenniferwilliams@example.com
 hashed_pass_placeholder
+
+[Donee]
+donaldgarcia@example.net
