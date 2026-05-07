@@ -32,7 +32,8 @@ class TestUserAdmin(unittest.TestCase):
             email="test@example.com",
             password="123456",
             name="Test User",
-            phone="91234567"
+            phone="91234567",
+            address="123 Tampines Street 11" 
         )
 
         with patch.object(UserAcct, "createAccount", return_value=1):
