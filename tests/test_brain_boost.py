@@ -16,7 +16,7 @@ class TestUserAdmin(unittest.TestCase):
     def test_create_user_profile(self):
         print("\nRunning: test_create_user_profile")
 
-        profile = UserProf(role="Donee", status=1)
+        profile = UserProf(role="Angel Investor", status=1)
 
         with patch.object(UserProf, "createProfile", return_value=1):
             result = UserProf.createProfile(profile)
