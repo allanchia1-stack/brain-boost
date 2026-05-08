@@ -2,5 +2,9 @@ from user_admin.entity.UserProf import UserProf
 
 
 class UserAdminCreateProfileC:
-    def createProfile(self, tempProfile):
-        return UserProf.createProfile(tempProfile)
+
+    def createProfile(self, temp):
+        print("Running UserAdminCreateProfileC.createProfile")
+        return UserProf.createProfile(temp)
+    
+

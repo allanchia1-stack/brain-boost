@@ -17,7 +17,8 @@ class UserProf:
         self.status = status
 
     @classmethod
-    def createProfile(cls, tempProfile):
+    def createProfile(cls, temp):
+        print("Running UserProf.createProfile")
         conn = None
         cursor = None
         try:
