@@ -30,6 +30,7 @@ class UserAdminUpdateUserProfilePg:
         return render_template("user_admin/view_user_profile_detail.html", profile=profile, success=success)
 
     def updateProf(self, temp):
+        print("Executing UserAdminUpdateUserProfilePg.updateProf")
         return UserAdminUpdateProfileC.updateProf(temp)
 
 

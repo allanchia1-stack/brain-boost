@@ -48,13 +48,13 @@ class UserProf:
     #def view(cls, profile_id):
     #    return cls.get_profile_by_id(profile_id)
 
-    @classmethod
-    def updateProf(cls, tempProfile):
-        return cls.update_profile(tempProfile.profile_id, tempProfile.role)
+    #@classmethod
+    #def updateProf(cls, tempProfile):
+    #    return cls.update_profile(tempProfile.profile_id, tempProfile.role)
 
-    @classmethod
-    def updateUser(cls, tempProfile):
-        return cls.updateProf(tempProfile)
+    #@classmethod
+    #def updateUser(cls, tempProfile):
+    #    return cls.updateProf(tempProfile)
 
     @classmethod
     def SuspendProf(cls, profile_id):
@@ -181,7 +181,8 @@ class UserProf:
                 conn.close()
 
     @classmethod
-    def update_profile(cls, profile_id, role):
+    def updateProf(cls, temp):
+        print("Executing UserProf.updateProf()")
         conn = None
         cursor = None
         try:
@@ -189,7 +190,7 @@ class UserProf:
             cursor = conn.cursor()
             cursor.execute(
                 "UPDATE UserProf SET profile_role = %s WHERE profile_id = %s",
-                (role, profile_id),
+                (temp.role, temp.profile_id),
             )
             conn.commit()
             return True
