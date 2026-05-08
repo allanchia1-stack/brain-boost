@@ -64,9 +64,9 @@ class UserProf:
     def SuspendUserProfile(cls, profile_id):
         return cls.SuspendProf(profile_id)
 
-    @classmethod
-    def queryUserProfile(cls, search_query=""):
-        return cls.search_profiles(search_query)
+    #@classmethod
+    #def queryUserProfile(cls, search_query=""):
+    #    return cls.search_profiles(search_query)
 
     @classmethod
     def get_all_profiles(cls):
@@ -93,7 +93,8 @@ class UserProf:
                 conn.close()
 
     @classmethod
-    def search_profiles(cls, query):
+    def queryUserProfile(cls, query):
+        print("Executing UserProf.queryUserProfile : " + query)
         conn = None
         cursor = None
 

@@ -15,8 +15,9 @@ class UserAdminResultUserProfilePg:
     def view_all(self):
         return UserAdminViewProfileC.view_all_user_profiles()
 
-    def searchUserProfile(self, text):
-        return UserAdminSearchProfileC.searchUserProfile(text)
+    def searchUserProfile(self, query):
+        print("Executing UserAdminResultUserProfilePg.searchUserProfile")
+        return UserAdminSearchProfileC.searchUserProfile(query)
 
     def view(self, profile_id):
         return UserAdminViewProfileC.view(profile_id)
