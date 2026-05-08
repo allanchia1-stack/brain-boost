@@ -29,7 +29,7 @@ class UserProf:
                 INSERT INTO UserProf (profile_role, profile_status)
                 VALUES (%s, %s)
                 """,
-                (tempProfile.role, tempProfile.status),
+                (temp.role, temp.status),
             )
             conn.commit()
             return cursor.lastrowid
