@@ -35,8 +35,9 @@ class UserAdminUpdateUserProfilePg:
 
 
 class UserAdminUserProfilePg:
-    def SuspendProf(self, profile_id):
-        return UserAdminSuspendProfileC.SuspendProf(profile_id)
+    def suspendProf(self, profile_id):
+        print("Executing UserAdminUserProfilePg.suspendProf")
+        return UserAdminSuspendProfileC.suspendProf(profile_id)
 
 
 @view_user_profile_bp.route("/user_admin/view_user_profiles_page", methods=["GET"])
@@ -53,7 +54,7 @@ def view_user_profile_detail(profile_id):
     if request.method == "POST":
         action = request.form.get("action")
         if action == "toggle_suspend":
-            UserAdminUserProfilePg().SuspendProf(profile_id)
+            UserAdminUserProfilePg().suspendProf(profile_id)
             return redirect(url_for("view_user_profile_bp.view_user_profile_detail", profile_id=profile_id))
         if action == "update":
             role = request.form.get("role", "").strip()

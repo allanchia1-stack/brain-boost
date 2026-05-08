@@ -56,9 +56,9 @@ class UserProf:
     #def updateUser(cls, tempProfile):
     #    return cls.updateProf(tempProfile)
 
-    @classmethod
-    def SuspendProf(cls, profile_id):
-        return cls.toggle_suspend_profile(profile_id)
+    #@classmethod
+    #def suspendProf(cls, profile_id):
+    #    return cls.toggle_suspend_profile(profile_id)
 
     @classmethod
     def SuspendUserProfile(cls, profile_id):
@@ -206,7 +206,8 @@ class UserProf:
                 conn.close()
 
     @classmethod
-    def toggle_suspend_profile(cls, profile_id):
+    def suspendProf(cls, profile_id):
+        print("Executing UserProf.suspendProf")
         conn = None
         cursor = None
         try:

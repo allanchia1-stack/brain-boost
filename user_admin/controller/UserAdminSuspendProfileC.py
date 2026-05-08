@@ -3,8 +3,9 @@ from user_admin.entity.UserProf import UserProf
 
 class UserAdminSuspendProfileC:
     @staticmethod
-    def SuspendProf(profile_id):
-        return UserProf.SuspendProf(profile_id)
+    def suspendProf(profile_id):
+        print("Executing UserAdminSuspendProfileC.suspendProf")
+        return UserProf.suspendProf(profile_id)
 
     # Backward compatible alias
     @staticmethod
