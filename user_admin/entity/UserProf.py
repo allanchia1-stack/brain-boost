@@ -44,9 +44,9 @@ class UserProf:
             if conn and conn.is_connected():
                 conn.close()
 
-    @classmethod
-    def view(cls, profile_id):
-        return cls.get_profile_by_id(profile_id)
+    #@classmethod
+    #def view(cls, profile_id):
+    #    return cls.get_profile_by_id(profile_id)
 
     @classmethod
     def updateProf(cls, tempProfile):
@@ -130,7 +130,8 @@ class UserProf:
                 conn.close()
 
     @classmethod
-    def get_profile_by_id(cls, profile_id):
+    def view(cls, profile_id):
+        print("Executing UserProf.view()")
         conn = None
         cursor = None
         try:
