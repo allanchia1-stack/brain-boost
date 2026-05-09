@@ -213,7 +213,8 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def get_fra_by_id(cls, fra_id, owner_id):
+    def viewFraById(cls, fra_id, owner_id):
+        print("Executing FRA.viewFraById")
         conn = None
         cursor = None
         try:
