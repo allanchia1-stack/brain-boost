@@ -40,6 +40,7 @@ class FundRaiserResultFraPg:
         return FundRaiserViewFraC.viewFra(owner_id)
 
     def searchFra(self, query, owner_id):
+        print("Executing FundRaiserResultFraPg.searchFra")
         return FundRaiserSearchFraC.searchFra(query, owner_id)
 
     def searchOngoingFra(self, query, owner_id):

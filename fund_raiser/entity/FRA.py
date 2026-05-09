@@ -177,7 +177,8 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def search_fras(cls, query, owner_id):
+    def searchFra(cls, query, owner_id):
+        print("Executing FRA.searchFra()")
         conn = None
         cursor = None
         try:
