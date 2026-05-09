@@ -20,6 +20,7 @@ class UserAdminResultUserAccountPg:
         return UserAdminSearchAccountC.searchUserAccount(text)
 
     def view(self, accountId):
+        print("executing UserAdminResultUserAccountPg.view()")
         return UserAdminViewAccountC.view(accountId)
 
     def updateUser(self, temp):

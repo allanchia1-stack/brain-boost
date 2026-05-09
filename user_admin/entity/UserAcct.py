@@ -102,9 +102,9 @@ class UserAcct:
             if conn and conn.is_connected():
                 conn.close()
 
-    @classmethod
-    def view(cls, accountId):
-        return cls.get_account_by_user_id(accountId)
+    #@classmethod
+    #def view(cls, accountId):
+    #    return cls.get_account_by_user_id(accountId)
 
     @classmethod
     def updateUser(cls, temp):
@@ -194,7 +194,8 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def get_account_by_user_id(cls, account_id):
+    def view(cls, accountId):
+        print("executing UserAcct.view()")
         conn = None
         cursor = None
         try:
@@ -216,7 +217,7 @@ class UserAcct:
                 INNER JOIN UserProf p ON a.account_role_id = p.profile_id
                 WHERE a.account_id = %s
                 """,
-                (account_id,),
+                (accountId,),
             )
             return cursor.fetchone()
         except mysql.connector.Error as err:
