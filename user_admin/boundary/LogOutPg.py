@@ -5,6 +5,7 @@ logout_bp = Blueprint("logout_bp", __name__)
 
 class LogOutPg:
     def userLogOut(self):
+        print("Executing LogOutPg.userLogOut()")
         session.clear()
         return True
 

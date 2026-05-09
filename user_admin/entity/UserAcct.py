@@ -29,12 +29,13 @@ class UserAcct:
         self.address = address
         self.role = role
 
-    @classmethod
-    def userLogin(cls, username, password_hash):
-        return cls.authenticate(username, password_hash)
+    #@classmethod
+    #def userLogIn(cls, username, password_hash):
+    #    return cls.authenticate(username, password_hash)
 
     @classmethod
-    def authenticate(cls, email, password):
+    def userLogIn(cls, username, password_hash):
+        print("Execute UserAcct.userLogIn()")
         conn = None
         cursor = None
         try:
@@ -47,10 +48,10 @@ class UserAcct:
                 INNER JOIN UserProf p ON a.account_role_id = p.profile_id
                 WHERE LOWER(a.account_email) = LOWER(%s)
                 """,
-                (email,),
+                (username,),
             )
             account = cursor.fetchone()
-            if account and account["account_password"] == password and int(account.get("account_status", 1)) == 1:
+            if account and account["account_password"] == password_hash and int(account.get("account_status", 1)) == 1:
                 return AuthenticatedUser(
                     id=account["account_id"],
                     email=account["account_email"],
