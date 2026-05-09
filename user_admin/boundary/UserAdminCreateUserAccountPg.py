@@ -15,8 +15,9 @@ class UserAdminCreateUserAccountPg:
     def get(self):
         return self.displayAccountCreationForm()
 
-    def createAccount(self, tempAccount):
-        return self.control.createAccount(tempAccount)
+    def createAccount(self, temp):
+        print("Executing UserAdminCreateUserAccountPg.createAccount()")
+        return self.control.createAccount(temp)
 
     def post(self):
         tempAccount = UserAcct(

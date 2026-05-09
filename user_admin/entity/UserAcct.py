@@ -72,6 +72,7 @@ class UserAcct:
 
     @classmethod
     def createAccount(cls, temp):
+        print("Executing UserAcct.createAccount()")
         conn = None
         cursor = None
         try:
