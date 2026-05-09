@@ -20,6 +20,7 @@ class FundRaisingActivityPg:
             return redirect(url_for("login"))
         source = request.args.get("source", "all").strip() or "all"
         if request.method == "POST" and request.form.get("action") == "suspend":
+            print("Executing FundRaisingActivityPg.suspendFra()")
             FundRaiserSuspendFraC.suspendFra(fra_id, owner_id)
             return redirect(get_back_route(source))
         return FundRaiserPg.updateFra(fra_id)

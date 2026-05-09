@@ -426,7 +426,8 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def suspend_fra(cls, fra_id, owner_id):
+    def suspendFra(cls, fra_id, owner_id):
+        print("Executing FRA.suspendFra()")
         conn = None
         cursor = None
         try:
@@ -437,12 +438,30 @@ class FRA:
                 UPDATE FRA
                 SET fra_status = 'cancelled'
                 WHERE fra_id = %s
-                  AND fra_owner_id = %s
+                 AND fra_owner_id = %s
                 """,
                 (fra_id, owner_id),
             )
             conn.commit()
-            return True
+
+            row = cursor.fetchone()
+
+            if not row:
+                return None
+
+            temp = FRA(
+                title=row["fra_title"],
+                category_id=row["fra_category"],
+                start_date=row["fra_start_date"],
+                end_date=row["fra_end_date"],
+                goal=row["fra_donation_goal"],
+                description=row["fra_des"],
+                owner_id=row["fra_owner_id"]
+            )
+
+            return temp
+
+            #return True
         except mysql.connector.Error as err:
             print(f"Database Error: {err}")
             if conn:
