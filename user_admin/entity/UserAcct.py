@@ -110,9 +110,9 @@ class UserAcct:
     #def updateUser(cls, temp):
     #    return cls.update_account(temp.account_id, temp.email, temp.password, temp.name, temp.phone, temp.address, temp.role)
 
-    @classmethod
-    def SuspendUserAccount(cls, idNum):
-        return cls.toggle_suspend_account(idNum)
+    #@classmethod
+    #def suspendUserAccount(cls, account_id):
+    #    return cls.toggle_suspend_account(account_id)
 
     @classmethod
     def queryUserAccount(cls, user_id_match):
@@ -271,7 +271,8 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def toggle_suspend_account(cls, account_id):
+    def suspendUserAccount(cls, account_id):
+        print("Executing UserAcct.suspendUserAccout()")
         conn = None
         cursor = None
         try:

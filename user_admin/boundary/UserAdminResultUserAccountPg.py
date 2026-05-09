@@ -27,8 +27,9 @@ class UserAdminResultUserAccountPg:
         print("Executing UserAdminResultUserAccountPg.updateUser")
         return UserAdminUpdateAccountC.updateUser(temp)
 
-    def SuspendUserAccount(self, account_id):
-        return UserAdminSuspendAccountC.SuspendUserAccount(account_id)
+    def suspendUserAccount(self, account_id):
+        print("Executing UserAdminResultUserAccountPg.suspendUserAccout()")
+        return UserAdminSuspendAccountC.suspendUserAccount(account_id)
 
     def showResult(self, accounts, search_query=""):
         return render_template("user_admin/view_user_accounts.html", accounts=accounts, search_query=search_query)
@@ -41,8 +42,8 @@ class UserAdminUpdateUserAccountPg:
 
 
 class UserAccountPg:
-    def SuspendUserAccount(self, account_id):
-        return UserAdminResultUserAccountPg().SuspendUserAccount(account_id)
+    def suspendUserAccount(self, account_id):
+        return UserAdminResultUserAccountPg().suspendUserAccount(account_id)
 
 
 @view_user_account_bp.route("/user_admin/view_user_accounts_page", methods=["GET"])
@@ -59,7 +60,7 @@ def view_user_account_detail(accountId):
     if request.method == "POST":
         action = request.form.get("action")
         if action == "toggle_suspend":
-            UserAdminResultUserAccountPg().SuspendUserAccount(accountId)
+            UserAdminResultUserAccountPg().suspendUserAccount(accountId)
             return redirect(url_for("view_user_account_bp.view_user_account_detail", accountId=accountId))
         if action == "update":
             temp = UserAcct(
