@@ -147,7 +147,7 @@ class FRA:
 
 
     @classmethod
-    def get_completed_fras(cls, owner_id):
+    def viewFraHistory(cls, owner_id):
         conn = None
         cursor = None
         try:
