@@ -3,6 +3,16 @@ import mysql.connector
 
 
 class FRA:
+
+    def __init__(self, title, category_id, start_date, end_date, goal, description, owner_id):
+        self.title = title
+        self.category_id = category_id
+        self.start_date = start_date
+        self.end_date = end_date
+        self.goal = goal
+        self.description = description
+        self.owner_id = owner_id
+
     @staticmethod
     def get_connection():
         return mysql.connector.connect(
@@ -38,16 +48,8 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def create_fra(
-        cls,
-        title,
-        category_id,
-        start_date,
-        end_date,
-        goal,
-        description,
-        owner_id,
-    ):
+    def createFra(cls, temp):
+        print("Executing FRA.createFra()")
         conn = None
         cursor = None
         try:
@@ -62,13 +64,13 @@ class FRA:
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """,
                 (
-                    title,
-                    description,
-                    goal,
-                    datetime.combine(start_date, datetime.min.time()),
-                    datetime.combine(end_date, datetime.min.time()),
-                    category_id,
-                    owner_id,
+                    temp.title,
+                    temp.description,
+                    temp.goal,
+                    datetime.combine(temp.start_date, datetime.min.time()),
+                    datetime.combine(temp.end_date, datetime.min.time()),
+                    temp.category_id,
+                    temp.owner_id,
                 ),
             )
             conn.commit()
@@ -244,34 +246,6 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def increment_fra_views(cls, fra_id):
-        conn = None
-        cursor = None
-        try:
-            conn = cls.get_connection()
-            cursor = conn.cursor()
-            cursor.execute(
-                """
-                UPDATE FRA
-                SET fra_views = fra_views + 1
-                WHERE fra_id = %s
-                """,
-                (fra_id,),
-            )
-            conn.commit()
-            return cursor.rowcount > 0
-        except mysql.connector.Error as err:
-            print(f"Database Error: {err}")
-            if conn:
-                conn.rollback()
-            return False
-        finally:
-            if cursor:
-                cursor.close()
-            if conn and conn.is_connected():
-                conn.close()
-
-    @classmethod
     def get_fras_by_category(cls, category_id):
         conn = None
         cursor = None
@@ -410,3 +384,36 @@ class FRA:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+
+    @classmethod
+    def searchFraHis(cls,query, owner_id):
+        pass
+
+    @classmethod
+    def increment_fra_views(cls, fra_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE FRA
+                SET fra_views = fra_views + 1
+                WHERE fra_id = %s
+                """,
+                (fra_id,),
+            )
+            conn.commit()
+            return cursor.rowcount > 0
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+        

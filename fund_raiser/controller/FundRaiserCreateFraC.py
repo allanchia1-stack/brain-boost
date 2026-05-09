@@ -9,24 +9,17 @@ class FundRaiserCreateFraC:
         return FRA.get_categories()
 
     @staticmethod
-    def createFra(title, category_id, start_date, end_date, goal, description, owner_id):
-        if not title or not category_id or not start_date or not end_date or not goal:
+    def createFra(temp):
+        print("Executing FundRaiserCreateFraC.createFra()")
+        if not temp.title or not temp.category_id or not temp.start_date or not temp.end_date or not temp.goal:
             return False
-        if end_date < start_date:
+        if temp.end_date < temp.start_date:
             return False
-        if goal <= 0:
+        if temp.goal <= 0:
             return False
-        if not owner_id:
+        if not temp.owner_id:
             return False
-        if start_date < date.today():
+        if temp.start_date < date.today():
             return False
 
-        return FRA.create_fra(
-            title,
-            category_id,
-            start_date,
-            end_date,
-            goal,
-            description,
-            owner_id,
-        )
+        return FRA.createFra(temp)
