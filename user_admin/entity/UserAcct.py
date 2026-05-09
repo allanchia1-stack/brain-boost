@@ -106,9 +106,9 @@ class UserAcct:
     #def view(cls, accountId):
     #    return cls.get_account_by_user_id(accountId)
 
-    @classmethod
-    def updateUser(cls, temp):
-        return cls.update_account(temp.account_id, temp.email, temp.password, temp.name, temp.phone, temp.address, temp.role)
+    #@classmethod
+    #def updateUser(cls, temp):
+    #    return cls.update_account(temp.account_id, temp.email, temp.password, temp.name, temp.phone, temp.address, temp.role)
 
     @classmethod
     def SuspendUserAccount(cls, idNum):
@@ -230,31 +230,32 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def update_account(cls, account_id, email, password=None, name=None, phone=None, address=None, role=None):
+    def updateUser(cls, temp):
+        print("Executing UserAcct.updateUser")
         conn = None
         cursor = None
         try:
-            role_id = UserProf.get_profile_id_by_role(role) if role else None
+            role_id = UserProf.get_profile_id_by_role(temp.role) if temp.role else None
             conn = cls.get_connection()
             cursor = conn.cursor()
             fields = ["account_email = %s"]
-            values = [email.strip().lower()]
-            if password:
+            values = [temp.email.strip().lower()]
+            if temp.password:
                 fields.append("account_password = %s")
-                values.append(password)
-            if name is not None:
+                values.append(temp.password)
+            if temp.name is not None:
                 fields.append("account_name = %s")
-                values.append(name)
-            if phone is not None:
+                values.append(temp.name)
+            if temp.phone is not None:
                 fields.append("account_phone = %s")
-                values.append(phone)
-            if address is not None:
+                values.append(temp.phone)
+            if temp.address is not None:
                 fields.append("account_address = %s")
-                values.append(address)
+                values.append(temp.address)
             if role_id is not None:
                 fields.append("account_role_id = %s")
                 values.append(role_id)
-            values.append(account_id)
+            values.append(temp.account_id)
             cursor.execute(f"UPDATE UserAcct SET {', '.join(fields)} WHERE account_id = %s", tuple(values))
             conn.commit()
             return True

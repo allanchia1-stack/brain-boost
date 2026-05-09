@@ -24,6 +24,7 @@ class UserAdminResultUserAccountPg:
         return UserAdminViewAccountC.view(accountId)
 
     def updateUser(self, temp):
+        print("Executing UserAdminResultUserAccountPg.updateUser")
         return UserAdminUpdateAccountC.updateUser(temp)
 
     def SuspendUserAccount(self, account_id):
