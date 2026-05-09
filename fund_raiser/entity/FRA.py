@@ -305,6 +305,74 @@ class FRA:
                 conn.close()
 
     @classmethod
+    def updateFra(cls, fra_id, temp, owner_id):
+        print("Executing FRA.updateFRA()")
+        title = temp.title
+        description = temp.description
+        try:
+            category_id = int(temp.category_id)
+            start_date = temp.start_date
+            end_date = temp.end_date
+            goal = int(temp.goal)
+        except ValueError:
+            return False, "Please enter a valid category, date range, and donation goal."
+        
+        print("start_date : ", start_date)
+        print("end_date : ", end_date)
+        if not title or not category_id or not start_date or not end_date or not goal:
+            return None
+        if not owner_id:
+            return None
+        if end_date < start_date:
+            return None
+        if goal <= 0:
+            return None
+
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE FRA
+                SET fra_title = %s,
+                    fra_des = %s,
+                    fra_donation_goal = %s,
+                    fra_start_date = %s,
+                    fra_end_date = %s,
+                    fra_category = %s
+                WHERE fra_id = %s
+                  AND fra_owner_id = %s
+                """,
+                (
+                    title,
+                    description,
+                    goal,
+                    datetime.combine(start_date, datetime.min.time()),
+                    datetime.combine(end_date, datetime.min.time()),
+                    category_id,
+                    fra_id,
+                    owner_id,
+                ),
+            )
+            conn.commit()
+            return temp
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+        
+
+        
+
+    @classmethod
     def update_fra(
         cls,
         fra_id,
