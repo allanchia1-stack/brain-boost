@@ -17,6 +17,7 @@ class UserAdminResultUserAccountPg:
         return UserAdminViewAccountC.view_all_user_accounts()
 
     def searchUserAccount(self, text):
+        print("Executing UserAdminResultUserAccountPg.searchUserAccount()")
         return UserAdminSearchAccountC.searchUserAccount(text)
 
     def view(self, accountId):

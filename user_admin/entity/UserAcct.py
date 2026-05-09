@@ -114,9 +114,9 @@ class UserAcct:
     #def suspendUserAccount(cls, account_id):
     #    return cls.toggle_suspend_account(account_id)
 
-    @classmethod
-    def queryUserAccount(cls, user_id_match):
-        return cls.search_accounts(user_id_match)
+    #@classmethod
+    #def queryUserAccount(cls, text):
+    #    return cls.search_accounts(text)
 
     @classmethod
     def get_all_accounts(cls):
@@ -153,7 +153,8 @@ class UserAcct:
                 conn.close()
 
     @classmethod
-    def search_accounts(cls, user_email):
+    def queryUserAccount(cls, text):
+        print("Executing UserAcct.queryUserAccount()")
         conn = None
         cursor = None
 
@@ -178,7 +179,7 @@ class UserAcct:
                     ON a.account_role_id = p.profile_id
                 WHERE a.account_email LIKE %s
                 """,
-                (f"%{user_email}%",)
+                (f"%{text}%",)
             )
 
             return cursor.fetchall()
