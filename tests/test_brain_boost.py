@@ -7,6 +7,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import unittest
 from unittest.mock import patch
 
+from user_admin.boundary.LogInPg import LogInPg
+from user_admin.controller.LogInC import LogInC
+
+from user_admin.boundary.UserAdminCreateUserAccountPg import UserAdminCreateUserAccountPg
+from user_admin.controller.UserAdminCreateAccountC import UserAdminCreateAccountC
+from user_admin.boundary.UserAdminCreateProfilePg import UserAdminCreateProfilePg
+from user_admin.controller.UserAdminCreateProfileC import UserAdminCreateProfileC
 from user_admin.entity.UserProf import UserProf
 from user_admin.entity.UserAcct import UserAcct
 
@@ -30,8 +37,11 @@ class TestUserAdmin(unittest.TestCase):
                     role=data["role"],
                     status=data["status"]
                 )
-
-                result = UserProf.createProfile(profile)
+                
+                page = UserAdminCreateProfilePg()
+                result = page.createProfile(profile)
+                
+                #result = UserAdminCreateProfilePg.createProfile(self,profile)
                 self.assertEqual(result, 1)
 
         print("Passed: All user profiles created successfully")
@@ -87,8 +97,11 @@ class TestUserAdmin(unittest.TestCase):
                     phone=data["phone"],
                     address=data["address"]
                 )
+                
+                page = UserAdminCreateUserAccountPg()
+                result = page.createAccount(account)
 
-                result = UserAcct.createAccount(account)
+                #result = UserAdminCreateUserAccountPg.createAccount(self,account)
                 self.assertEqual(result, 1)
 
         print("Passed: All user accounts created successfully")
