@@ -9,4 +9,4 @@ class PMUpdateFrcC:
         frc = self.viewFrc(frc_id)
         if not frc or not name:
             return False
-        return FRC.update_frc(frc_id, name, description, frc["status"])
+        return FRC.updateFrc(frc_id, name, description, frc["status"])
