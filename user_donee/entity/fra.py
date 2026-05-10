@@ -40,7 +40,8 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def search_fras(cls, keyword):
+    def searchFra(cls, keyword):
+        print("Executing FRA.searchFra()")
         conn = None
         cursor = None
         try:

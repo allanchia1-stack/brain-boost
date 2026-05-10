@@ -17,12 +17,13 @@ def view_fra_page():
     if not donee_only():
         return redirect(url_for("login"))
 
-    search_query = request.args.get("q", "").strip()
-    fras = search_control.search_fra(search_query)
+    query = request.args.get("q", "").strip()
+    print("Executing Donee Search FRA")
+    fras = search_control.searchFra(query)
     return render_template(
         "user_donee/donee_viewfra.html",
         fras=fras,
-        search_query=search_query,
+        search_query=query,
         page_title="View FRA",
         table_title="View FRA",
         source="all",

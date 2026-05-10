@@ -2,7 +2,8 @@ from user_donee.entity.fra import FRA
 
 
 class DoneeSearchFraC:
-    def search_fra(self, criteria):
-        if criteria:
-            return FRA.search_fras(criteria)
+    def searchFra(self, query):
+        print("Executing DoneeSearchFraC.searchFra()")
+        if query:
+            return FRA.searchFra(query)
         return FRA.get_all_fras()
