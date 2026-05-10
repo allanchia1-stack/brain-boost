@@ -9,7 +9,8 @@ class DoneeViewFraC:
     def update_num_of_views(self, fra_id):
         return FRA.increment_fra_views(fra_id)
 
-    def view_fra(self, fra_id, user_id):
-        fra = FRA.get_fra_by_id(fra_id)
+    def viewFra(self, fra_id, user_id):
+        print("Executing DoneeViewFraC.viewFra()")
+        fra = FRA.viewFra(fra_id)
         saved = FavouriteFRA.is_saved(user_id, fra_id)
         return fra, saved

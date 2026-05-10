@@ -37,7 +37,7 @@ def view_fra_detail_page(fra_id):
 
     source = request.args.get("source", "all").strip() or "all"
     view_control.update_num_of_views(fra_id)
-    fra, saved = view_control.view_fra(fra_id, session["user_id"])
+    fra, saved = view_control.viewFra(fra_id, session["user_id"])
     if fra is None:
         if source == "favourited":
             return redirect(url_for("donee_view_fav_fra_bp.view_fav_fra_page"))

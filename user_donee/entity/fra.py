@@ -71,7 +71,8 @@ class FRA:
                 conn.close()
 
     @classmethod
-    def get_fra_by_id(cls, fra_id):
+    def viewFra(cls, fra_id):
+        print("Executing FRA.viewFra()")
         conn = None
         cursor = None
         try:
