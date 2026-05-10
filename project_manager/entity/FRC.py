@@ -97,7 +97,8 @@ class FRC:
         )
 
     @classmethod
-    def get_frc_by_id(cls, frc_id):
+    def viewFrc(cls, frc_id):
+        print("Executing FRC.viewFrc()")
         return cls._fetch_one(
             "SELECT frc_id AS id, frc_name AS name, frc_des AS description, "
             "frc_status AS status FROM FRC WHERE frc_id = %s",

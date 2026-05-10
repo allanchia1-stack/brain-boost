@@ -1,12 +1,12 @@
 from flask import render_template, request
 
 from project_manager.boundary.PMSuspendFrcPg import PMSuspendFrcPg
-from project_manager.controller.PMUpdateFrcC import PMUpdateFrcC
+from project_manager.controller.PMViewFrcC import PMViewFrcC
 
 
 class PMUpdateFrcPg:
     def __init__(self):
-        self.control = PMUpdateFrcC()
+        self.control = PMViewFrcC()
         self.suspend_page = PMSuspendFrcPg()
 
     def get(self, frc_id):

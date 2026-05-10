@@ -11,4 +11,5 @@ class PMViewFrcC:
         return FRC.get_all_frcs()
 
     def viewFrc(self, frc_id):
-        return FRC.get_frc_by_id(frc_id)
+        print("Executing PMViewFrcC.viewFrc()")
+        return FRC.viewFrc(frc_id)
