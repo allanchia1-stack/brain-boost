@@ -2,15 +2,18 @@ from flask import render_template, request
 
 from project_manager.boundary.PMSuspendFrcPg import PMSuspendFrcPg
 from project_manager.controller.PMViewFrcC import PMViewFrcC
+from project_manager.controller.PMUpdateFrcC import PMUpdateFrcC
+from project_manager.entity.FRC import FRC
 
 
 class PMUpdateFrcPg:
     def __init__(self):
-        self.control = PMViewFrcC()
+        self.controlView = PMViewFrcC()
+        self.controlUpdate = PMUpdateFrcC()
         self.suspend_page = PMSuspendFrcPg()
 
     def get(self, frc_id):
-        frc = self.control.viewFrc(frc_id)
+        frc = self.controlView.viewFrc(frc_id)
         if frc is None:
             return "Fund raising category not found", 404
         return render_template("project_manager/update_frc.html", frc=frc)
@@ -28,5 +31,5 @@ class PMUpdateFrcPg:
             from flask import redirect, url_for
             return redirect(url_for("view_frc"))
 
-        frc = self.control.viewFrc(frc_id)
+        frc = self.controlView.viewFrc(frc_id)
         return render_template("project_manager/update_frc.html", frc=frc), 400
