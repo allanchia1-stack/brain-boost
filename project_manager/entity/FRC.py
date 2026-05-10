@@ -113,7 +113,7 @@ class FRC:
         )
 
     @classmethod
-    def suspend_frc(cls, frc_id):
+    def suspendFrc(cls, frc_id):
         return cls._execute_write(
             "UPDATE FRC SET frc_status = 0 WHERE frc_id = %s",
             (frc_id,),
