@@ -87,7 +87,7 @@ class FRC:
         )
 
     @classmethod
-    def search_frcs(cls, query):
+    def queryFrc(cls, query):
         like = f"%{query}%"
         return cls._fetch_all(
             "SELECT frc_id AS id, frc_name AS name, frc_des AS description, "
