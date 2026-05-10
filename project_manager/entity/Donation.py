@@ -75,19 +75,19 @@ class Donation:
         }
 
     @classmethod
-    def get_monthly_summary(cls):
-        today           = datetime.now().date()
-        start_of_month  = today.replace(day=1)
-        if today.month == 12:
-            end_of_month = today.replace(day=31)
+    def generateMonthlyReport(cls, date):
+        
+        start_of_month  = date.replace(day=1)
+        if date.month == 12:
+            end_of_month = date.replace(day=31)
         else:
-            end_of_month = today.replace(month=today.month + 1, day=1) - timedelta(days=1)
+            end_of_month = date.replace(month=date.month + 1, day=1) - timedelta(days=1)
         rows = cls._get_by_period(
             datetime.combine(start_of_month, datetime.min.time()),
             datetime.combine(end_of_month,   datetime.max.time())
         )
         return {
-            'period':           today.strftime('%B %Y'),
+            'period':           date.strftime('%B %Y'),
             'donations':        rows,
             'total_donations':  len(rows),
             'total_amount':     sum(r['donation_amt'] for r in rows),

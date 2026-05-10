@@ -2,5 +2,5 @@ from project_manager.entity.Donation import Donation
 
 
 class PMMonthlyReportGenC:
-    def generateMonthlyReport(self):
-        return Donation.get_monthly_summary()
+    def generateMonthlyReport(self, date):
+        return Donation.generateMonthlyReport(date)
