@@ -14,7 +14,8 @@ def donation_history_page():
         return redirect(url_for("login"))
 
     search_query = request.args.get("q", "").strip()
-    donations = search_don_control.search_don(session["user_id"], search_query)
+    print("Executing search FRA donation history")
+    donations = search_don_control.searchDon(session["user_id"], search_query)
     return render_template(
         "user_donee/donee_fra_history.html",
         donations=donations,

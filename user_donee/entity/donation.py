@@ -35,7 +35,8 @@ class Donation:
                 conn.close()
 
     @classmethod
-    def search_donation_history(cls, user_id, keyword):
+    def searchDon(cls, user_id, keyword):
+        print("Executing Donation.searchDon()")
         conn = None
         cursor = None
         try:
