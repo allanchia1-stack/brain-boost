@@ -118,7 +118,8 @@ class FavouriteFRA:
                 conn.close()
 
     @classmethod
-    def search_favourite_fras(cls, user_id, keyword):
+    def searchFraFav(cls, user_id, keyword):
+        print("Executing DoneeViewFraFav.searchFraFav()")
         conn = None
         cursor = None
         try:

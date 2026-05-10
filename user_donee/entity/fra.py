@@ -126,3 +126,66 @@ class FRA:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+
+    @classmethod
+    def searchFraFav(cls, user_id, keyword):
+        print("Executing Fav.searchFraFav()")
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            search_text = f"%{keyword}%"
+            query = """
+                SELECT f.fra_id, f.fra_title, f.fra_des,
+                       c.frc_name AS category_name,
+                       f.fra_start_date, f.fra_end_date,
+                       f.fra_donation_goal, f.fra_donation_amt,
+                       f.fra_views, f.fra_num_of_fav, fav.fav_saved_at
+                FROM FavouriteFRA fav
+                JOIN FRA f ON fav.fra_id = f.fra_id
+                JOIN FRC c ON f.fra_category = c.frc_id
+                WHERE fav.user_id = %s
+                  AND (f.fra_title LIKE %s OR c.frc_name LIKE %s)
+                ORDER BY fav.fav_saved_at DESC
+            """
+            cursor.execute(query, (user_id, search_text, search_text))
+            return cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def viewAllFraFav(cls, user_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            query = """
+                SELECT f.fra_id, f.fra_title, f.fra_des,
+                       c.frc_name AS category_name,
+                       f.fra_start_date, f.fra_end_date,
+                       f.fra_donation_goal, f.fra_donation_amt,
+                       f.fra_views, f.fra_num_of_fav, fav.fav_saved_at
+                FROM FavouriteFRA fav
+                JOIN FRA f ON fav.fra_id = f.fra_id
+                JOIN FRC c ON f.fra_category = c.frc_id
+                WHERE fav.user_id = %s
+                ORDER BY fav.fav_saved_at DESC
+            """
+            cursor.execute(query, (user_id,))
+            return cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()

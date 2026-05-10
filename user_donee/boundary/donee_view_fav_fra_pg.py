@@ -12,7 +12,7 @@ def view_fav_fra_page():
         return redirect(url_for("login"))
 
     search_query = request.args.get("q", "").strip()
-    fras = fav_control.donee_search_fav_fra(session["user_id"], search_query)
+    fras = fav_control.searchFraFav(session["user_id"], search_query)
     return render_template(
         "user_donee/donee_viewfra.html",
         fras=fras,
