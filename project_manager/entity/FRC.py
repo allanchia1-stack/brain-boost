@@ -2,6 +2,12 @@ import mysql.connector
 
 
 class FRC:
+
+    def __init__(self, name, description, status):
+        self.name = name
+        self.description = description
+        self.status = status
+
     @staticmethod
     def get_connection():
         return mysql.connector.connect(
@@ -66,10 +72,11 @@ class FRC:
                 conn.close()
 
     @classmethod
-    def create_frc(cls, name, description, status=1):
+    def createFrc(cls, temp):
+        print("Executing FRC.createFrc()")
         return cls._execute_write(
             "INSERT INTO FRC (frc_name, frc_des, frc_status) VALUES (%s, %s, %s)",
-            (name, description, status),
+            (temp.name, temp.description, temp.status),
         )
 
     @classmethod

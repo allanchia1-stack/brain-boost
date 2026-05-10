@@ -13,7 +13,7 @@ from fund_raiser.boundary.FundRaiserCreateFraPg import FundRaiserCreateFraPg
 from fund_raiser.boundary.FundRaiserResultFraPg import view_fra_bp as fr_view_fra_bp
 
 # Project Manager imports
-from project_manager.boundary.CreateFrcPg import CreateFrcPg
+from project_manager.boundary.CreateFrcPg import PMCreateFrcPg
 from project_manager.boundary.PMDailyReportGenPg import PMDailyReportGenPg
 from project_manager.boundary.PMMonthlyReportGenPg import PMMonthlyReportGenPg
 from project_manager.boundary.PMUpdateFrcPg import PMUpdateFrcPg
@@ -45,7 +45,7 @@ login_page = LogInPg()
 create_profile_page = UserAdminCreateProfilePg()
 create_account_page = UserAdminCreateUserAccountPg()
 create_fra_page = FundRaiserCreateFraPg()
-create_frc_page = CreateFrcPg()
+create_frc_page = PMCreateFrcPg()
 view_frc_page = PMViewFrcPg()
 view_fra_page = ViewFraPg()
 update_frc_page = PMUpdateFrcPg()
