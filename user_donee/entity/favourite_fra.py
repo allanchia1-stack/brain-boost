@@ -29,7 +29,8 @@ class FavouriteFRA:
                 conn.close()
 
     @classmethod
-    def save_fra(cls, user_id, fra_id):
+    def saveFra(cls, user_id, fra_id):
+        print("Executing FRA.saveFra()")
         conn = None
         cursor = None
         try:

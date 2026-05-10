@@ -10,6 +10,7 @@ save_control = DoneeSaveFraFavC()
 def toggle_save_fra(fra_id):
     if session.get("role") != "Donee":
         return redirect(url_for("login"))
-
-    save_control.toggle_save_fra(session["user_id"], fra_id)
+    
+    print("Executing saving of FRA for Donee")
+    save_control.saveFra(session["user_id"], fra_id)
     return redirect(url_for("donee_view_fra_bp.view_fra_detail_page", fra_id=fra_id))
