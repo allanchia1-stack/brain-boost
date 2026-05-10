@@ -119,7 +119,7 @@ class FavouriteFRA:
 
     @classmethod
     def searchFraFav(cls, user_id, keyword):
-        print("Executing DoneeViewFraFav.searchFraFav()")
+        print("Executing Fav.searchFraFav()")
         conn = None
         cursor = None
         try:

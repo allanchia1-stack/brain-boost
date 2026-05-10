@@ -6,8 +6,8 @@ class DoneeViewFraFavC:
     def donee_view_fav_fra(self, user_id):
         return FRA.viewAllFraFav(user_id)
 
-    def searchFraFav(self, user_id, criteria):
+    def searchFraFav(self, user_id, query):
         print("Executing DoneeViewFraFav.searchFraFav()")
-        if criteria:
-            return FRA.searchFraFav(user_id, criteria)
+        if query:
+            return FRA.searchFraFav(user_id, query)
         return FRA.viewAllFraFav(user_id)
