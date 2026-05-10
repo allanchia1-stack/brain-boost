@@ -28,7 +28,8 @@ def donation_detail_page(donation_id):
     if session.get("role") != "Donee":
         return redirect(url_for("login"))
 
-    donation = view_don_control.view_don(session["user_id"], donation_id)
+    print("Executing View FRA Donation History")
+    donation = view_don_control.viewDon(session["user_id"], donation_id)
     if donation is None:
         return redirect(url_for("donee_donation_history_bp.donation_history_page"))
 

@@ -65,7 +65,8 @@ class Donation:
                 conn.close()
 
     @classmethod
-    def get_donation_by_id(cls, user_id, donation_id):
+    def viewDon(cls, user_id, donation_id):
+        print("Executing Donation.viewDon()")
         conn = None
         cursor = None
         try:
