@@ -47,14 +47,13 @@ class Donation:
         )
 
     @classmethod
-    def get_daily_summary(cls):
-        today = datetime.now().date()
+    def fetchDailyDon(cls, date):
         rows  = cls._get_by_period(
-            datetime.combine(today, datetime.min.time()),
-            datetime.combine(today, datetime.max.time())
+            datetime.combine(date, datetime.min.time()),
+            datetime.combine(date, datetime.max.time())
         )
         return {
-            'period':           today.strftime('%d %B %Y'),
+            'period':           date.strftime('%d %B %Y'),
             'donations':        rows,
             'total_donations':  len(rows),
             'total_amount':     sum(r['donation_amt'] for r in rows),
