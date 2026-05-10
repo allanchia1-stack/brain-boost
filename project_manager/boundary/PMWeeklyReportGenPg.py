@@ -1,7 +1,7 @@
 from flask import render_template
 
 from project_manager.controller.PMWeeklyReportGenC import PMWeeklyReportGenC
-
+from datetime import datetime
 
 class PMWeeklyReportGenPg:
     def __init__(self):
@@ -11,5 +11,6 @@ class PMWeeklyReportGenPg:
         return render_template("project_manager/weekly_report.html")
 
     def post(self):
-        report = self.control.generateWeeklyReport()
+        date = datetime.now().date()
+        report = self.control.generateWeeklyReport(date)
         return render_template("project_manager/weekly_report.html", report=report)

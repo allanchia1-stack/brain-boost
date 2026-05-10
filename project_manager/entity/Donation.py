@@ -60,9 +60,8 @@ class Donation:
         }
 
     @classmethod
-    def get_weekly_summary(cls):
-        today         = datetime.now().date()
-        start_of_week = today - timedelta(days=today.weekday())
+    def generateWeeklyReport(cls, date):
+        start_of_week = date - timedelta(days=date.weekday())
         end_of_week   = start_of_week + timedelta(days=6)
         rows = cls._get_by_period(
             datetime.combine(start_of_week, datetime.min.time()),
