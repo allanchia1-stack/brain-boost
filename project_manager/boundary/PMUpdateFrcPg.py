@@ -27,7 +27,9 @@ class PMUpdateFrcPg:
 
         name = request.form.get("name", "").strip()
         description = request.form.get("description", "").strip()
-        if self.controlUpdate.updateFrc(frc_id, name, description):
+        frc = self.controlView.viewFrc(frc_id)
+        temp = FRC(name,description,frc["status"])
+        if self.controlUpdate.updateFrc(frc_id, temp):
             from flask import redirect, url_for
             return redirect(url_for("view_frc"))
 

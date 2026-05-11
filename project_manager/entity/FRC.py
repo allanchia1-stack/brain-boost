@@ -106,10 +106,10 @@ class FRC:
         )
 
     @classmethod
-    def updateFrc(cls, frc_id, name, description, status):
+    def updateFrc(cls, frc_id, temp):
         return cls._execute_write(
             "UPDATE FRC SET frc_name = %s, frc_des = %s, frc_status = %s WHERE frc_id = %s",
-            (name, description, status, frc_id),
+            (temp.name, temp.description, temp.status, frc_id),
         )
 
     @classmethod
