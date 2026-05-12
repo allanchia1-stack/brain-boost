@@ -24,10 +24,13 @@ class DoneeResultFraPg:
         print("Executing DoneeResultFraPg.searchFra()")
         return self.search_fra_control.searchFra(query)
 
-    def viewFra(self, fra_id, user_id):
-        print("Executing DoneeResultFraPg.viewFra()")
-        self.view_fra_control.update_num_of_views(fra_id)
-        return self.view_fra_control.viewFra(fra_id, user_id)
+    def view(self, fra_id, user_id):
+        print("Executing DoneeResultFraPg.view()")
+        return self.view_fra_control.view(fra_id, user_id)
+
+    def doneeViewFavFra(self, fra_id):
+        print("Executing DoneeResultFraPg.doneeViewFavFra()")
+        return self.view_fav_control.doneeViewFavFra(fra_id)
 
     def viewFraFav(self, user_id):
         print("Executing DoneeResultFraPg.viewFraFav()")
@@ -74,7 +77,7 @@ def view_fra_detail_page(fra_id):
         return redirect(url_for("login"))
 
     source = request.args.get("source", "all").strip() or "all"
-    fra, saved = page.viewFra(fra_id, session["user_id"])
+    fra, saved = page.view(fra_id, session["user_id"])
     if fra is None:
         if source == "favourited":
             return redirect(url_for("donee_view_fav_fra_bp.view_fav_fra_page"))

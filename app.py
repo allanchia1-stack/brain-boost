@@ -22,10 +22,9 @@ from project_manager.boundary.PMWeeklyReportGenPg import PMWeeklyReportGenPg
 from project_manager.boundary.ViewFraPg import ViewFraPg
 
 # Donee imports
-from user_donee.boundary.donee_view_fra_pg import donee_view_fra_bp
-from user_donee.boundary.donee_save_fra_pg import donee_save_fra_bp
-from user_donee.boundary.donee_view_fav_fra_pg import donee_view_fav_fra_bp
-from user_donee.boundary.donee_donation_history_pg import donee_donation_history_bp
+from user_donee.boundary.DoneeResultFraPg import donee_view_fra_bp, donee_view_fav_fra_bp
+from user_donee.boundary.DoneeFraPg import donee_save_fra_bp
+from user_donee.boundary.DoneeDonationHistoryPg import donee_donation_history_bp
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key"

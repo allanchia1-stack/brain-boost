@@ -2,7 +2,12 @@ from user_donee.entity.FRA import FRA
 
 
 class DoneeViewFraFavC:
+    def doneeViewFavFra(self, fra_id):
+        print("Executing DoneeViewFraFavC.doneeViewFavFra()")
+        return FRA.doneeViewFavFra(fra_id)
+
     def viewFraFav(self, user_id):
+        print("Executing DoneeViewFraFavC.viewFraFav()")
         return FRA.viewAllFraFav(user_id)
 
     def searchFraFav(self, user_id, query):
