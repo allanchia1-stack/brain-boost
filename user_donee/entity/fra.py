@@ -189,3 +189,85 @@ class FRA:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
+
+    @classmethod
+    def is_saved(cls, user_id, fra_id):
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(
+                "SELECT fav_id FROM FavouriteFRA WHERE user_id = %s AND fra_id = %s",
+                (user_id, fra_id),
+            )
+            return cursor.fetchone() is not None
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def saveFra(cls, user_id, fra_id):
+        print("Executing FRA.saveFra()")
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT IGNORE INTO FavouriteFRA (user_id, fra_id) VALUES (%s, %s)",
+                (user_id, fra_id),
+            )
+            if cursor.rowcount > 0:
+                cursor.execute(
+                    "UPDATE FRA SET fra_num_of_fav = fra_num_of_fav + 1 WHERE fra_id = %s",
+                    (fra_id,),
+                )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
+    @classmethod
+    def unsave_fra(cls, user_id, fra_id):
+        print("Executing FRA.unsave_fra()")
+        conn = None
+        cursor = None
+        try:
+            conn = cls.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM FavouriteFRA WHERE user_id = %s AND fra_id = %s",
+                (user_id, fra_id),
+            )
+            if cursor.rowcount > 0:
+                cursor.execute(
+                    "UPDATE FRA SET fra_num_of_fav = GREATEST(fra_num_of_fav - 1, 0) WHERE fra_id = %s",
+                    (fra_id,),
+                )
+            conn.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Database Error: {err}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn and conn.is_connected():
+                conn.close()
+
