@@ -1,4 +1,4 @@
-from user_donee.entity.Donation import Donation
+from user_donee.entity.donation import Donation
 
 
 class DoneeViewDonC:

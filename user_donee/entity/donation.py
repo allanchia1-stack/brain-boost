@@ -1,5 +1,5 @@
 import mysql.connector
-from user_donee.entity.FRA import FRA
+from user_donee.entity.fra import FRA
 
 
 class Donation:
