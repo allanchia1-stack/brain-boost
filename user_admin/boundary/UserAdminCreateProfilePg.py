@@ -14,7 +14,7 @@ class UserAdminCreateProfilePg:
         return self.displayProfileCreationForm()
 
     def createProfile(self, temp):
-        print("Running UserAdminCreateProfilePg.createProfile")
+        #print("Running UserAdminCreateProfilePg.createProfile()")
         return self.control.createProfile(temp)
 
     def post(self):

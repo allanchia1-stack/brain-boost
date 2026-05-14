@@ -18,7 +18,7 @@ class UserProf:
 
     @classmethod
     def createProfile(cls, temp):
-        print("Running UserProf.createProfile")
+        #print("Running userprof.createProfile()")
         conn = None
         cursor = None
         try:
@@ -32,7 +32,7 @@ class UserProf:
                 (temp.role, temp.status),
             )
             conn.commit()
-            return cursor.lastrowid
+            return True
         except mysql.connector.Error as err:
             print(f"Error creating user profile: {err}")
             if conn:
@@ -43,30 +43,6 @@ class UserProf:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
-
-    #@classmethod
-    #def view(cls, profile_id):
-    #    return cls.get_profile_by_id(profile_id)
-
-    #@classmethod
-    #def updateProf(cls, tempProfile):
-    #    return cls.update_profile(tempProfile.profile_id, tempProfile.role)
-
-    #@classmethod
-    #def updateUser(cls, tempProfile):
-    #    return cls.updateProf(tempProfile)
-
-    #@classmethod
-    #def suspendProf(cls, profile_id):
-    #    return cls.toggle_suspend_profile(profile_id)
-
-    @classmethod
-    def SuspendUserProfile(cls, profile_id):
-        return cls.SuspendProf(profile_id)
-
-    #@classmethod
-    #def queryUserProfile(cls, search_query=""):
-    #    return cls.search_profiles(search_query)
 
     @classmethod
     def get_all_profiles(cls):
@@ -94,7 +70,7 @@ class UserProf:
 
     @classmethod
     def queryUserProfile(cls, query):
-        print("Executing UserProf.queryUserProfile : " + query)
+        #print("Executing userprof.queryUserProfile()")
         conn = None
         cursor = None
 
@@ -132,7 +108,7 @@ class UserProf:
 
     @classmethod
     def view(cls, profile_id):
-        print("Executing UserProf.view()")
+        
         conn = None
         cursor = None
         try:
@@ -183,7 +159,7 @@ class UserProf:
 
     @classmethod
     def updateProf(cls, temp):
-        print("Executing UserProf.updateProf()")
+        #print("Executing userprof.updateProf()")
         conn = None
         cursor = None
         try:
@@ -208,7 +184,7 @@ class UserProf:
 
     @classmethod
     def suspendProf(cls, profile_id):
-        print("Executing UserProf.suspendProf")
+        
         conn = None
         cursor = None
         try:

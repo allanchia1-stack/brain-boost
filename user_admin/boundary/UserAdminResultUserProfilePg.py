@@ -16,7 +16,7 @@ class UserAdminResultUserProfilePg:
         return UserAdminViewProfileC.view_all_user_profiles()
 
     def searchUserProfile(self, query):
-        print("Executing UserAdminResultUserProfilePg.searchUserProfile")
+        #print("Executing UserAdminResultUserProfilePg.searchUserProfile()")
         return UserAdminSearchProfileC.searchUserProfile(query)
 
     def view(self, profile_id):
@@ -31,13 +31,13 @@ class UserAdminUpdateUserProfilePg:
         return render_template("user_admin/view_user_profile_detail.html", profile=profile, success=success)
 
     def updateProf(self, temp):
-        print("Executing UserAdminUpdateUserProfilePg.updateProf")
+        #print("Executing UserAdminUpdateUserProfilePg.updateProf")
         return UserAdminUpdateProfileC.updateProf(temp)
 
 
 class UserAdminUserProfilePg:
     def suspendProf(self, profile_id):
-        print("Executing UserAdminUserProfilePg.suspendProf")
+        #print("Executing UserAdminUserProfilePg.suspendProf")
         return UserAdminSuspendProfileC.suspendProf(profile_id)
 
 
@@ -64,7 +64,9 @@ def view_user_profile_detail(profile_id):
 
     profile = UserAdminResultUserProfilePg().view(profile_id)
     if profile is None:
+        print("Cannot view user profile")
         return "Profile not found", 404
+    print("viewing user profile")
     return UserAdminUpdateUserProfilePg().updateUserForm(profile, success)
 
 
