@@ -18,11 +18,11 @@ class DoneeDonationHistoryPg:
         return request.args.get("q", "").strip()
 
     def searchDon(self, user_id, query):
-        print("Executing DoneeDonationHistoryPg.searchDon()")
+        #print("Executing DoneeDonationHistoryPg.searchDon()")
         return self.search_don_control.searchDon(user_id, query)
 
     def viewDon(self, user_id, donation_id):
-        print("Executing DoneeDonationHistoryPg.viewDon()")
+        p#rint("Executing DoneeDonationHistoryPg.viewDon()")
         return self.view_don_control.viewDon(user_id, donation_id)
 
     def showResult(self, donations, search_query=""):

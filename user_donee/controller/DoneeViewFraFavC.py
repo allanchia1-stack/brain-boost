@@ -11,7 +11,7 @@ class DoneeViewFraFavC:
         return FRA.viewAllFraFav(user_id)
 
     def searchFraFav(self, user_id, query):
-        print("Executing DoneeViewFraFavC.searchFraFav()")
+        #print("Executing DoneeViewFraFavC.searchFraFav()")
         if query:
             return FRA.searchFraFav(user_id, query)
         return FRA.viewAllFraFav(user_id)

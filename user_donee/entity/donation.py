@@ -36,7 +36,7 @@ class Donation:
 
     @classmethod
     def searchDon(cls, user_id, keyword):
-        print("Executing Donation.searchDon()")
+        #print("Executing Donation.searchDon()")
         conn = None
         cursor = None
         try:
@@ -66,7 +66,7 @@ class Donation:
 
     @classmethod
     def viewDon(cls, user_id, donation_id):
-        print("Executing Donation.viewDon()")
+        #print("Executing Donation.viewDon()")
         conn = None
         cursor = None
         try:
