@@ -4,7 +4,7 @@ from fund_raiser.entity.FRA import FRA
 class FundRaiserSearchFraC:
     @staticmethod
     def searchFra(query, owner_id):
-        print("Executing FundRaiserSearchFraC.searchFra()")
+        #print("Executing FundRaiserSearchFraC.searchFra()")
         return FRA.searchFra(query, owner_id)
 
     @staticmethod

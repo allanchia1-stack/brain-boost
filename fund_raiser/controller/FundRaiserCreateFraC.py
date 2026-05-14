@@ -10,7 +10,7 @@ class FundRaiserCreateFraC:
 
     @staticmethod
     def createFra(temp):
-        print("Executing FundRaiserCreateFraC.createFra()")
+        #print("Executing FundRaiserCreateFraC.createFra()")
         if not temp.title or not temp.category_id or not temp.start_date or not temp.end_date or not temp.goal:
             return False
         if temp.end_date < temp.start_date:

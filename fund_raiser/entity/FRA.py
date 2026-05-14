@@ -49,7 +49,7 @@ class FRA:
 
     @classmethod
     def createFra(cls, temp):
-        print("Executing FRA.createFra()")
+        #print("Executing FRA.createFra()")
         conn = None
         cursor = None
         try:
@@ -178,7 +178,7 @@ class FRA:
 
     @classmethod
     def searchFra(cls, query, owner_id):
-        print("Executing FRA.searchFra()")
+        #print("Executing FRA.queryFra()")
         conn = None
         cursor = None
         try:
@@ -307,7 +307,7 @@ class FRA:
 
     @classmethod
     def updateFra(cls, fra_id, temp, owner_id):
-        print("Executing FRA.updateFRA()")
+        #print("Executing FRA.updateFRA()")
         title = temp.title
         description = temp.description
         try:
@@ -363,7 +363,7 @@ class FRA:
             print(f"Database Error: {err}")
             if conn:
                 conn.rollback()
-            return False
+            return None
         finally:
             if cursor:
                 cursor.close()
@@ -428,7 +428,7 @@ class FRA:
 
     @classmethod
     def suspendFra(cls, fra_id, owner_id):
-        print("Executing FRA.suspendFra()")
+        #print("Executing FRA.suspendFra()")
         conn = None
         cursor = None
         try:
