@@ -47,7 +47,7 @@ class Donation:
         )
 
     @classmethod
-    def fetchDailyDon(cls, date):
+    def generateDailyReport(cls, date):
         rows  = cls._get_by_period(
             datetime.combine(date, datetime.min.time()),
             datetime.combine(date, datetime.max.time())

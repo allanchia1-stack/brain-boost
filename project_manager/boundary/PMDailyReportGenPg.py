@@ -12,5 +12,5 @@ class PMDailyReportGenPg:
 
     def post(self):
         date = datetime.now().date()
-        report = self.control.fetchDailyDon(date)
+        report = self.control.generateDailyReport(date)
         return render_template("project_manager/daily_report.html", report=report)

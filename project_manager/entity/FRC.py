@@ -73,7 +73,7 @@ class FRC:
 
     @classmethod
     def createFrc(cls, temp):
-        print("Executing FRC.createFrc()")
+        #print("Executing FRC.createFrc()")
         return cls._execute_write(
             "INSERT INTO FRC (frc_name, frc_des, frc_status) VALUES (%s, %s, %s)",
             (temp.name, temp.description, temp.status),
@@ -98,7 +98,7 @@ class FRC:
 
     @classmethod
     def viewFrc(cls, frc_id):
-        print("Executing FRC.viewFrc()")
+        #print("Executing FRC.viewFrc()")
         return cls._fetch_one(
             "SELECT frc_id AS id, frc_name AS name, frc_des AS description, "
             "frc_status AS status FROM FRC WHERE frc_id = %s",

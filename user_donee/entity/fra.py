@@ -42,7 +42,7 @@ class FRA:
 
     @classmethod
     def searchFra(cls, query):
-        print("Executing FRA.searchFra()")
+        #print("Executing FRA.searchFra()")
         conn = None
         cursor = None
         try:
@@ -77,7 +77,7 @@ class FRA:
 
     @classmethod
     def view(cls, fra_id):
-        print("Executing FRA.view()")
+        #print("Executing FRA.view()")
         conn = None
         cursor = None
         try:
@@ -157,7 +157,7 @@ class FRA:
 
     @classmethod
     def saveFra(cls, acct_id, fra_id):
-        print("Executing FRA.saveFra()")
+        #print("Executing FRA.saveFra()")
         conn = None
         cursor = None
         try:
@@ -217,7 +217,7 @@ class FRA:
 
     @classmethod
     def doneeViewFavFra(cls, fra_id):
-        print("Executing FRA.doneeViewFavFra()")
+        #print("Executing FRA.doneeViewFavFra()")
         return cls.view(fra_id)
 
     @classmethod
@@ -254,7 +254,7 @@ class FRA:
 
     @classmethod
     def searchFraFav(cls, user_id, query):
-        print("Executing FRA.searchFraFav()")
+        #print("Executing FRA.searchFraFav()")
         conn = None
         cursor = None
         try:

@@ -10,7 +10,7 @@ class FundRaiserViewFraC:
 
     @staticmethod
     def viewFraById(fra_id, owner_id):
-        print("Executing FundRaiserViewFraC.viewFraById()")
+        #print("Executing FundRaiserViewFraC.viewFraById()")
         return FRA.viewFraById(fra_id, owner_id)
 
     @staticmethod

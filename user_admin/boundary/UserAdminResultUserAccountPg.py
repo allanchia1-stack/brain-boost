@@ -17,19 +17,19 @@ class UserAdminResultUserAccountPg:
         return UserAdminViewAccountC.view_all_user_accounts()
 
     def searchUserAccount(self, text):
-        print("Executing UserAdminResultUserAccountPg.searchUserAccount()")
+        #print("Executing UserAdminResultUserAccountPg.searchUserAccount()")
         return UserAdminSearchAccountC.searchUserAccount(text)
 
     def view(self, accountId):
-        print("executing UserAdminResultUserAccountPg.view()")
+        #print("executing UserAdminResultUserAccountPg.view()")
         return UserAdminViewAccountC.view(accountId)
 
     def updateUser(self, temp):
-        print("Executing UserAdminResultUserAccountPg.updateUser")
+        #print("Executing UserAdminResultUserAccountPg.updateUser")
         return UserAdminUpdateAccountC.updateUser(temp)
 
     def suspendUserAccount(self, account_id):
-        print("Executing UserAdminResultUserAccountPg.suspendUserAccout()")
+        #print("Executing UserAdminResultUserAccountPg.suspendUserAccout()")
         return UserAdminSuspendAccountC.suspendUserAccount(account_id)
 
     def showResult(self, accounts, search_query=""):

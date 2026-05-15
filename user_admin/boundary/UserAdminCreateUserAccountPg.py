@@ -16,7 +16,7 @@ class UserAdminCreateUserAccountPg:
         return self.displayAccountCreationForm()
 
     def createAccount(self, temp):
-        print("Executing UserAdminCreateUserAccountPg.createAccount()")
+        #print("Executing UserAdminCreateUserAccountPg.createAccount()")
         return self.control.createAccount(temp)
 
     def post(self):
@@ -29,5 +29,7 @@ class UserAdminCreateUserAccountPg:
             password=request.form.get("password", ""),
         )
         if self.createAccount(tempAccount):
+            print("Successful account creation")
             return redirect(url_for("view_user_account_bp.view_user_accounts_page"))
+        print("Error creating account")
         return "Error creating account", 400

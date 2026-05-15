@@ -21,15 +21,15 @@ class DoneeResultFraPg:
         return request.args.get("q", "").strip()
 
     def searchFra(self, query):
-        print("Executing DoneeResultFraPg.searchFra()")
+        #print("Executing DoneeResultFraPg.searchFra()")
         return self.search_fra_control.searchFra(query)
 
     def view(self, fra_id, user_id):
-        print("Executing DoneeResultFraPg.view()")
+        #print("Executing DoneeResultFraPg.view()")
         return self.view_fra_control.view(fra_id, user_id)
 
     def doneeViewFavFra(self, fra_id):
-        print("Executing DoneeResultFraPg.doneeViewFavFra()")
+        #print("Executing DoneeResultFraPg.doneeViewFavFra()")
         return self.view_fav_control.doneeViewFavFra(fra_id)
 
     def viewFraFav(self, user_id):
@@ -37,7 +37,7 @@ class DoneeResultFraPg:
         return self.view_fav_control.viewFraFav(user_id)
 
     def searchFraFav(self, user_id, query):
-        print("Executing DoneeResultFraPg.searchFraFav()")
+        #print("Executing DoneeResultFraPg.searchFraFav()")
         return self.view_fav_control.searchFraFav(user_id, query)
 
     def showResult(self, fras, search_query="", page_title="View FRA", table_title="View FRA", source="all"):

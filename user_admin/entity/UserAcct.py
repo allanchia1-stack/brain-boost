@@ -73,7 +73,7 @@ class UserAcct:
 
     @classmethod
     def createAccount(cls, temp):
-        print("Executing UserAcct.createAccount()")
+        #print("Executing UserAcct.createAccount()")
         conn = None
         cursor = None
         try:
@@ -102,22 +102,6 @@ class UserAcct:
                 cursor.close()
             if conn and conn.is_connected():
                 conn.close()
-
-    #@classmethod
-    #def view(cls, accountId):
-    #    return cls.get_account_by_user_id(accountId)
-
-    #@classmethod
-    #def updateUser(cls, temp):
-    #    return cls.update_account(temp.account_id, temp.email, temp.password, temp.name, temp.phone, temp.address, temp.role)
-
-    #@classmethod
-    #def suspendUserAccount(cls, account_id):
-    #    return cls.toggle_suspend_account(account_id)
-
-    #@classmethod
-    #def queryUserAccount(cls, text):
-    #    return cls.search_accounts(text)
 
     @classmethod
     def get_all_accounts(cls):
@@ -155,7 +139,7 @@ class UserAcct:
 
     @classmethod
     def queryUserAccount(cls, text):
-        print("Executing UserAcct.queryUserAccount()")
+        #print("Executing UserAcct.queryUserAccount()")
         conn = None
         cursor = None
 
@@ -197,7 +181,7 @@ class UserAcct:
 
     @classmethod
     def view(cls, accountId):
-        print("executing UserAcct.view()")
+        #print("executing UserAcct.view()")
         conn = None
         cursor = None
         try:
@@ -233,7 +217,7 @@ class UserAcct:
 
     @classmethod
     def updateUser(cls, temp):
-        print("Executing UserAcct.updateUser")
+        #print("Executing UserAcct.updateUser()")
         conn = None
         cursor = None
         try:
@@ -274,7 +258,7 @@ class UserAcct:
 
     @classmethod
     def suspendUserAccount(cls, account_id):
-        print("Executing UserAcct.suspendUserAccout()")
+        #print("Executing UserAcct.suspendUserAccout()")
         conn = None
         cursor = None
         try:
