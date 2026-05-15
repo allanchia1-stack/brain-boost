@@ -39,6 +39,9 @@
         <tr>
           <th>Title</th>
           <th>Category</th>
+          {% if source == 'completed' %}
+          <th>Status</th>
+          {% endif %}
           <th>Views</th>
           <th>Favourites</th>
           <th></th>
@@ -49,6 +52,9 @@
         <tr>
           <td>{{ fra["fra_title"] }}</td>
           <td>{{ fra["frc_name"] }}</td>
+          {% if source == 'completed' %}
+          <td>{{ 'Completed' if fra["fra_status"] == 'completed' else 'Uncompleted' }}</td>
+          {% endif %}
           <td>{{ fra["fra_views"] }}</td>
           <td>{{ fra["fra_num_of_fav"] }}</td>
           <td><a class="view-btn" href="{{ url_for('view_fra_bp.view_fra_detail', fra_id=fra['fra_id'], source=source or 'all') }}">View</a></td>

@@ -27,7 +27,7 @@ class FundRaiserViewFraC:
 
     @staticmethod
     def searchFra(query, owner_id):
-        return FRA.search_fras(query, owner_id)
+        return FRA.searchFra(query, owner_id)
 
     @staticmethod
     def updateFra(fra_id, owner_id, title, category_id, start_date, end_date, goal, description):
