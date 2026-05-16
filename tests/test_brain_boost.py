@@ -130,6 +130,11 @@ class TestUserAdmin(unittest.TestCase):
         #with self.assertRaises(mysql.connector.IntegrityError):
         #    page.createProfile(profile)
         
+        # second insert
+        result1 = page.createProfile(profile)
+
+        self.assertEqual(result1, False)
+        
         # Verify only ONE record exists in DB
         
         self.cursor.execute(
@@ -261,6 +266,8 @@ class TestUserAdmin(unittest.TestCase):
         #with self.assertRaises(mysql.connector.IntegrityError):
         #    page.createAccount(account)
         
+        self.assertEqual(result1, False)
+        
         # Verify only ONE record exists in DB
         self.cursor.execute(
             "SELECT COUNT(*) FROM useracct WHERE account_email=%s",
@@ -364,7 +371,7 @@ class TestUserAdmin(unittest.TestCase):
         #print(count)
         self.assertEqual(len(count), 1)
         
-    def test_log_in_incorrect_password(self):
+    def test_log_in_success(self):
 		
 		# Log in with the following data
 		# User Email: samuel87@example.org
@@ -379,7 +386,7 @@ class TestUserAdmin(unittest.TestCase):
         #print(result)
         self.assertEqual(result.user_id, 7)
         
-    def test_log_in_success(self):
+    def test_log_in_incorrect_password(self):
 		
 		# Log in with the following data, password is wrong
 		# User Email: samuel87@example.org
