@@ -266,6 +266,8 @@ class TestUserAdmin(unittest.TestCase):
         #with self.assertRaises(mysql.connector.IntegrityError):
         #    page.createAccount(account)
         
+        result1 = page.createAccount(account)
+
         self.assertEqual(result1, False)
         
         # Verify only ONE record exists in DB
