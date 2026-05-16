@@ -283,7 +283,7 @@ class TestUserAdmin(unittest.TestCase):
         
     def test_view_user_account_success(self):
         
-        # use this to fetch profile_id 1 which is "Admin"
+        # use this to fetch account_id 1 which is "donaldgarcia@example.net"
         idNum = 1
 
         page = UserAdminResultUserAccountPg()
@@ -320,7 +320,6 @@ class TestUserAdmin(unittest.TestCase):
 
         page = UserAdminResultUserAccountPg()
 
-        # run profile into updateProf function
         result = page.updateUser(account)
         #print(result)
 
