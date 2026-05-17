@@ -35,7 +35,7 @@ class UserAcct:
 
     @classmethod
     def userLogIn(cls, username, password_hash):
-        print("Execute UserAcct.userLogIn()")
+        # print("Execute UserAcct.userLogIn()")
         conn = None
         cursor = None
         try:

@@ -10,7 +10,7 @@ class LogInPg:
         return render_template("user_admin/login.html", error=None, email=""), 200
 
     def userLogIn(self, username, password_hash):
-        print("Executing LogInPg.userLogIn()")
+        # print("Executing LogInPg.userLogIn()")
         return self.control.userLogIn(username, password_hash)
 
     def post(self):

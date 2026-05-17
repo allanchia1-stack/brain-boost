@@ -8,7 +8,7 @@ class LogInC():
 
     @staticmethod
     def userLogIn(username, password_hash):
-        print("Executing LogInC.userLogIn()")
+        # print("Executing LogInC.userLogIn()")
         normalized_email = username.strip().lower()
         cleaned_password = password_hash or ""
         if not normalized_email or not cleaned_password:
