@@ -303,8 +303,73 @@ def populate_data():
                 )
         conn.commit()
         print(f"  [5/5] Inserted {len(fav_pairs)} favourite FRA records.")
+        
+        # Force set DB insertion of 5 donations on the 22nd of May 2026 for presentation
+        
+        # For testing purposes, please adjust date to generate the donation for.
+        target_date = datetime(2026, 5, 22)
+
+        for _ in range(5):
+        
+            # Find FRAs active on 22 May 2026
+            cursor.execute("""
+                SELECT fra_id
+                FROM fra
+                WHERE fra_status = 'ongoing'
+                AND fra_start_date <= %s
+                AND fra_end_date >= %s
+             """, 
+             (target_date,
+              target_date
+            ))
+
+            active_fras = cursor.fetchall()
+
+            if not active_fras:
+                print("No active FRAs found for 22 May 2026.")
+                break
+
+            selected_fra = random.choice(active_fras)
+            fra_id = selected_fra[0]
+
+            # Generate donation data
+            account_id = random.randint(1, 10)   # sample donor account IDs
+            donation_amt = random.randint(10, 100)
+            user_id = random.randint(1,3)
+
+            # Insert donation
+            cursor.execute("""
+                INSERT INTO donation (
+                    fra_id,
+                    donation_user_id,
+                    donation_amt,
+                    donation_date
+                )
+                VALUES (%s, %s, %s, %s)
+            """, (
+                fra_id,
+                user_id,
+                donation_amt,
+                target_date
+            ))
+
+        # Update FRA total donation amount
+        cursor.execute("""
+            UPDATE fra
+            SET fra_donation_amt = fra_donation_amt + %s
+            WHERE fra_id = %s
+        """, (
+            donation_amt,
+            fra_id
+        ))
+
+        conn.commit()
+        print("5 donations inserted and FRA totals updated successfully.")
 
         print("\nDatabase populated successfully! All data integrity checks passed.")
+        
+        
+    
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
