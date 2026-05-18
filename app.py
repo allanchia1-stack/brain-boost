@@ -13,13 +13,13 @@ from fund_raiser.boundary.FundRaiserCreateFraPg import FundRaiserCreateFraPg
 from fund_raiser.boundary.FundRaiserResultFraPg import view_fra_bp as fr_view_fra_bp
 
 # Project Manager imports
-from project_manager.boundary.CreateFrcPg import PMCreateFrcPg
-from project_manager.boundary.PMDailyReportGenPg import PMDailyReportGenPg
-from project_manager.boundary.PMMonthlyReportGenPg import PMMonthlyReportGenPg
-from project_manager.boundary.PMUpdateFrcPg import PMUpdateFrcPg
-from project_manager.boundary.PMViewFrcPg import PMViewFrcPg
-from project_manager.boundary.PMWeeklyReportGenPg import PMWeeklyReportGenPg
-from project_manager.boundary.ViewFraPg import ViewFraPg
+from platform_management.boundary.CreateFrcPg import PMCreateFrcPg
+from platform_management.boundary.PMDailyReportGenPg import PMDailyReportGenPg
+from platform_management.boundary.PMMonthlyReportGenPg import PMMonthlyReportGenPg
+from platform_management.boundary.PMUpdateFrcPg import PMUpdateFrcPg
+from platform_management.boundary.PMViewFrcPg import PMViewFrcPg
+from platform_management.boundary.PMWeeklyReportGenPg import PMWeeklyReportGenPg
+from platform_management.boundary.ViewFraPg import ViewFraPg
 
 # Donee imports
 from user_donee.boundary.DoneeResultFraPg import donee_view_fra_bp, donee_view_fav_fra_bp
