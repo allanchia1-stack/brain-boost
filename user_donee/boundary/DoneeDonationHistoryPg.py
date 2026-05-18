@@ -22,7 +22,6 @@ class DoneeDonationHistoryPg:
         return self.search_don_control.searchDon(user_id, query)
 
     def viewDon(self, user_id, donation_id):
-        p#rint("Executing DoneeDonationHistoryPg.viewDon()")
         return self.view_don_control.viewDon(user_id, donation_id)
 
     def showResult(self, donations, search_query=""):
