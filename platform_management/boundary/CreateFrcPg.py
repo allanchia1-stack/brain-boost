@@ -7,7 +7,7 @@ class PMCreateFrcPg:
         self.control = PMCreateFrcC()
 
     def get(self):
-        return render_template("project_manager/create_frc.html")
+        return render_template("platform_management/create_frc.html")
 
     def post(self):
         name        = request.form.get("name", "").strip()

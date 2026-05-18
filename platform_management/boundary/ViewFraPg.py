@@ -9,10 +9,10 @@ class ViewFraPg:
 
     def get_by_category(self, frc_id):
         fras = self.control.get_fras_by_category(frc_id)
-        return render_template("project_manager/view_fra_by_frc.html", fras=fras)
+        return render_template("platform_management/view_fra_by_frc.html", fras=fras)
 
     def get_detail(self, fra_id):
         fra = self.control.get_fra_by_id(fra_id)
         if fra is None:
             return "Fund raising activity not found", 404
-        return render_template("project_manager/view_fra_detail.html", fra=fra)
+        return render_template("platform_management/view_fra_detail.html", fra=fra)

@@ -8,9 +8,9 @@ class PMMonthlyReportGenPg:
         self.control = PMMonthlyReportGenC()
 
     def get(self):
-        return render_template("project_manager/monthly_report.html")
+        return render_template("platform_management/monthly_report.html")
 
     def post(self):
         date = datetime.now().date()
         report = self.control.generateMonthlyReport(date)
-        return render_template("project_manager/monthly_report.html", report=report)
+        return render_template("platform_management/monthly_report.html", report=report)

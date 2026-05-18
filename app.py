@@ -85,7 +85,7 @@ def home():
     if role == "FundRaiser":
         return render_template("fund_raiser/fr_dashboard.html", user_name=email)
     if role == "Manager":
-        return render_template("project_manager/manager_dashboard.html", manager_identifier=email)
+        return render_template("platform_management/manager_dashboard.html", manager_identifier=email)
 
     return "Role not recognized or unauthorized.", 403
 

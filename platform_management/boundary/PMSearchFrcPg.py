@@ -10,4 +10,4 @@ class PMSearchFrcPg:
     def get(self):
         query = request.args.get("query", "").strip()
         frcs = self.control.searchFrc(query)
-        return render_template("project_manager/view_frc.html", frcs=frcs, query=query)
+        return render_template("platform_management/view_frc.html", frcs=frcs, query=query)

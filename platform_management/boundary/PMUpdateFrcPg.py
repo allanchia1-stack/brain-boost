@@ -16,7 +16,7 @@ class PMUpdateFrcPg:
         frc = self.controlView.viewFrc(frc_id)
         if frc is None:
             return "Fund raising category not found", 404
-        return render_template("project_manager/update_frc.html", frc=frc)
+        return render_template("platform_management/update_frc.html", frc=frc)
 
     def post(self, frc_id):
         action = request.form.get("action", "update")
@@ -34,4 +34,4 @@ class PMUpdateFrcPg:
             return redirect(url_for("view_frc"))
 
         frc = self.controlView.viewFrc(frc_id)
-        return render_template("project_manager/update_frc.html", frc=frc), 400
+        return render_template("platform_management/update_frc.html", frc=frc), 400
